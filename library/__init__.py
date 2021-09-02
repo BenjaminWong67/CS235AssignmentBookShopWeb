@@ -20,6 +20,8 @@ def create_some_book():
 def create_app():
     app = Flask(__name__)
 
+    app.config.from_object('config.Config')
+
     @app.route('/')
     def home():
         some_book = create_some_book()
