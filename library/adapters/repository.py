@@ -28,6 +28,15 @@ class AbstractRepository(abc.ABC):
         """
         raise NotImplementedError
 
+
+    @abc.abstractmethod
+    def get_book_catalogue(self):
+        """Returns the book catalogue
+
+        If there is none return None
+        """
+        raise NotImplementedError
+
     @abc.abstractmethod
     def add_users(self, user: User):
         """Adds the user into the repository. """
@@ -41,16 +50,7 @@ class AbstractRepository(abc.ABC):
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
-    def add_review(self, review:Review):
-        """Adds the review into the repository"""
-        raise NotImplementedError
 
-    @abc.abstractmethod
-    def get_review(self, username:str, book_id:int):
-        """Returns the review that matches the book_id and the username
 
-        If there is no username or book)id that matches return None
-        """
-        raise NotImplementedError
+
 

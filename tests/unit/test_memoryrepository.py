@@ -14,8 +14,9 @@ class TestPublisher:
         print(repo.get_book("Choo Choo"))
 
     def test_populate_memory_repo(self):
+        data_path = get_project_root() / "library" / "adapters" / "data"
         repo = MemoryRepository()
-        author_files_name = get_project_root() / "library" / "adapters" / "data" / "comic_books_excerpt.json"
-        book_files_name = get_project_root() / "library" / "adapters" / "data" / "book_authors_excerpt.json"
-        memoryrepository.populate(author_files_name, book_files_name, repo)
+        memoryrepository.populate(data_path, repo)
+        for book in repo.get_book_catalogue():
+            print(book)
 

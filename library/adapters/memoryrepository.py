@@ -1,4 +1,5 @@
 """Name: Benjamin Wong UPI:BLU378 last-Modified:1:07pm 2/8/2021"""
+from pathlib import Path
 from typing import Type
 
 from library.adapters.jsondatareader import BooksJSONReader
@@ -28,6 +29,9 @@ class MemoryRepository(AbstractRepository):
 
         return book
 
+    def get_book_catalogue(self):
+        return self.__books
+
     def add_users(self, user: User):
         pass
 
@@ -40,9 +44,18 @@ class MemoryRepository(AbstractRepository):
     def get_review(self, username: str, book_id: int):
         pass
 
+    def get_publisher(self, publisher_id: int) -> Publisher:
+        pass
 
-def populate(authors_file_name: str, books_file_name: str, repo: MemoryRepository):
-    data_set_of_books = BooksJSONReader(authors_file_name, books_file_name)
+    def get_author(self, author_id: int) -> Author:
+        pass
+
+
+def populate(data_path: Path, repo: MemoryRepository):
+    authors_data_path = str(Path(data_path) / "comic_books_excerpt.json")
+    book_data_path = str(Path(data_path) / "book_authors_excerpt.json")
+    data_set_of_books = BooksJSONReader(authors_data_path, book_data_path)
     data_set_of_books.read_json_files()
     for book in data_set_of_books.dataset_of_books:
         repo.add_book(book)
+
