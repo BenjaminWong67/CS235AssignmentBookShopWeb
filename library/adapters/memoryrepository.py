@@ -19,11 +19,11 @@ class MemoryRepository(AbstractRepository):
         self.__books.append(book)
         self.__books_index[book.title] = book
 
-    def get_book(self, book_title: str) -> Book:
+    def get_book(self, id: int) -> Book:
         book = None
 
         try:
-            book = self.__books_index[book_title]
+            book = self.__books_index[int]
         except KeyError:
             pass
 
@@ -52,8 +52,10 @@ class MemoryRepository(AbstractRepository):
 
 
 def populate(data_path: Path, repo: MemoryRepository):
+
     authors_data_path = str(Path(data_path) / "comic_books_excerpt.json")
     book_data_path = str(Path(data_path) / "book_authors_excerpt.json")
+
     data_set_of_books = BooksJSONReader(authors_data_path, book_data_path)
     data_set_of_books.read_json_files()
     for book in data_set_of_books.dataset_of_books:
