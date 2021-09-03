@@ -19,11 +19,11 @@ class MemoryRepository(AbstractRepository):
         self.__books.append(book)
         self.__books_index[book.title] = book
 
-    def get_book(self, id: int) -> Book:
+    def get_book(self, book_title: str) -> Book:
         book = None
 
         try:
-            book = self.__books_index[int]
+            book = self.__books_index[book_title]
         except KeyError:
             pass
 
