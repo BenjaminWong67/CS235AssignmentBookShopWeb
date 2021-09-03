@@ -1,9 +1,11 @@
 """Name: Benjamin Wong UPI:BLU378 last-Modified:1:07pm 2/8/2021"""
-from library.adapters import memoryrepository
 from library.adapters.jsondatareader import BooksJSONReader
 from library.adapters.memoryrepository import MemoryRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review
 from utils import get_project_root
+
+import pytest
+
 
 class TestPublisher:
 

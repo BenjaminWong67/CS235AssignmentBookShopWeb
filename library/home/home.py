@@ -1,0 +1,3 @@
+# will implement the home page here...
+
+""" for now this is left blank until we start blueprint development"""
