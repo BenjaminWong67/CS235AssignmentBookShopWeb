@@ -1,8 +1,7 @@
 """Initialize Flask app."""
-
+from pathlib import Path
 from flask import Flask, render_template
 
-# TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 from library.domain.model import Book
 
 # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
@@ -17,10 +16,16 @@ def create_some_book():
     return some_book
 
 
-def create_app():
+def create_app(test_config=None):
     app = Flask(__name__)
 
     app.config.from_object('config.Config')
+    data_path = Path("library") / "adapters" / "data"
+
+    if test_config is not None:
+        # Load test configuration, and override any configuration settings.
+        app.config.from_mapping(test_config)
+        data_path = app.config['TEST_DATA_PATH']
 
     @app.route('/')
     def home():

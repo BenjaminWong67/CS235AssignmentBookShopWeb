@@ -1,11 +1,10 @@
 """Name: Benjamin Wong UPI:BLU378 last-Modified:12:48pm 2/8/2021"""
 import abc
-from datetime import date
 
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review
 
-repo_instance = None
 
+repo_instance = None
 
 class RepositoryException(Exception):
 

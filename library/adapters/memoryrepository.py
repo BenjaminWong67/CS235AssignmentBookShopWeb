@@ -1,10 +1,10 @@
 """Name: Benjamin Wong UPI:BLU378 last-Modified:1:07pm 2/8/2021"""
 from pathlib import Path
-from typing import Type
 
 from library.adapters.jsondatareader import BooksJSONReader
 from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review
+
 
 
 class MemoryRepository(AbstractRepository):
@@ -19,11 +19,11 @@ class MemoryRepository(AbstractRepository):
         self.__books.append(book)
         self.__books_index[book.title] = book
 
-    def get_book(self, id: int) -> Book:
+    def get_book(self, book_title: str) -> Book:
         book = None
 
         try:
-            book = self.__books_index[int]
+            book = self.__books_index[book_title]
         except KeyError:
             pass
 
