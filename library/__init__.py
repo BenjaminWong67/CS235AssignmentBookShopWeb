@@ -5,6 +5,7 @@ from flask import Flask, render_template
 import library.adapters.repository as repo
 from library.adapters.memoryrepository import MemoryRepository, populate
 
+from utils import get_project_root
 
 #        # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 #        def create_some_book():
@@ -30,16 +31,16 @@ def create_app(test_config=None):
 
     # creates Memory repo instance
     repo.repo_instance = MemoryRepository()
+    data_path = get_project_root() / "library" / "adapters" / "data"
     # fills the repo instance with the provided data_path
     populate(data_path, repo.repo_instance)
 
-
-    @app.route('/')
+    @app.route('/books-by-title', methods=['GET'])
     def page_of_books():
-        pass
+        return render_template("testing.html", books_inventory=repo.repo_instance.get_book_catalogue())
 
-    @app.route('/book')
-    def book_page():
-        pass
+    @app.route('/book/<book_title>', methods=['GET'])
+    def book_page(book_title):
+        return render_template("testing.html", book=repo.repo_instance.get_book(book_title))
 
     return app
