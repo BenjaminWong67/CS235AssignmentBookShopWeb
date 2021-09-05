@@ -39,8 +39,7 @@ def create_app():
     @app.route('/book_info/<int:book_id>')
     def catalogue(book_id):
         book_object = repo.repo_instance.get_book(book_id)
-        print(book_object)
+        print(type(book_id))
         return render_template('simple_book.html', book=book_object)
-
 
     return app
