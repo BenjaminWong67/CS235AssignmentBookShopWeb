@@ -17,7 +17,7 @@ class MemoryRepository(AbstractRepository):
 
     def add_book(self, book: Book):
         self.__books.append(book)
-        self.__books_index[book.title] = book
+        self.__books_index[book.book_id] = book
 
     def get_book(self, book_title: str) -> Book:
         book = None

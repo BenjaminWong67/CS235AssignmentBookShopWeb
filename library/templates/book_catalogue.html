@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'layout.html' %}
+{% block content %}
+    <table class="center">
+        <tr>
+            <th>Book</th>
+        </tr>
+        {% for book in list_of_books %}
+            <tr>
+                <td>
+                    <a href="/book_info/{{book.book_id}}">{{ book.title }}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -6,7 +6,7 @@ from flask import Flask, render_template
 from library.domain.model import Book
 
 import library.adapters.repository as repo
-from adapters.memoryrepository import MemoryRepository, populate
+from library.adapters.memoryrepository import MemoryRepository, populate
 
 # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 #    def create_some_book():
@@ -33,10 +33,14 @@ def create_app():
 
     @app.route('/')
     def home():
-        some_book =
         # Use Jinja to customize a predefined html page rendering the layout for showing a single book.
-        return render_template('simple_book.html', book=repo.repo_instance.get_book())
+        return render_template('book_catalogue.html', list_of_books=repo.repo_instance.get_book_catalogue())
 
+    @app.route('/book_info/<int:book_id>')
+    def catalogue(book_id):
+        book_object = repo.repo_instance.get_book(book_id)
+        print(book_object)
+        return render_template('simple_book.html', book=book_object)
 
 
     return app
