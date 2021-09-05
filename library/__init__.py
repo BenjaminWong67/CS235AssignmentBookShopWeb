@@ -7,10 +7,10 @@ from library.adapters.memoryrepository import MemoryRepository, populate
 
 from utils import get_project_root
 
-#        # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
-#        def create_some_book():
-#            some_book = Book(1, "Harry Potter and the Chamber of Secrets")
-#            some_book.description = "Ever since Harry Potter had come home for the summer, the Dursleys had been so mean \
+##TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
+#def create_some_book():
+#some_book = Book(1, "Harry Potter and the Chamber of Secrets")
+#some_book.description = "Ever since Harry Potter had come home for the summer, the Dursleys had been so mean \
 #                                     and hideous that all Harry wanted was to get back to the Hogwarts School for \
 #                                     Witchcraft and Wizardry. But just as he’s packing his bags, Harry receives a \
 #                                     warning from a strange impish creature who says that if Harry returns to Hogwarts, \
@@ -35,11 +35,11 @@ def create_app(test_config=None):
     # fills the repo instance with the provided data_path
     populate(data_path, repo.repo_instance)
 
-    @app.route('/books-by-title', methods=['GET'])
+    @app.route('/books-by-title')
     def page_of_books():
         return render_template("testing.html", books_inventory=repo.repo_instance.get_book_catalogue())
 
-    @app.route('/book/<book_title>', methods=['GET'])
+    @app.route('/book/<book_title>')
     def book_page(book_title):
         return render_template("testing.html", book=repo.repo_instance.get_book(book_title))
 
