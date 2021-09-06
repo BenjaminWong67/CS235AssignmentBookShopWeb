@@ -18,10 +18,10 @@ from library.adapters.memoryrepository import MemoryRepository, populate
 #        some_book.release_year = 1999
 #        return some_book
 
-
 def create_app(test_config=None):
     app = Flask(__name__)
 
+    # sets up normal configuration
     app.config.from_object('config.Config')
     data_path = Path("library") / "adapters" / "data"
 
@@ -38,6 +38,19 @@ def create_app(test_config=None):
 
     @app.route('/')
     def home():
+        return render_template("book_catalogue.html", list_of_books=repo.repo_instance.get_book_catalogue())
+
+    @app.route('/book_info/<int:book_id>')
+    def catalogue(book_id):
+        return render_template("simple_book.html", book=repo.repo_instance.get_book(book_id))
+
+    return app
+
+
+"""
+<<<<<<< HEAD
+    @app.route('/')
+    def home():
         # Use Jinja to customize a predefined html page rendering the layout for showing a single book.
         return render_template('book_catalogue.html', list_of_books=repo.repo_instance.get_book_catalogue())
 
@@ -45,5 +58,4 @@ def create_app(test_config=None):
     def catalogue(book_id):
         book_object = repo.repo_instance.get_book(book_id)
         return render_template('simple_book.html', book=book_object)
-
-    return app
+"""
