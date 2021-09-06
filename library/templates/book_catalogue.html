@@ -7,7 +7,8 @@
         {% for book in list_of_books %}
             <tr>
                 <td>
-                    <a href="/book_info/{{book.book_id}}">{{ book.title }}</a>
+                    {{ book.title }}<br>
+                    <a href="/book_info/{{book.book_id}}">view book details</a>
                 </td>
             </tr>
         {% endfor %}
