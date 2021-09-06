@@ -1,0 +1,16 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <table class="center">
+        <tr>
+            <th>Book</th>
+        </tr>
+        {% for book in list_of_books %}
+            <tr>
+                <td>
+                    {{ book.title }}<br>
+                    <a href="/book_info/{{book.book_id}}">view book details</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

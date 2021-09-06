@@ -5,6 +5,9 @@ from library.adapters.memoryrepository import MemoryRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review
 from utils import get_project_root
 
+import pytest
+
+
 class TestPublisher:
 
     def test_memoryrepository_construction(self):
