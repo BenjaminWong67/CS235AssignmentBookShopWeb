@@ -1,8 +1,34 @@
 #container {
     text-align: center;
     color: red;
+    background-color: rgb(253, 236, 166);
+    margin: auto;
+    width: 1000px;
+}
+
+body {
+    background-color: rgb(253, 127, 39);
 }
 .center {
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
+  width: 50%;
+  border: 3px solid black;
+  padding: 10px;
 }
+
+h1 {
+    margin: auto;
+    text-align: center;
+    background-color: rgb(253, 236, 166);
+    width: 1000px;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+

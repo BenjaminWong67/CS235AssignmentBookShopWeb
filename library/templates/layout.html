@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <title>TimBen Book Catalogue</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-
+    <div id="banner">
+        <h1>TimBen Book Catalogue</h1>
+    </div>
 </head>
 <body>
-    <div id="container">
-    {% block content %} {% endblock %}
+    <div id="body">
+    <!-- Include navigation partial. -->
+    {% include 'navigation.html' %}
+
+        <div id="container">
+        {% block content %} {% endblock %}
         </div>
+    </div>
 
 
 </body>
