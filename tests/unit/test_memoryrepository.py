@@ -5,7 +5,7 @@ from library.domain.model import Book, User, BooksInventory, Author, Publisher, 
 from library.adapters.repository import RepositoryException
 
 
-def test_repo_construction():
+def test_repo_construction(in_memory_repo):
 
     book = Book(1234, "random_book")
     in_memory_repo.add_book(book)
