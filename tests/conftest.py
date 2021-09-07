@@ -1,8 +1,8 @@
 import pytest
 
 from library import create_app
-from library.adapters import memoryrepository
-from library.adapters.memoryrepository import MemoryRepository
+from library.adapters import memory_repository
+from library.adapters.memory_repository import MemoryRepository
 
 from utils import get_project_root
 
@@ -12,7 +12,7 @@ TEST_DATA_PATH = get_project_root() / "tests" / "data"
 @pytest.fixture
 def in_memory_repo():
     repo = MemoryRepository()
-    memoryrepository.populate(TEST_DATA_PATH, repo)
+    memory_repository.populate(TEST_DATA_PATH, repo)
     return repo
 
 
