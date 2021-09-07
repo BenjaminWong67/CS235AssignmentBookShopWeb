@@ -45,3 +45,4 @@ def create_app(test_config=None):
         return render_template("simple_book.html", book=repo.repo_instance.get_book(book_id))
 
     return app
+
