@@ -15,8 +15,11 @@ class MemoryRepository(AbstractRepository):
         self.__users = list()
 
     def add_book(self, book: Book):
-        self.__books.append(book)
-        self.__books_index[book.book_id] = book
+        if isinstance(book, Book):
+            self.__books.append(book)
+            self.__books_index[book.book_id] = book
+        else:
+            raise ValueError
 
     def get_book(self, book_id: int) -> Book:
         book = None
