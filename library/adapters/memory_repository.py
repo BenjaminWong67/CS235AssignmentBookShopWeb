@@ -51,6 +51,7 @@ def load_search_dictionary(dataset_of_books: list, repo: MemoryRepository):
     creates a nested dictionary using the four attributes
 
     if a book does not contain the attribute, then the book id is added to the key called "N/A"
+    assumes that there is only one of each attribute except of the authors attribute
 
     adds the search dictionary to the repository
     """
