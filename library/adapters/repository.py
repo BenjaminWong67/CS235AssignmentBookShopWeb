@@ -34,3 +34,15 @@ class AbstractRepository(abc.ABC):
         If there is none return None
         """
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_search_dictionary(self, search_dictionary: dict):
+        """Loads the nested search dictionary into the repository"""
+        raise NotImplementedError
+
+    def get_search_dictionary(self):
+        """Returns search dictionary
+
+        if none return None
+        """
+        raise NotImplementedError

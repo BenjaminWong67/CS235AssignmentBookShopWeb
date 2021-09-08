@@ -31,29 +31,37 @@ class BooksJSONReader:
                 authors_json.append(author_entry)
         return authors_json
 
-
     def read_json_files(self):
         authors_json = self.read_authors_file()
         books_json = self.read_books_file()
 
         for book_json in books_json:
+            # creates book instance with id and title
             book_instance = Book(int(book_json['book_id']), book_json['title'])
+            # adds publisher
             book_instance.publisher = Publisher(book_json['publisher'])
+
+            # adds publication year if exists
             if book_json['publication_year'] != "":
                 book_instance.release_year = int(book_json['publication_year'])
+
+            # adds bool ebook is exists
             if book_json['is_ebook'].lower() == 'false':
                 book_instance.ebook = False
             else:
                 if book_json['is_ebook'].lower() == 'true':
                     book_instance.ebook = True
+
+            # adds description
             book_instance.description = book_json['description']
+
+            # adds number of pages in book
             if book_json['num_pages'] != "":
                 book_instance.num_pages = int(book_json['num_pages'])
 
             # extract the author ids:
-            list_of_authors_ids = book_json['authors']
+            list_of_authors_ids = book_json['authors']  # extracts list of authors in book
             for author_id in list_of_authors_ids:
-
                 numerical_id = int(author_id['author_id'])
                 # We assume book authors are available in the authors file,
                 # otherwise more complex handling is required.
@@ -63,4 +71,5 @@ class BooksJSONReader:
                         author_name = author_json['name']
                 book_instance.add_author(Author(numerical_id, author_name))
 
+            # adds book instance to the dataset of books
             self.__dataset_of_books.append(book_instance)
