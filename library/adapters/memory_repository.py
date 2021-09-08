@@ -15,8 +15,11 @@ class MemoryRepository(AbstractRepository):
         self.__users = list()
 
     def add_book(self, book: Book):
-        self.__books.append(book)
-        self.__books_index[book.book_id] = book
+        if isinstance(book, Book):
+            self.__books.append(book)
+            self.__books_index[book.book_id] = book
+        else:
+            raise ValueError
 
     def get_book(self, book_id: int) -> Book:
         book = None
@@ -32,6 +35,7 @@ class MemoryRepository(AbstractRepository):
         return self.__books
 
 
+# populates the memory repository with the provided json files
 def populate(data_path: Path, repo: MemoryRepository):
     authors_data_path = str(Path(data_path) / "comic_books_excerpt.json")
     book_data_path = str(Path(data_path) / "book_authors_excerpt.json")

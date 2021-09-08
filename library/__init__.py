@@ -5,7 +5,7 @@ from flask import Flask, render_template
 from library.domain.model import Book
 
 import library.adapters.repository as repo
-from library.adapters.memoryrepository import MemoryRepository, populate
+from library.adapters.memory_repository import MemoryRepository, populate
 
 # TODO: Access to the books should be implemented via the repository pattern and using blueprints, so this can not stay here!
 #    def create_some_book():
@@ -45,3 +45,4 @@ def create_app(test_config=None):
         return render_template("simple_book.html", book=repo.repo_instance.get_book(book_id))
 
     return app
+
