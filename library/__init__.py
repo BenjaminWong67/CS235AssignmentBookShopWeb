@@ -36,13 +36,24 @@ def create_app(test_config=None):
 
     populate(data_path, repo.repo_instance)
 
-    @app.route('/')
-    def home():
-        return render_template("book_catalogue.html", list_of_books=repo.repo_instance.get_book_catalogue())
+    with app.app_context():
+        # home blueprint
+        from .home import home
+        app.register_blueprint(home.home_blueprint)
 
-    @app.route('/book_info/<int:book_id>')
-    def catalogue(book_id):
-        return render_template("simple_book.html", book=repo.repo_instance.get_book(book_id))
+        # authentication blueprint
+        from .authentication import authentication
+        app.register_blueprint(authentication.authentication_blueprint)
+
+        # books blueprint
+        from .books import books
+        app.register_blueprint(books.books_blueprint)
+
+        # utilities blueprint
+        from .utilities import utilities
+        app.register_blueprint(utilities.utilities_blueprint)
+
+
 
     return app
 
