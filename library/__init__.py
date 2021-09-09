@@ -53,7 +53,5 @@ def create_app(test_config=None):
         from .utilities import utilities
         app.register_blueprint(utilities.utilities_blueprint)
 
-
-
     return app
 
