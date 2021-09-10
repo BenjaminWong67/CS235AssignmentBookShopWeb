@@ -13,12 +13,36 @@ class MemoryRepository(AbstractRepository):
         self.__books_index = dict()
         self.__reviews = list()
         self.__users = list()
-        self.__search_dictionary = dict()
+        self.__search_dictionary = {
+            "title": dict(),
+            "author": dict(),
+            "publisher": dict(),
+            "release_year": dict()
+        }
 
     def add_book(self, book: Book):
         if isinstance(book, Book):
-            self.__books.append(book)
-            self.__books_index[book.book_id] = book
+            if book.book_id not in self.__books_index.keys():
+                self.__books.append(book)
+                self.__books_index[book.book_id] = book
+
+                if book.title not in self.__search_dictionary["title"].keys():
+                    self.__search_dictionary["title"][book.title] = list()
+                self.__search_dictionary["title"][book.title].append(book.book_id)
+
+                for author in book.authors:
+                    if str(author.full_name) not in self.__search_dictionary["author"].keys():
+                        self.__search_dictionary["author"][str(author.full_name)] = list()
+                    self.__search_dictionary["author"][str(author.full_name)].append(book.book_id)
+
+                if str(book.publisher.name) not in self.__search_dictionary["publisher"].keys():
+                    self.__search_dictionary["publisher"][str(book.publisher.name)] = list()
+                self.__search_dictionary["publisher"][str(book.publisher.name)].append(book.book_id)
+
+                if str(book.release_year) not in self.__search_dictionary["release_year"].keys():
+                    self.__search_dictionary["release_year"][str(book.release_year)] = list()
+                self.__search_dictionary["release_year"][str(book.release_year)].append(book.book_id)
+
         else:
             raise ValueError
 
@@ -35,72 +59,8 @@ class MemoryRepository(AbstractRepository):
     def get_book_catalogue(self):
         return self.__books
 
-    def add_search_dictionary(self, search_dictionary: dict):
-        self.__search_dictionary = search_dictionary
-
     def get_search_dictionary(self):
         return self.__search_dictionary
-
-
-# creates a nested dictionary for searching via, Authors, Publishers, Release Year, Title
-def load_search_dictionary(dataset_of_books: list, repo: MemoryRepository):
-    """
-    iterates the dataset of books
-
-    checks the title, author, publisher and release year
-    creates a nested dictionary using the four attributes
-
-    if a book does not contain the attribute, then the book id is added to the key called "N/A"
-    assumes that there is only one of each attribute except of the authors attribute
-
-    adds the search dictionary to the repository
-    """
-    title_search = dict()
-    author_search = dict()
-    publisher_search = dict()
-    release_year_search = dict()
-
-    search = {
-        "title": title_search,
-        "author": author_search,
-        "publisher": publisher_search,
-        "release_year": release_year_search
-    }
-
-    for book in dataset_of_books:
-        book_id_instance = book.book_id
-
-        # title
-        title_instance = book.title if book.title is not None else "N/A"
-        if title_instance not in search["title"].keys():
-            search["title"][str(title_instance)] = list()
-        search["title"][str(title_instance)].append(book_id_instance)
-
-        # author -- there can be many authors
-        if len(book.authors) > 0:
-            for author in book.authors:
-                if author.full_name not in search["author"].keys():
-                    search["author"][str(author.full_name)] = list()
-                search["author"][str(author.full_name)].append(book_id_instance)
-        else:
-            author = "N/A"
-            if author not in search["author"].keys():
-                search["author"][author] = list()
-            search["author"][author].append(book_id_instance)
-
-        # publisher
-        publisher_instance = book.publisher.name if book.publisher.name is not None else "N/A"
-        if publisher_instance not in search["publisher"].keys():
-            search["publisher"][str(publisher_instance)] = list()
-        search["publisher"][str(publisher_instance)].append(book_id_instance)
-
-        # release year
-        release_year_instance = book.release_year if book.release_year is not None else "N/A"
-        if release_year_instance not in search["release_year"].keys():
-            search["release_year"][str(release_year_instance)] = list()
-        search["release_year"][str(release_year_instance)].append(book_id_instance)
-
-    repo.add_search_dictionary(search)
 
 
 # populates the memory repository with the provided json files
@@ -110,8 +70,6 @@ def populate(data_path: Path, repo: MemoryRepository):
 
     books_data = BooksJSONReader(authors_data_path, book_data_path)
     books_data.read_json_files()
-
-    load_search_dictionary(books_data.dataset_of_books, repo)
 
     for book in books_data.dataset_of_books:
         repo.add_book(book)

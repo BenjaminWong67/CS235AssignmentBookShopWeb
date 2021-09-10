@@ -28,10 +28,7 @@ def books_search():
         if id_list is None:
             return render_template('books/search_fail.html')
 
-        return
-
-
-
+        return render_template('books/book_id.html', list=id_list)
 
 
 class SearchForm(FlaskForm):
