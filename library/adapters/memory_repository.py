@@ -77,12 +77,11 @@ def load_search_dictionary(dataset_of_books: list, repo: MemoryRepository):
         search["title"][str(title_instance)].append(book_id_instance)
 
         # author -- there can be many authors
-        if book.authors > 0:
+        if len(book.authors) > 0:
             for author in book.authors:
-                if author not in search["author"].keys():
-                    search["author"][str(author)] = list()
-                search["author"][str(author)].append(book_id_instance)
-
+                if author.full_name not in search["author"].keys():
+                    search["author"][str(author.full_name)] = list()
+                search["author"][str(author.full_name)].append(book_id_instance)
         else:
             author = "N/A"
             if author not in search["author"].keys():
@@ -90,7 +89,7 @@ def load_search_dictionary(dataset_of_books: list, repo: MemoryRepository):
             search["author"][author].append(book_id_instance)
 
         # publisher
-        publisher_instance = book.publisher if book.publisher is not None else "N/A"
+        publisher_instance = book.publisher.name if book.publisher.name is not None else "N/A"
         if publisher_instance not in search["publisher"].keys():
             search["publisher"][str(publisher_instance)] = list()
         search["publisher"][str(publisher_instance)].append(book_id_instance)
