@@ -14,4 +14,4 @@ def home():
 
 @home_blueprint.route('/book_info/<int:book_id>')
 def catalogue(book_id):
-    return render_template("simple_book.html", book=repo.repo_instance.get_book(book_id))
+    return render_template("book_view.html", book=repo.repo_instance.get_book(book_id))
