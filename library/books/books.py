@@ -25,10 +25,9 @@ def books_search():
 
         id_list = services.search_repository_by_attribute(search_attribute, search_input, repo.repo_instance)
 
-        if id_list is None:
-            return render_template('books/search_fail.html')
+        list_of_books = services.get_books_from_list_of_ids(id_list, repo.repo_instance)
 
-        return render_template('books/book_id.html', list=id_list)
+        return render_template('books/search.html', list_of_books=list_of_books)
 
 
 class SearchForm(FlaskForm):

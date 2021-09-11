@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <table class="center">
+        <tr>
+            <th>Search Results</th>
+        </tr>
+        {% if list_of_books is not none %}
+            {% for book in list_of_books %}
+                <tr>
+                    <td>
+                        {{ book.title }}<br>
+                        <a href="/book_info/{{book.book_id}}">view book details</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td>
+                    Search did not return any results.
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+{% endblock %}
