@@ -16,7 +16,10 @@ class AbstractRepository(abc.ABC):
 
     @abc.abstractmethod
     def add_book(self, book: Book):
-        """Adds the book into the repository. """
+        """Adds the book into the repository.
+
+        also adds the book to the search dictionary
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -36,10 +39,6 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def add_search_dictionary(self, search_dictionary: dict):
-        """Loads the nested search dictionary into the repository"""
-        raise NotImplementedError
-
     def get_search_dictionary(self):
         """Returns search dictionary
 
