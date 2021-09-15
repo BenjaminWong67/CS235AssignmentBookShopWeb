@@ -20,18 +20,20 @@
             {% include 'header.html' %}
         </div>
 
-
-        <div id="nav-bar">
+        <div id="top-bar">
             <!-- include navigation partial -->
-            {% include 'navigation.html' %}
+            <div id="nav">
+                {% include 'navigation.html' %}
+            </div>
+            <div id="search">
+                {% include 'search.html' %}
+            </div>
         </div>
-
 
         <div id="main">
             <!-- webpage provided by blueprints -->
             {% block content %}{% endblock %}
         </div>
-
 
         <div id="footer">
             <!-- include footer partial -->
