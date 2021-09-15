@@ -12,6 +12,10 @@ books_blueprint = Blueprint(
     "books_bp", __name__, url_prefix="/books")
 
 
+
+"""
+old implementation of the book blueprint
+
 @books_blueprint.route('/search', methods=['GET', 'POST'])
 def books_search():
 
@@ -39,3 +43,4 @@ class SearchForm(FlaskForm):
                            )
     input = TextField('input', [DataRequired()])
     submit = SubmitField("Search")
+"""
