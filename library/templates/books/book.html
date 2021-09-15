@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<table class="center">
+    <tr>
+        <th>Search</th>
+    </tr>
+
+    <form action="{{handler_url}}" method="post">
+        <td>
+            {{ form.attribute.label }}
+            {% for subfield in form.attribute %}
+                <ul>
+                    <li>{{ subfield }}</li>
+                    <li>{{ subfield.label }}</li>
+                </ul>
+            {% endfor %}
+        </td>
+        <tr>
+            <td>
+                {{ form.submit }}
+                {{ form.input }}
+            </td>
+        </tr>
+    </form>
+
+</table>
+{% endblock %}

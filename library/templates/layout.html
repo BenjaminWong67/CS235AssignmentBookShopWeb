@@ -1,23 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>TimBen Book Catalogue</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-    <div id="banner">
-        <h1>TimBen Book Catalogue</h1>
-    </div>
-</head>
-<body>
-    <div id="body">
-    <!-- Include navigation partial. -->
-    {% include 'navigation.html' %}
 
-        <div id="container">
-        {% block content %} {% endblock %}
+    <head>
+        <meta charset="UTF-8">
+        <title>TimBen Book Catalogue</title>
+
+        <link
+                rel="stylesheet"
+                href="{{ url_for('static', filename='css/main.css')}}"
+        />
+
+    </head>
+
+	<body>
+
+
+        <div id="header">
+            <!-- include header partial -->
+            {% include 'header.html' %}
         </div>
-    </div>
 
 
-</body>
+        <div id="nav-bar">
+            <!-- include navigation partial -->
+            {% include 'navigation.html' %}
+        </div>
+
+
+        <div id="main">
+            <!-- webpage provided by blueprints -->
+            {% block content %}{% endblock %}
+        </div>
+
+
+        <div id="footer">
+            <!-- include footer partial -->
+            {% include 'footer.html' %}
+        </div>
+
+
+    </body>
+
 </html>

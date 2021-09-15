@@ -12,6 +12,10 @@ books_blueprint = Blueprint(
     "books_bp", __name__, url_prefix="/books")
 
 
+@books_blueprint.route('/')
+def books_catalogue():
+    return render_template("books/books.html")
+
 
 """
 old implementation of the book blueprint
@@ -22,7 +26,7 @@ def books_search():
     form = SearchForm()
 
     if request.method == 'GET':
-        return render_template('books/books.html', form=form)
+        return render_template('books/book.html', form=form)
     else:
         search_attribute = form.attribute.data
         search_input = form.input.data
