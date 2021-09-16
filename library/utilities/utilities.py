@@ -18,5 +18,5 @@ class SearchForm(FlaskForm):
                                                   ("release_year", "Release Year")]
                             )
     input = StringField('input', [DataRequired()])
-    submit = SubmitField('>')
+    submit = SubmitField('🔎')
 
