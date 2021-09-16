@@ -1,4 +1,6 @@
 
+@import url(https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap);
+
 body {
     background-color: #E8804C;
     display:flex;
@@ -6,13 +8,13 @@ body {
     justify-content: flex-start;
     margin: 10px 20%;
     padding: 0px;
-    font-family: Helvetica;
+    font-family: 'Lato', sans-serif;
 }
 
 /* Container styles and layout */
 #header {
     /*header container */
-    margin-bottom:25px;
+    margin-bottom:30px;
     padding:20px;
     border-radius: 10px;
     background-color: #F3AD78;
@@ -32,7 +34,7 @@ body {
 }
 #main {
     /* main body container */
-    margin-bottom:10px;
+    margin-bottom:30px;
     border-radius: 10px;
     display:flex;
     flex-direction: column;
@@ -93,25 +95,17 @@ div#search select, div#search input {
 
 
 
-th, td, tr {
-    border: 3px solid #42649b;
-    padding: 10px;
-    width: 100%;
-}
 table {
-    padding:0;
-    margin:0;
+    border-radius: 7px;
+    padding: 0px 0px 10px 0px;
+    background: #F3F3F3;
 }
-
-
-
-
-/* text styles */
-h1 {
-    margin: auto;
-    text-align: center;
-    width: 1250px;
+th {
+    border-radius: 10px 10px 0px 0px;
+    border-bottom: 2px dotted black;
+    padding: 14px 16px;
 }
-h2 {
-    text-align: center;
+tr td {
+    border-left: 10px solid #30C3CD;
+    padding: 14px 16px;
 }
