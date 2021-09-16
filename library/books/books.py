@@ -9,7 +9,7 @@ import library.books.services as services
 
 # configure blueprint
 books_blueprint = Blueprint(
-    "books_bp", __name__, url_prefix="/books")
+    "books_bp", __name__, url_prefix="/catalogue")
 
 
 @books_blueprint.route('/', methods=['GET'])
