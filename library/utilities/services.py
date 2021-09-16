@@ -1,7 +1,5 @@
 from typing import Iterable
 
-from flask import url_for
-
 from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, Author, Publisher
 
@@ -73,7 +71,6 @@ def book_to_dict(book: Book):
         'authors': authors_to_dict(book.authors),
         'ebook': book.ebook,
         'num_pages': book.num_pages,
-        'url': url_for('books_bp.books_view', id=book.book_id)
     }
     return book_dict
 

@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, url_for
 
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField, StringField
@@ -32,5 +32,8 @@ def search_for_books(attribute: str, input: str, repo: repo.repo_instance):
         search_results = services.search_with_publisher(input, repo)
     elif attribute == 'release_year':
         search_results = services.search_with_release_year(input, repo)
+
+    for book in search_results:
+        book['url'] = url_for('books_bp.books_view', id=book['id'])
 
     return search_results

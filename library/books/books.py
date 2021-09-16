@@ -30,28 +30,20 @@ def books_view():
     book_id = int(request.args.get('id'))
 
     book = services.get_book(book_id, repo.repo_instance)
-
-    form = utilities.SearchForm()
+    book['url'] = url_for('books_bp.books_view', id=book['id'])
 
     return render_template(
         "books/books_view.html",
         book=book,
-        form=form
+        form=utilities.SearchForm()
     )
 
 
 @books_blueprint.route('/search', methods=['GET'])
 def books_search():
 
-    search_attribute = request.args.get('attribute')
-    search_input = request.args.get('input')
-
-    form = utilities.SearchForm()
-
-    books = utilities.search_for_books(search_attribute, search_input, repo.repo_instance)
-
     return render_template(
         'books/books.html',
-        form=form,
-        books=books
+        form=utilities.SearchForm(),
+        books=utilities.search_for_books(request.args.get('attribute'), request.args.get('input'), repo.repo_instance)
     )
