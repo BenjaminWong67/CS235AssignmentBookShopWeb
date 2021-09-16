@@ -6,9 +6,22 @@
     <tr>
         <th>this is the book.html template</th>
     </tr>
-    <tr>
-        <td>nothing to see here.</td>
-    </tr>
+    {% if books is none %}
+        <tr>
+            <td>nothing to see here.</td>
+        </tr>
+    {% elif books|length <= 0 %}
+        <tr>
+            <td>Search did not return any results.</td>
+        </tr>
+    {% else %}
+        {% for book in books %}
+            <tr>
+                <td>{{ book.title }}</td><br>
+                <a href="{{url_for('books_bp.book_catalogue')}}">view details</a>
+            </tr>
+        {% endfor %}
+    {% endif %}
 </table>
 
 {% endblock %}
