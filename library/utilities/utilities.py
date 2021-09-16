@@ -19,4 +19,3 @@ class SearchForm(FlaskForm):
                             )
     input = StringField('input', [DataRequired()])
     submit = SubmitField('🔎')
-
