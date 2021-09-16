@@ -19,7 +19,8 @@ def books_catalogue():
 
     return render_template(
         "books/books.html",
-        form=form
+        form=form,
+        books=None
     )
 
 

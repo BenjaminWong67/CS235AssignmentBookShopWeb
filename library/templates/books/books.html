@@ -6,11 +6,11 @@
     <tr>
         <th>this is the book.html template</th>
     </tr>
-    {% if books is none %}
+    {% if books == none %}
         <tr>
             <td>nothing to see here.</td>
         </tr>
-    {% elif books|length <= 0 %}
+    {% elif books|length == 0 %}
         <tr>
             <td>Search did not return any results.</td>
         </tr>
