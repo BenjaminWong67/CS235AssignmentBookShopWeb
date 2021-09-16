@@ -15,7 +15,14 @@ books_blueprint = Blueprint(
 @books_blueprint.route('/', methods=['GET'])
 def books_catalogue():
 
-    return render_template("books/books.html")
+    form = utilities.SearchForm()
+
+    return render_template(
+        "books/books.html",
+        form=form,
+        books=None
+    )
+
 
 @books_blueprint.route('/search', methods=['GET'])
 def books_search():
@@ -23,4 +30,12 @@ def books_search():
     search_attribute = request.args.get('attribute')
     search_input = request.args.get('input')
 
-    return render_template('books/books.html')
+    form = utilities.SearchForm()
+
+    books = utilities.search_for_books(search_attribute, search_input, repo.repo_instance)
+
+    return render_template(
+        'books/books.html',
+        form=form,
+        books=books
+    )
