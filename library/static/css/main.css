@@ -1,0 +1,111 @@
+
+@import url(https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap);
+
+body {
+    background-color: #E8804C;
+    display:flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    margin: 10px 20%;
+    padding: 0px;
+    font-family: 'Lato', sans-serif;
+}
+
+/* Container styles and layout */
+#header {
+    /*header container */
+    margin-bottom:30px;
+    padding:20px;
+    border-radius: 10px;
+    background-color: #F3AD78;
+    font-size: 50px;
+    text-align: center;
+}
+#top-bar {
+    /*navigation container*/
+    margin-bottom:10px;
+    border-radius: 10px;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    padding:5px;
+    background: #F3AD78;
+}
+#main {
+    /* main body container */
+    margin-bottom:30px;
+    border-radius: 10px;
+    display:flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    padding:5px;
+    background: #F3AD78;
+}
+#footer {
+    /* footer container */
+    border-radius: 10px;
+    padding:20px;
+    background: #F3AD78;
+
+    text-align: center;
+    font-size: 10px;
+}
+
+
+/* top-bar elements */
+#nav {
+    padding:0px;
+    margin:0px;
+}
+#search {
+    padding:0px;
+    margin:0px;
+}
+ul {
+    display: flex;
+    flex-direction: row;
+    margin:0px; padding: 14px 0px;
+}
+li {
+    list-style-type: none;
+    padding:0px 2px;
+}
+li a {
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+    text-decoration: none;
+    padding: 14px 16px;
+    background-color: #F3F3F3;
+}
+li a:hover {
+    background-color: #111;
+}
+div#search select, div#search input {
+    border:0px;
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    background-color: #F3F3F3;
+}
+
+
+
+
+table {
+    border-radius: 7px;
+    padding: 0px 0px 10px 0px;
+    background: #F3F3F3;
+}
+th {
+    border-radius: 10px 10px 0px 0px;
+    border-bottom: 2px dotted black;
+    padding: 14px 16px;
+}
+tr td {
+    border-left: 10px solid #30C3CD;
+    padding: 14px 16px;
+}

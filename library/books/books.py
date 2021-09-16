@@ -12,30 +12,15 @@ books_blueprint = Blueprint(
     "books_bp", __name__, url_prefix="/books")
 
 
-@books_blueprint.route('/search', methods=['GET', 'POST'])
+@books_blueprint.route('/', methods=['GET'])
+def books_catalogue():
+
+    return render_template("books/books.html")
+
+@books_blueprint.route('/search', methods=['GET'])
 def books_search():
 
-    form = SearchForm()
+    search_attribute = request.args.get('attribute')
+    search_input = request.args.get('input')
 
-    if request.method == 'GET':
-        return render_template('books/books.html', form=form)
-    else:
-        search_attribute = form.attribute.data
-        search_input = form.input.data
-
-        id_list = services.search_repository_by_attribute(search_attribute, search_input, repo.repo_instance)
-
-        list_of_books = services.get_books_from_list_of_ids(id_list, repo.repo_instance)
-
-        return render_template('books/search.html', list_of_books=list_of_books)
-
-
-class SearchForm(FlaskForm):
-    attribute = RadioField('Search by...',
-                           choices=[("title", "Title"),
-                                    ("author", "Author"),
-                                    ("publisher", "Publisher"),
-                                    ("release_year", "Release Year")]
-                           )
-    input = TextField('input', [DataRequired()])
-    submit = SubmitField("Search")
+    return render_template('books/books.html')

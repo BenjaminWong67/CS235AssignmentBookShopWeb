@@ -30,8 +30,6 @@ def create_app(test_config=None):
         app.config.from_mapping(test_config)
         data_path = app.config['TEST_DATA_PATH']
 
-    data_path = Path('library') / 'adapters' / 'data'
-
     repo.repo_instance = MemoryRepository()
 
     populate(data_path, repo.repo_instance)
