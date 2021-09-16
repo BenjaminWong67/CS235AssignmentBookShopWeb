@@ -1,7 +1,6 @@
 from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review
 
-
 """
 old implementation of the book services
 
@@ -27,4 +26,3 @@ def get_books_from_list_of_ids(book_ids: list, repo: AbstractRepository):
 
     return list_of_books
 """
-
