@@ -37,11 +37,3 @@ class AbstractRepository(abc.ABC):
         If there is none return None
         """
         raise NotImplementedError
-
-    @abc.abstractmethod
-    def get_search_dictionary(self):
-        """Returns search dictionary
-
-        if none return None
-        """
-        raise NotImplementedError
