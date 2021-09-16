@@ -1,7 +1,6 @@
 
 body {
-    border: 3px solid black;
-    background-color: #fff8d4;
+    background-color: #E8804C;
     display:flex;
     flex-direction:column;
     justify-content: flex-start;
@@ -13,33 +12,40 @@ body {
 /* Container styles and layout */
 #header {
     /*header container */
+    margin-bottom:25px;
     padding:20px;
-    background-color: rgb(253, 236, 166);
+    border-radius: 10px;
+    background-color: #F3AD78;
     font-size: 50px;
     text-align: center;
 }
 #top-bar {
     /*navigation container*/
+    margin-bottom:10px;
+    border-radius: 10px;
     display:flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;
-    padding:20px;
-    background:rgb(253, 236, 166);
+    padding:5px;
+    background: #F3AD78;
 }
 #main {
     /* main body container */
+    margin-bottom:10px;
+    border-radius: 10px;
     display:flex;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: flex-start;
     padding:5px;
-    background:#ffdd8c;
+    background: #F3AD78;
 }
 #footer {
     /* footer container */
+    border-radius: 10px;
     padding:20px;
-    background: rgb(253, 236, 166);
+    background: #F3AD78;
 
     text-align: center;
     font-size: 10px;
@@ -48,35 +54,55 @@ body {
 
 /* top-bar elements */
 #nav {
-    padding: 0px;
+    padding:0px;
+    margin:0px;
 }
 #search {
-    padding: 0px;
+    padding:0px;
+    margin:0px;
+}
+ul {
+    display: flex;
+    flex-direction: row;
+    margin:0px; padding: 14px 0px;
+}
+li {
+    list-style-type: none;
+    padding:0px 2px;
 }
 li a {
+    border-radius: 10px;
     color: black;
     text-align: center;
-    /*padding: 14px 16px;*/
     text-decoration: none;
-    background-color: rgb(253, 236, 166);
+    padding: 14px 16px;
+    background-color: #F3F3F3;
 }
 li a:hover {
     background-color: #111;
 }
+div#search select, div#search input {
+    border:0px;
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    background-color: #F3F3F3;
+}
+
+
+
+
 th, td, tr {
-    border: 3px solid black;
+    border: 3px solid #42649b;
     padding: 10px;
     width: 100%;
 }
-ul li {
-    display: inline;
-    list-style-type: none;
-    margin: 0px;
-    padding: 0px;
+table {
+    padding:0;
+    margin:0;
 }
-ul {
-    margin: 0px; padding: 0px;
-}
+
 
 
 
@@ -84,7 +110,6 @@ ul {
 h1 {
     margin: auto;
     text-align: center;
-    background-color: rgb(0, 23, 66);
     width: 1250px;
 }
 h2 {
