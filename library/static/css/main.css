@@ -97,15 +97,16 @@ div#search select, div#search input {
 
 table {
     border-radius: 7px;
-    padding: 0px 0px 10px 0px;
+    padding: 5px 5px 10px 5px;
     background: #F3F3F3;
 }
 th {
     border-radius: 10px 10px 0px 0px;
     border-bottom: 2px dotted black;
-    padding: 14px 16px;
 }
-tr td {
+tr, td {
     border-left: 10px solid #30C3CD;
+}
+tr, td, th {
     padding: 14px 16px;
 }
