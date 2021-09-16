@@ -24,6 +24,22 @@ def books_catalogue():
     )
 
 
+@books_blueprint.route('/book', methods=['GET'])
+def books_view():
+
+    book_id = int(request.args.get('id'))
+
+    book = services.get_book(book_id, repo.repo_instance)
+
+    form = utilities.SearchForm()
+
+    return render_template(
+        "books/books_view.html",
+        book=book,
+        form=form
+    )
+
+
 @books_blueprint.route('/search', methods=['GET'])
 def books_search():
 

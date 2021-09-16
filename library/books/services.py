@@ -1,28 +1,50 @@
+from typing import Iterable
+
+from flask import url_for
+
 from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review
 
-"""
-old implementation of the book services
 
-def search_repository_by_attribute(attribute: str, search: str, repo: AbstractRepository):
-    search_dictionary = repo.get_search_dictionary()
+def get_book(book_id: int, repo: AbstractRepository):
+    book = repo.get_book(book_id)
 
-    search_input = None if search not in search_dictionary[attribute].keys() else search
-
-    if search_input is None:
-        return search_input
-
-    return search_dictionary[attribute][search_input]
+    return book_to_dict(book)
 
 
-def get_books_from_list_of_ids(book_ids: list, repo: AbstractRepository):
-    if book_ids is None:
-        return None
+# ============================================
+# Functions to convert model entities to dicts
+# ============================================
 
-    list_of_books = list()
+def book_to_dict(book: Book):
+    book_dict = {
+        'id': book.book_id,
+        'title': book.title,
+        'release_year': book.release_year,
+        'description': book.description,
+        'publisher': publisher_to_dict(book.publisher),
+        'authors': authors_to_dict(book.authors),
+        'ebook': book.ebook,
+        'num_pages': book.num_pages,
+        'url': url_for('books_bp.books_view', id=book.book_id)
+    }
+    return book_dict
 
-    for id in book_ids:
-        list_of_books.append(repo.get_book(int(id)))
 
-    return list_of_books
-"""
+def publisher_to_dict(publisher: Publisher):
+    publisher_dict = {
+        'name': publisher.name,
+    }
+    return publisher_dict
+
+
+def author_to_dict(author: Author):
+    author_dict = {
+        'unique_id': author.unique_id,
+        'full_name': author.full_name,
+    }
+    return author_dict
+
+
+def authors_to_dict(authors: Iterable[Author]):
+    return [author_to_dict(author) for author in authors]

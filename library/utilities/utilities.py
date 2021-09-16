@@ -8,7 +8,7 @@ import library.adapters.repository as repo
 import library.utilities.services as services
 
 utilities_blueprint = Blueprint(
-    "utilities_bp", __name__,)
+    "utilities_bp", __name__, )
 
 
 class SearchForm(FlaskForm):
@@ -19,7 +19,6 @@ class SearchForm(FlaskForm):
                             )
     input = StringField('input', [DataRequired()])
     submit = SubmitField('🔎')
-
 
 
 def search_for_books(attribute: str, input: str, repo: repo.repo_instance):
@@ -35,4 +34,3 @@ def search_for_books(attribute: str, input: str, repo: repo.repo_instance):
         search_results = services.search_with_release_year(input, repo)
 
     return search_results
-

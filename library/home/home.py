@@ -14,6 +14,7 @@ def home():
 
     form = utilities.SearchForm()
 
-    return render_template("home/home.html",
-                           form=form
-                           )
+    return render_template(
+        "home/home.html",
+        form=form
+    )

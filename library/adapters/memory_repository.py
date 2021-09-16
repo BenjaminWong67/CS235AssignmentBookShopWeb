@@ -39,7 +39,6 @@ class MemoryRepository(AbstractRepository):
         return self.__books
 
 
-
 # populates the memory repository with the provided json files
 def populate(data_path: Path, repo: MemoryRepository):
     authors_data_path = str(Path(data_path) / "comic_books_excerpt.json")
