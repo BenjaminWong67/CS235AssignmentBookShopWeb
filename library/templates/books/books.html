@@ -25,6 +25,17 @@
             </tr>
         {% endfor %}
     {% endif %}
+    <div style="float-left">
+        {% if prev_page_url is not none  %}
+            <button class="btn-general" onclick="location.href='{{prev_page_url}}'">Previous</button>
+        {% endif %}
+    </div>
+    <div style="float-right">
+        {% if next_page_url is not none  %}
+            <button class="btn-general" onclick="location.href='{{next_page_url}}'">Next</button>
+        {% endif %}
+    </div>
 </table>
+
 
 {% endblock %}

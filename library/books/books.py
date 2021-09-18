@@ -19,6 +19,8 @@ def books_catalogue():
     books_per_page = 5
     # read query parameters
     cursor = request.args.get('cursor')
+    next_page_url = request.args.get('next_page_url')
+    prev_page_url = request.args.get('prev_page_url')
 
     if cursor is None:
         # no cursor query parameter, so initialise cursor to start at begginign
@@ -26,12 +28,25 @@ def books_catalogue():
     else:
         # Convert cursor from string to int
         cursor = int(cursor)
+
     books = services.get_book_catalogue(repo.repo_instance, books_per_page, cursor)
+
+    if cursor + books_per_page > services.get_number_of_books(repo.repo_instance):
+        next_page_url = None
+        prev_page_url = url_for('books_bp.books_catalogue', cursor=cursor-(books_per_page - 1))
+    elif cursor == 0:
+        next_page_url = url_for('books_bp.books_catalogue', cursor=cursor+(books_per_page - 1))
+        prev_page_url = None
+    else:
+        next_page_url = url_for('books_bp.books_catalogue', cursor=cursor+(books_per_page - 1))
+        prev_page_url = url_for('books_bp.books_catalogue', cursor=cursor-(books_per_page - 1))
     form_search = utilities.SearchForm()
     return render_template(
         "books/books.html",
         form_search=form_search,
-        books=books
+        books=books,
+        next_page_url=next_page_url,
+        prev_page_url=prev_page_url
     )
 
 

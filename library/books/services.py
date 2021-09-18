@@ -19,9 +19,17 @@ class KeyErrorException:
 def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: int):
     books_to_show = list()
     book_list = repo.get_book_catalogue()
-    for i in range(cursor, books_per_page):
-        books_to_show.append(book_to_dict(book_list[i]))
+    if cursor + books_per_page < len(book_list):
+        for i in range(cursor, cursor + books_per_page):
+            books_to_show.append(book_to_dict(book_list[i]))
+    else:
+        for j in range(cursor, len(book_list)):
+            books_to_show.append(book_to_dict(book_list[j]))
     return books_to_show
+
+
+def get_number_of_books(repo: AbstractRepository):
+    return len(repo.get_book_catalogue())
 
 
 class NonExistentBookException:
@@ -36,7 +44,7 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
     if book_to_review is None:
         raise NonExistentBookException
 
-    review = make_review(review_text, rating, book_to_review,)
+    review = make_review(review_text, rating, book_to_review, )
     repo.add_review(review)
 
 
@@ -84,6 +92,7 @@ def author_to_dict(author: Author):
 def authors_to_dict(authors: Iterable[Author]):
     return [author_to_dict(author) for author in authors]
 
+
 def review_to_dict(review: Review):
     review_dict = {
         'user_name': None,
@@ -92,6 +101,7 @@ def review_to_dict(review: Review):
         'timestamp': review.timestamp
     }
     return review_dict
+
 
 def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
