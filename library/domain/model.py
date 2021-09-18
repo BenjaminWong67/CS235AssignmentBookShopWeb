@@ -116,7 +116,8 @@ class Book:
         self.__release_year = None
         self.__ebook = None
         self.__num_pages = None
-
+        self.__reviews = []
+        self.__display_reviews = False
 
     @property
     def book_id(self) -> int:
@@ -187,6 +188,29 @@ class Book:
 
         if author in self.__authors:
             self.__authors.remove(author)
+
+    @property
+    def reviews(self):
+        return self.__reviews
+
+    def add_review(self, review):
+        if not isinstance(review, Review):
+            return
+        self.__reviews.append(review)
+
+    def remove_review(self, review):
+        if not isinstance(review, Review):
+            return
+
+        if review in self.__reviews:
+            self.__reviews.remove(review)
+
+    @property
+    def display_reviews(self):
+        return self.__display_reviews
+
+    def change_display_reviews(self):
+        self.__display_reviews = not self.display_reviews
 
     @property
     def ebook(self) -> bool:
@@ -368,3 +392,11 @@ class BooksInventory:
             if self.__books[book_id].title == book_title:
                 return self.__books[book_id]
         return None
+
+
+def make_review(review_text: str, rating: int, book_to_review: Book):
+    review = Review(book_to_review, review_text, rating)
+    # add review to use
+    book_to_review.add_review(review)
+
+    return review

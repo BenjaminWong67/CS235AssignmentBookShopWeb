@@ -38,6 +38,13 @@ class MemoryRepository(AbstractRepository):
     def get_book_catalogue(self):
         return self.__books
 
+    def add_review(self, review: Review):
+        super().add_review(review)
+        self.__reviews.append(review)
+
+    def get_reviews(self):
+        return self.__reviews
+
 
 # populates the memory repository with the provided json files
 def populate(data_path: Path, repo: MemoryRepository):

@@ -37,3 +37,22 @@ class AbstractRepository(abc.ABC):
         If there is none return None
         """
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_review(self, review: Review):
+        """ Adds a review to the repository.
+        If the review doesn't have bidirectional links with an Book and a User, this method raises a
+        RepositoryException and doesn't update the repository.
+        """
+        """
+        Delete comment when implement user
+        if review.user is None or review not in review.user.reviews:
+            raise RepositoryException('Review not correctly attached to a User')
+        """
+        if review.book is None or review not in review.book.reviews:
+            raise RepositoryException('Review not correctly attached to an Book')
+
+    @abc.abstractmethod
+    def get_reviews(self):
+        """ Returns the reviews stored in the repository. """
+        raise NotImplementedError

@@ -37,3 +37,5 @@ def search_for_books(attribute: str, input: str, repo: repo.repo_instance):
         book['url'] = url_for('books_bp.books_view', id=book['id'])
 
     return search_results
+
+
