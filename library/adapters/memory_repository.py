@@ -45,6 +45,12 @@ class MemoryRepository(AbstractRepository):
     def get_reviews(self):
         return self.__reviews
 
+    def add_user(self, user: User):
+        self.__users.append(user)
+
+    def get_user(self, user_name) -> User:
+        return next((user for user in self.__users if user.user_name == user_name), None)
+
 
 # populates the memory repository with the provided json files
 def populate(data_path: Path, repo: MemoryRepository):

@@ -56,3 +56,15 @@ class AbstractRepository(abc.ABC):
     def get_reviews(self):
         """ Returns the reviews stored in the repository. """
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_user(self):
+        """Returns the user
+        if there is no user return none
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_user(self, user):
+        """Adds user to user database """
+        raise NotImplementedError

@@ -8,6 +8,8 @@ import library.utilities.utilities as utilities
 import library.books.services as services
 
 # configure blueprint
+from library.authentication.authentication import login_required
+
 books_blueprint = Blueprint(
     "books_bp", __name__, url_prefix="/catalogue")
 
@@ -25,17 +27,19 @@ def books_catalogue():
         # Convert cursor from string to int
         cursor = int(cursor)
     books = services.get_book_catalogue(repo.repo_instance, books_per_page, cursor)
-    form = utilities.SearchForm()
+    form_search = utilities.SearchForm()
     return render_template(
         "books/books.html",
-        form=form,
+        form_search=form_search,
         books=books
     )
 
 
 @books_blueprint.route('/review', methods=['GET', 'POST'])
+@login_required
 def book_review():
-    form = utilities.SearchForm()
+    user_name = session['user_name']
+    form_search = utilities.SearchForm()
     form_review = ReviewForm()
 
     if form_review.validate_on_submit():
@@ -47,7 +51,7 @@ def book_review():
         book_id = int(request.args.get('id'))
         form_review.book_id.data = book_id
     book = services.get_book(book_id, repo.repo_instance)
-    return render_template('books/book_review.html', id=book_id, form=form, form_review=form_review, book=book)
+    return render_template('books/book_review.html', id=book_id, form_search=form_search, form_review=form_review, book=book)
 
 
 @books_blueprint.route('/book', methods=['GET'])
@@ -63,7 +67,7 @@ def books_view():
     return render_template(
         "books/books_view.html",
         book=book,
-        form=utilities.SearchForm(),
+        form_search=utilities.SearchForm(),
         show_reviews_for_book=show_reviews_for_book
     )
 
@@ -72,7 +76,7 @@ def books_view():
 def books_search():
     return render_template(
         'books/books.html',
-        form=utilities.SearchForm(),
+        form_search=utilities.SearchForm(),
         books=utilities.search_for_books(request.args.get('attribute'), request.args.get('input'), repo.repo_instance)
     )
 

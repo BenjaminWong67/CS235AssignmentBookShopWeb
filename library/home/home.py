@@ -12,9 +12,9 @@ home_blueprint = Blueprint(
 @home_blueprint.route('/')
 def home():
 
-    form = utilities.SearchForm()
+    form_search = utilities.SearchForm()
 
     return render_template(
         "home/home.html",
-        form=form
+        form_search=form_search
     )
