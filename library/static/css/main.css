@@ -81,7 +81,7 @@ li a {
     background-color: #F3F3F3;
 }
 li a:hover {
-    background-color: #111;
+    background-color: #cfc4b0;
 }
 div#search select, div#search input {
     border:0px;
@@ -101,7 +101,7 @@ button {
     background-color: #F3F3F3;
 }
 button:hover {
-    background-color: #111;
+    background-color: #cfc4b0;
 }
 
 

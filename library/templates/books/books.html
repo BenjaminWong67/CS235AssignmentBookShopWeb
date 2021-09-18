@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<main>
+
     <table>
         <tr>
             <th>this is the book.html template </th>
@@ -17,25 +17,27 @@
         {% else %}
             {% for book in books %}
                 <tr>
-                 <td>
-                    {{ book.title }}
-                    <br>
-                    <button onclick=location.href="{{ url_for('books_bp.books_view', id=book.id) }}" }}'>view details</button>
-                </td>
+                    <td>
+                        {{ book.title }}
+                        <br>
+                        <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                    </td>
                 </tr>
             {% endfor %}
         {% endif %}
-        <div style="float-left">
+        
             {% if prev_page_url is not none  %}
-                <button class="btn-general" onclick="location.href='{{prev_page_url}}'">Previous</button>
+                <tr>
+                    <td>
+                        <button class="btn-general" onclick="location.href='{{prev_page_url}}'">Previous</button>
+                    </td>
             {% endif %}
-        </div>
-        <div style="float-right">
             {% if next_page_url is not none  %}
-                <button class="btn-general" onclick="location.href='{{next_page_url}}'">Next</button>
+                    <td>
+                        <button class="btn-general" onclick="location.href='{{next_page_url}}'">Next</button>
+                    </td>
+                </tr>
             {% endif %}
-        </div>
     </table>
-</main>
 
 {% endblock %}
