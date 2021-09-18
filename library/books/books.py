@@ -30,7 +30,6 @@ def books_view():
     book_id = int(request.args.get('id'))
 
     book = services.get_book(book_id, repo.repo_instance)
-    book['url'] = url_for('books_bp.books_view', id=book['id'])
 
     return render_template(
         "books/books_view.html",
