@@ -36,15 +36,14 @@ class NonExistentBookException:
     pass
 
 
-def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository):
-    """
-    takes a review made by a user then adds it to the book (will add user part later)
-    """
+def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository, user_name):
+    user_reviewing = repo.get_user(user_name)
     book_to_review = repo.get_book(book_id)
+
     if book_to_review is None:
         raise NonExistentBookException
 
-    review = make_review(review_text, rating, book_to_review, )
+    review = make_review(review_text, rating, book_to_review, user_reviewing)
     repo.add_review(review)
 
 
@@ -95,7 +94,7 @@ def authors_to_dict(authors: Iterable[Author]):
 
 def review_to_dict(review: Review):
     review_dict = {
-        'user_name': None,
+        'user_name': review.user.user_name,
         'book_id': review.book,
         'review_text': review.review_text,
         'timestamp': review.timestamp

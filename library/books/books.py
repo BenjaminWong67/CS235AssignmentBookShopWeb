@@ -23,23 +23,25 @@ def books_catalogue():
     prev_page_url = request.args.get('prev_page_url')
 
     if cursor is None:
-        # no cursor query parameter, so initialise cursor to start at begginign
+        # no cursor query parameter, so initialise cursor to start at begginning
         cursor = 0
     else:
         # Convert cursor from string to int
         cursor = int(cursor)
 
     books = services.get_book_catalogue(repo.repo_instance, books_per_page, cursor)
-
-    if cursor + books_per_page > services.get_number_of_books(repo.repo_instance):
+    if services.get_number_of_books(repo.repo_instance) < books_per_page:
         next_page_url = None
-        prev_page_url = url_for('books_bp.books_catalogue', cursor=cursor-(books_per_page - 1))
+        prev_page_url = None
+    elif cursor + books_per_page >= services.get_number_of_books(repo.repo_instance):
+        next_page_url = None
+        prev_page_url = url_for('books_bp.books_catalogue', cursor=cursor-books_per_page)
     elif cursor == 0:
-        next_page_url = url_for('books_bp.books_catalogue', cursor=cursor+(books_per_page - 1))
+        next_page_url = url_for('books_bp.books_catalogue', cursor=cursor+books_per_page)
         prev_page_url = None
     else:
-        next_page_url = url_for('books_bp.books_catalogue', cursor=cursor+(books_per_page - 1))
-        prev_page_url = url_for('books_bp.books_catalogue', cursor=cursor-(books_per_page - 1))
+        next_page_url = url_for('books_bp.books_catalogue', cursor=cursor+books_per_page)
+        prev_page_url = url_for('books_bp.books_catalogue', cursor=cursor-books_per_page)
     form_search = utilities.SearchForm()
     return render_template(
         "books/books.html",
@@ -59,7 +61,7 @@ def book_review():
 
     if form_review.validate_on_submit():
         book_id = int(form_review.book_id.data)
-        services.add_review(book_id, form_review.review.data, form_review.rating.data, repo.repo_instance)
+        services.add_review(book_id, form_review.review.data, form_review.rating.data, repo.repo_instance, user_name)
         return redirect(url_for('books_bp.books_view', id=book_id))
 
     if request.method == "GET":
@@ -89,10 +91,41 @@ def books_view():
 
 @books_blueprint.route('/search', methods=['GET'])
 def books_search():
+    next_page_url = request.args.get('next_page_url')
+    prev_page_url = request.args.get('prev_page_url')
+    attribute = request.args.get('attribute')
+    input =  request.args.get('input')
+    cursor = request.args.get('cursor')
+    books_per_page = 2
+    if cursor is None:
+        # no cursor query parameter, so initialise cursor to start at begginning
+        cursor = 0
+    else:
+        # Convert cursor from string to int
+        cursor = int(cursor)
+
+    list_of_searched_books = utilities.search_for_books(request.args.get('attribute'), request.args.get('input'),
+                                                        repo.repo_instance)
+    part_of_searched_books = utilities.get_searched_results_segment(list_of_searched_books, cursor, books_per_page)
+    if len(list_of_searched_books) < books_per_page:
+        next_page_url = None
+        prev_page_url = None
+    elif cursor + books_per_page >= len(list_of_searched_books):
+        next_page_url = None
+        prev_page_url = url_for('books_bp.books_search', cursor=cursor-books_per_page, attribute=attribute, input=input)
+    elif cursor == 0:
+        next_page_url = url_for('books_bp.books_search', cursor=cursor+books_per_page, attribute=attribute, input=input)
+        prev_page_url = None
+    else:
+        next_page_url = url_for('books_bp.books_search', cursor=cursor+books_per_page, attribute=attribute, input=input)
+        prev_page_url = url_for('books_bp.books_search', cursor=cursor-books_per_page, attribute=attribute, input=input)
     return render_template(
         'books/books.html',
         form_search=utilities.SearchForm(),
-        books=utilities.search_for_books(request.args.get('attribute'), request.args.get('input'), repo.repo_instance)
+        books=part_of_searched_books,
+        next_page_url=next_page_url,
+        prev_page_url=prev_page_url,
+        cursor=cursor
     )
 
 
