@@ -80,7 +80,6 @@ def books_view():
     else:
         show_reviews_for_book = int(show_reviews_for_book)
     book = services.get_book(book_id, repo.repo_instance)
-    book['url'] = url_for('books_bp.books_view', id=book['id'])
     return render_template(
         "books/books_view.html",
         book=book,

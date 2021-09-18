@@ -47,3 +47,6 @@ def get_searched_results_segment(search_results, cursor: int, books_per_page: in
         for j in range(cursor, len(search_results)):
             section_of_searched_results.append(search_results[j])
     return section_of_searched_results
+
+ 
+

@@ -17,11 +17,11 @@
         {% else %}
             {% for book in books %}
                 <tr>
-                    <td>
-                        {{ book.title }}
-                        <br>
-                        <a href='{{ book.url }}'>view details</a>
-                    </td>
+                 <td>
+                    {{ book.title }}
+                    <br>
+                    <button onclick=location.href="{{ url_for('books_bp.books_view', id=book.id) }}" }}'>view details</button>
+                </td>
                 </tr>
             {% endfor %}
         {% endif %}
