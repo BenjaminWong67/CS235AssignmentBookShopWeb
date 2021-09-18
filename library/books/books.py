@@ -16,7 +16,7 @@ books_blueprint = Blueprint(
 
 @books_blueprint.route('/', methods=['GET'])
 def books_catalogue():
-    books_per_page = 5
+    books_per_page = 2
     # read query parameters
     cursor = request.args.get('cursor')
     next_page_url = request.args.get('next_page_url')
