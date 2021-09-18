@@ -21,9 +21,12 @@ class SearchForm(FlaskForm):
     submit = SubmitField('🔎')
 
 
+class NoMoreBookException:
+    pass
+
+
 def search_for_books(attribute: str, input: str, repo: repo.repo_instance):
     search_results = list()
-
     if attribute == 'title':
         search_results = services.search_with_title(input, repo)
     elif attribute == 'author':
@@ -32,5 +35,18 @@ def search_for_books(attribute: str, input: str, repo: repo.repo_instance):
         search_results = services.search_with_publisher(input, repo)
     elif attribute == 'release_year':
         search_results = services.search_with_release_year(input, repo)
-
     return search_results
+
+
+def get_searched_results_segment(search_results, cursor: int, books_per_page: int):
+    section_of_searched_results = list()
+    if cursor + books_per_page < len(search_results):
+        for i in range(cursor, cursor + books_per_page):
+            section_of_searched_results.append(search_results[i])
+    else:
+        for j in range(cursor, len(search_results)):
+            section_of_searched_results.append(search_results[j])
+    return section_of_searched_results
+
+ 
+

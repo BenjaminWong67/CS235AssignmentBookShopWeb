@@ -1,30 +1,41 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
-<table>
-    <tr>
-        <th>this is the book.html template</th>
-    </tr>
-    {% if books == none %}
+<main>
+    <table>
         <tr>
-            <td>nothing to see here.</td>
+            <th>this is the book.html template </th>
         </tr>
-    {% elif books|length == 0 %}
-        <tr>
-            <td>Search did not return any results.</td>
-        </tr>
-    {% else %}
-        {% for book in books %}
+        {% if books == none %}
             <tr>
-                <td>
+                <td>nothing to see here.</td>
+            </tr>
+        {% elif books|length == 0 %}
+            <tr>
+                <td>Search did not return any results.</td>
+            </tr>
+        {% else %}
+            {% for book in books %}
+                <tr>
+                 <td>
                     {{ book.title }}
                     <br>
                     <button onclick=location.href="{{ url_for('books_bp.books_view', id=book.id) }}" }}'>view details</button>
                 </td>
-            </tr>
-        {% endfor %}
-    {% endif %}
-</table>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        <div style="float-left">
+            {% if prev_page_url is not none  %}
+                <button class="btn-general" onclick="location.href='{{prev_page_url}}'">Previous</button>
+            {% endif %}
+        </div>
+        <div style="float-right">
+            {% if next_page_url is not none  %}
+                <button class="btn-general" onclick="location.href='{{next_page_url}}'">Next</button>
+            {% endif %}
+        </div>
+    </table>
+</main>
 
 {% endblock %}

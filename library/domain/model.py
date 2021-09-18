@@ -116,7 +116,8 @@ class Book:
         self.__release_year = None
         self.__ebook = None
         self.__num_pages = None
-
+        self.__reviews = []
+        self.__display_reviews = False
 
     @property
     def book_id(self) -> int:
@@ -189,6 +190,29 @@ class Book:
             self.__authors.remove(author)
 
     @property
+    def reviews(self):
+        return self.__reviews
+
+    def add_review(self, review):
+        if not isinstance(review, Review):
+            return
+        self.__reviews.append(review)
+
+    def remove_review(self, review):
+        if not isinstance(review, Review):
+            return
+
+        if review in self.__reviews:
+            self.__reviews.remove(review)
+
+    @property
+    def display_reviews(self):
+        return self.__display_reviews
+
+    def change_display_reviews(self):
+        self.__display_reviews = not self.display_reviews
+
+    @property
     def ebook(self) -> bool:
         return self.__ebook
 
@@ -223,7 +247,7 @@ class Book:
 
 class Review:
 
-    def __init__(self, book: Book, review_text: str, rating: int):
+    def __init__(self, book: Book, review_text: str, rating: int, user):
         if isinstance(book, Book):
             self.__book = book
         else:
@@ -240,6 +264,7 @@ class Review:
             raise ValueError
 
         self.__timestamp = datetime.now()
+        self.__user = user
 
     @property
     def book(self) -> Book:
@@ -256,6 +281,10 @@ class Review:
     @property
     def timestamp(self) -> datetime:
         return self.__timestamp
+
+    @property
+    def user(self):
+        return self.__user
 
     def __eq__(self, other):
         if not isinstance(other, self.__class__):
@@ -274,7 +303,7 @@ class User:
         if user_name == "" or not isinstance(user_name, str):
             self.__user_name = None
         else:
-            self.__user_name = user_name.strip().lower()
+            self.__user_name = user_name.strip()
 
         if password == "" or not isinstance(password, str) or len(password) < 7:
             self.__password = None
@@ -368,3 +397,11 @@ class BooksInventory:
             if self.__books[book_id].title == book_title:
                 return self.__books[book_id]
         return None
+
+
+def make_review(review_text: str, rating: int, book_to_review: Book, user: User):
+    review = Review(book_to_review, review_text, rating, user)
+    user.add_review(review)
+    book_to_review.add_review(review)
+
+    return review
