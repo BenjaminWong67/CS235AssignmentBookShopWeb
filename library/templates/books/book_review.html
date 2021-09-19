@@ -2,24 +2,26 @@
 
 {% block content %}
 
-    <header>
-        <h1>Review for {{book.title}}</h1>
-    </header>
+    <div id='review-title'>
+        <h2>Review for {{book.title}}</h2>
+    </div>
 
-    <div class="form-wrapper">
+    <div id='review-form'>
         <form action="{{url_for('books_bp.book_review',book_id=book.id)}}" method="POST">
-
             {{ form_review.book_id }}
             {{ form_review.csrf_token }} <br>
-            <div class="form-field">
-                {{form_review.review.label}} </br> 
-                {{form_review.review(size = 100, placeholder="type your comment", class="textarea", cols="50", rows="6", wrap="hard")}}
-            </div>
+            <div id='input'>
+                <div>
+                    {{form_review.review.label}} </br> 
+                    {{form_review.review(placeholder="type your review")}}
+                </div>
 
-            <div class="form-field">
-                {{form_review.rating.label}} </br> 
-                {{form_review.rating(size = 100, placeholder="put your rating out of 5", class="textarea", cols="50", rows="6", wrap="hard")}}
+                <div>
+                    {{form_review.rating.label}} </br> 
+                    {{form_review.rating}}
+                </div>
             </div>
+            
             {{ form_review.submit }}
         </form>
     </div>

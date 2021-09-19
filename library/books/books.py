@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from flask_wtf import FlaskForm
-from wtforms import RadioField, TextField, SubmitField, IntegerField, HiddenField
+from wtforms import SelectField, RadioField, TextField, SubmitField, IntegerField, HiddenField
 from wtforms.validators import DataRequired
 
 import library.adapters.repository as repo
@@ -66,7 +66,7 @@ def book_review():
 
     if form_review.validate_on_submit():
         book_id = int(form_review.book_id.data)
-        services.add_review(book_id, form_review.review.data, form_review.rating.data, repo.repo_instance, user_name)
+        services.add_review(book_id, form_review.review.data, int(form_review.rating.data), repo.repo_instance, user_name)
         return redirect(url_for('books_bp.books_view', id=book_id))
 
     if request.method == "GET":
@@ -152,7 +152,14 @@ def books_search():
 
 
 class ReviewForm(FlaskForm):
-    review = TextField('write your review here:', [DataRequired()])
-    rating = IntegerField('Your rating out of 5:', [DataRequired()])
+    review = TextField('Write your review here:', [DataRequired()])
+    rating = SelectField('Your rating out of 5:', 
+                        [DataRequired()], 
+                        choices=[('1','1'),
+                                ('2','2'),
+                                ('3','3'),
+                                ('4','4'),
+                                ('5','5')]
+                        )
     book_id = HiddenField('Book id')
     submit = SubmitField("Submit")

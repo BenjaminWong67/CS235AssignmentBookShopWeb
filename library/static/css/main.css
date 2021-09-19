@@ -177,6 +177,18 @@ div#authentication input[type=submit] {
 }
 
 
+/*review page styles*/
+#review-form {
+    background-color: #F3F3F3;
+    border-radius: 7px;
+}
+#review-form form {
+    display:flex;
+    flex-direction: column;
+    padding:30px;
+}
+
+
 button {
     border:2px solid #F3AD78;
     border-radius: 10px;
