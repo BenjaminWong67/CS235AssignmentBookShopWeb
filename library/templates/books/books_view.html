@@ -2,47 +2,57 @@
 
 {% block content %}
 
-    <h2>
-        {{ book.title }}
-    </h2>
-    
-        <p>
-            Author:
-            {% for author in book.authors %}
-                {{author.full_name}}<br>
-            {% endfor %}
-        </p>
-        
-        <p>Publisher: {{ book.publisher.name }}</p>
-
-        <p>Release year: <b>{{ book.release_year }}</b></p>
-
-        <p>Description: {{ book.description }}</p>
-
-
-    <div id="book-options">
-
-        {% if book.reviews|length > 0 and book.id != show_reviews_for_book %}
-            <button class="btn-general" onclick=location.href="{{url_for('books_bp.books_view', id=book.id, show_reviews_for_book=book.id)}}">{{book.reviews|length}} Reviews</button>
-        {% endif %}
-
-        <button class="btn-general" onclick=location.href="{{url_for('books_bp.book_review', id=book.id)}}">Review</button>
+    <div id='book-title'>
+        <h2>{{ book.title }}</h2>
     </div>
+    <div id='book-view'>
+        <div id='attributes-left'>
+            
+        
+            <p>
+                
+                Author/s:<br>
+                <ul>
+                    {% for author in book.authors %}
+                        <li style='list-style-type:none;'>- {{author.full_name}}</li>
+                    {% endfor %}
+                </ul>
+                
+            </p>
 
+            <p>Publisher: {{ book.publisher.name }}</p>
+
+            <p>Release year: <b>{{ book.release_year }}</b></p>
+
+            <div>
+
+                {% if book.reviews|length > 0 and book.id != show_reviews_for_book %}
+                    <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id, show_reviews_for_book=book.id)}}">{{book.reviews|length}} Reviews</button>
+                {% endif %}
     
-    {% if book.id == show_reviews_for_book %}
-
-        <div style="clear:both">
-
-            {% for review in book.reviews %}
-
-                <p>{{review.review_text}} by {{review.user_name}}, {{review.timestamp}}</p>
-
-                <p>{{review.rating}}</p>
-
-            {% endfor %}
+                <button onclick=location.href="{{url_for('books_bp.book_review', id=book.id)}}">Review</button>
+            </div>
+    
+            
+            {% if book.id == show_reviews_for_book %}
+    
+                <div style="clear:both">
+    
+                    {% for review in book.reviews %}
+    
+                        <p>{{review.review_text}} by {{review.user_name}}, {{review.timestamp}}</p>
+    
+                        <p>{{review.rating}}</p>
+    
+                    {% endfor %}
+                </div>
+    
+            {% endif %}
         </div>
 
-    {% endif %}
+        <div id='attributes-right'>
+            <p>Description: {{ book.description }}</p>
+        </div>
+    </div>
 
 {% endblock %}
