@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, session, request
 from flask_wtf import FlaskForm
-from wtforms import SelectField, RadioField, TextField, SubmitField, IntegerField, HiddenField
+from wtforms import TextAreaField, SelectField, RadioField, TextField, SubmitField, IntegerField, HiddenField
 from wtforms.validators import DataRequired
 
 import library.adapters.repository as repo
@@ -152,7 +152,7 @@ def books_search():
 
 
 class ReviewForm(FlaskForm):
-    review = TextField('Write your review here:', [DataRequired()])
+    review = TextAreaField('Write your review here:', [DataRequired()])
     rating = SelectField('Your rating out of 5:', 
                         [DataRequired()], 
                         choices=[('1','1'),

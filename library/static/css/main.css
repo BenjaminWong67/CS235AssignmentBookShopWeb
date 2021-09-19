@@ -149,6 +149,7 @@ div#authentication input[type=submit] {
 }
 
 
+
 /*book view styles*/
 #book-title {
     background-color: #30C3CD;
@@ -173,7 +174,7 @@ div#authentication input[type=submit] {
     width: 60%;
 }
 #book-view button {
-    margin: 80px 0px 0px 0px;
+    margin: 50px 0px 80px 0px;
 }
 
 
@@ -183,9 +184,20 @@ div#authentication input[type=submit] {
     border-radius: 7px;
 }
 #review-form form {
-    display:flex;
-    flex-direction: column;
+    text-align: center;
     padding:30px;
+}
+#review-form textarea, #review-form select, #review-form input[type=submit] {
+    margin-top:10px;
+    margin-bottom: 40px;
+    border-radius: 10px;
+    border: 2px solid #E8804C;
+    padding: 14px 16px;
+}
+#review-title {
+    background-color: #30C3CD;
+    border-radius: 7px 7px 0px 0px;
+    padding: 0px 20px;
 }
 
 
@@ -227,6 +239,6 @@ tr, td, th {
 }
 
 
-h2 {
+h2, header {
     color: white;
 }
