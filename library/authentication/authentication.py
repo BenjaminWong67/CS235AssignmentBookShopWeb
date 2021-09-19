@@ -12,13 +12,14 @@ import library.utilities.utilities as utilities
 import library.authentication.services as services
 import library.adapters.repository as repo
 
-
 # Configure Blueprint.
 authentication_blueprint = Blueprint(
     'authentication_bp', __name__, url_prefix='/authentication')
 
+
 @authentication_blueprint.route('/register', methods=['GET', 'POST'])
 def register():
+
     form_register = RegistrationForm()
     form_search = utilities.SearchForm()
     user_name_not_unique = None
@@ -37,16 +38,18 @@ def register():
     # For a GET or a failed POST request, return the Registration Web page.
     return render_template(
         'authentication/credentials.html',
-        title='Register',
+        title='REGISTER',
         form_search=form_search,
         form=form_register,
         user_name_error_message=user_name_not_unique,
+        password_error_message=None,
         handler_url=url_for('authentication_bp.register')
     )
 
 
 @authentication_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
+
     form_login = LoginForm()
     form_search = utilities.SearchForm()
     user_name_not_recognised = None
@@ -77,7 +80,7 @@ def login():
     # For a GET or a failed POST, return the Login Web page.
     return render_template(
         'authentication/credentials.html',
-        title='Login',
+        title='LOGIN',
         user_name_error_message=user_name_not_recognised,
         password_error_message=password_does_not_match_user_name,
         form_search=form_search,
@@ -119,18 +122,18 @@ class PasswordValid:
 
 
 class RegistrationForm(FlaskForm):
-    user_name = StringField('Username', [
+    user_name = StringField('Username...', [
         DataRequired(message='Your user name is required'),
         Length(min=3, message='Your user name is too short')])
-    password = PasswordField('Password', [
+    password = PasswordField('Password...', [
         DataRequired(message='Your password is required'),
         PasswordValid()])
     submit = SubmitField('Register')
 
 
 class LoginForm(FlaskForm):
-    user_name = StringField('Username', [
+    user_name = StringField('Username...', [
         DataRequired()])
-    password = PasswordField('Password', [
-        DataRequired()])
+    password = PasswordField('Password...', [
+        DataRequired(message='Your password is required')])
     submit = SubmitField('Login')
