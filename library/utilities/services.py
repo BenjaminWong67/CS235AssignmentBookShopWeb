@@ -17,6 +17,7 @@ def search_with_title(input: str, repo: AbstractRepository):
 
 
 def search_with_author(input: str, repo: AbstractRepository):
+    
     books_catalogue = repo.get_book_catalogue()
 
     books = list()

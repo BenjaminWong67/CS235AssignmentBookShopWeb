@@ -18,13 +18,16 @@ class KeyErrorException:
 
 def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: int):
     books_to_show = list()
+
     book_list = repo.get_book_catalogue()
+
     if cursor + books_per_page < len(book_list):
         for i in range(cursor, cursor + books_per_page):
             books_to_show.append(book_to_dict(book_list[i]))
     else:
         for j in range(cursor, len(book_list)):
             books_to_show.append(book_to_dict(book_list[j]))
+            
     return books_to_show
 
 
