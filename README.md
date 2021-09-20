@@ -1,5 +1,6 @@
 # COMPSCI 235 Starter Repository for Assignment 2
 
+# 20/9/2021 - From Tim and Ben : Follow the instructions here to run the web app :)
 
 ## Description
 
