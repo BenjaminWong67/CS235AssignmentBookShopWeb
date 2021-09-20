@@ -4,16 +4,25 @@ from flask import url_for
 
 from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review, make_review
+class UnknownUserException(Exception):
+    pass
+
+
+class NonExistentBookException(Exception):
+    pass
+
+
+class KeyErrorException(Exception):
+    pass
 
 
 def get_book(book_id: int, repo: AbstractRepository):
     book = repo.get_book(book_id)
 
+    if book is None:
+        raise NonExistentBookException
+
     return book_to_dict(book)
-
-
-class KeyErrorException:
-    pass
 
 
 def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: int):
@@ -27,16 +36,12 @@ def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: in
     else:
         for j in range(cursor, len(book_list)):
             books_to_show.append(book_to_dict(book_list[j]))
-            
+
     return books_to_show
 
 
 def get_number_of_books(repo: AbstractRepository):
     return len(repo.get_book_catalogue())
-
-
-class NonExistentBookException:
-    pass
 
 
 def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository, user_name):
@@ -46,13 +51,20 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
     if book_to_review is None:
         raise NonExistentBookException
 
+    if user_reviewing is None:
+        raise UnknownUserException
+
     review = make_review(review_text, rating, book_to_review, user_reviewing)
     repo.add_review(review)
 
 
-def decide_to_display_reviews(book_id: int, repo: AbstractRepository):
-    reviews_to_display = repo.get_book(book_id)
-    reviews_to_display.change_display_reviews()
+def get_reviews_for_book(book_id, repo: AbstractRepository):
+    book = repo.get_book(book_id)
+
+    if book is None:
+        raise NonExistentBookException
+
+    return reviews_to_dict(book.reviews)
 
 
 # ============================================
@@ -71,7 +83,6 @@ def book_to_dict(book: Book):
         'ebook': book.ebook,
         'num_pages': book.num_pages,
         'reviews': reviews_to_dict(book.reviews),
-        'url': url_for('books_bp.books_view', id=book.book_id)
     }
     return book_dict
 
@@ -98,7 +109,7 @@ def authors_to_dict(authors: Iterable[Author]):
 def review_to_dict(review: Review):
     review_dict = {
         'user_name': review.user.user_name,
-        'book_id': review.book,
+        'book': review.book,
         'review_text': review.review_text,
         'timestamp': review.timestamp,
         'rating':review.rating

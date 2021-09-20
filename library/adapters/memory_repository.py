@@ -44,6 +44,7 @@ class MemoryRepository(AbstractRepository):
     def add_review(self, review: Review):
         super().add_review(review)
         self.__reviews.append(review)
+        review.user.add_review(review)
 
     def get_reviews(self):
         return self.__reviews
