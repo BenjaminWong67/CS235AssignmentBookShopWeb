@@ -19,6 +19,9 @@ class KeyErrorException(Exception):
 def get_book(book_id: int, repo: AbstractRepository):
     book = repo.get_book(book_id)
 
+    if book is None:
+        raise NonExistentBookException
+
     return book_to_dict(book)
 
 

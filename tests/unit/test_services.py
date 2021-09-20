@@ -69,24 +69,75 @@ def test_can_add_review(in_memory_repo):
         (review['review_text'] for review in reviews_as_dict if review['review_text'] == review_text),
         None) is not None
 
+
 def test_cannot_add_review_for_non_existent_book(in_memory_repo):
     book_id = 19191919919191
     review_text = "WoooOOOOo"
     rating = 2
     user_name = "Ben"
 
-    #Call the service layer to attempt to add comment
+    # Call the service layer to attempt to add comment
     with pytest.raises(book_services.NonExistentBookException):
         book_services.add_review(book_id, review_text, rating, in_memory_repo, user_name)
 
-def test_cannot_add_comment_by_unknown_user(in_memory_repo):
+
+def test_cannot_add_reviews_by_unknown_user(in_memory_repo):
     book_id = 2250580
     review_text = "Pretty good"
     rating = 5
     user_name = "thresh"
 
-    #Call the service layer to attempt to add comment
+    # Call the service layer to attempt to add comment
     with pytest.raises(book_services.UnknownUserException):
         book_services.add_review(book_id, review_text, rating, in_memory_repo, user_name)
 
 
+def test_can_get_book(in_memory_repo):
+    book_id = 27036538
+
+    # Call the service layer to attempt to retrieve the Book.
+    book_as_dict = book_services.get_book(book_id, in_memory_repo)
+
+    assert book_as_dict['id'] == 27036538
+    assert book_as_dict['title'] == "Crossed + One Hundred, Volume 2 (Crossed +100 #2)"
+    assert book_as_dict['release_year'] == 2016
+    assert book_as_dict['description'] == book_as_dict['description']
+    assert book_as_dict['authors'] == [{'unique_id': 14155472, 'full_name': 'Simon Spurrier'},
+                                       {'unique_id': 8224446, 'full_name': 'Fernando Heinz'},
+                                       {'unique_id': 1251983, 'full_name': 'Rafael Ortiz'},
+                                       {'unique_id': 5808419, 'full_name': 'DigiKore Studios'},
+                                       {'unique_id': 4346284, 'full_name': 'Jaymes Reed'}]
+    assert book_as_dict['ebook'] == False
+    assert book_as_dict['num_pages'] == 160
+    assert len(book_as_dict['reviews']) == 0
+
+
+def test_cannot_get_book_with_non_existent_id(in_memory_repo):
+    book_id = 12321424
+
+    # Call the service layer to attempt to retrieve the Book.
+    with pytest.raises(book_services.NonExistentBookException):
+        book_services.get_book(book_id, in_memory_repo)
+
+
+def test_get_reviews_for_books(in_memory_repo):
+    reviews_as_dict = book_services.get_reviews_for_book(707611, in_memory_repo)
+    book_to_use = book_services.get_book(707611, in_memory_repo)
+    # Check that 1 review was returned for book with id 707611
+    assert len(reviews_as_dict) == 1
+
+    # Check that the review relates to the book with id 707611
+    book_that_relates_to_review = [review['book'] for review in reviews_as_dict]
+
+    assert 707611 == book_that_relates_to_review[0].book_id
+    assert len(book_that_relates_to_review) == 1
+
+
+def test_get_reviews_for_non_existent_book(in_memory_repo):
+    with pytest.raises(NonExistentBookException):
+        reviews_as_dict = book_services.get_reviews_for_book(7, in_memory_repo)
+
+
+def test_get_comments_for_article_without_reviews(in_memory_repo):
+    reviews_as_dict = book_services.get_reviews_for_book(27036538, in_memory_repo)
+    assert len(reviews_as_dict) == 0
