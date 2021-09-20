@@ -73,8 +73,3 @@ class AbstractRepository(abc.ABC):
     def get_book_inventory(self):
         """returns the book inventory"""
         raise NotImplementedError
-
-    @abc.abstractmethod
-    def add_inventory(self, book: Book, price: int, stock_count: int):
-        """adds book price and stock_count to inventory"""
-        raise NotImplementedError

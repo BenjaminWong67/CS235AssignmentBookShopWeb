@@ -17,7 +17,7 @@ class MemoryRepository(AbstractRepository):
         self.__books_index = dict()
         self.__reviews = list()
         self.__users = list()
-        self.__book_inventory = BooksInventory
+        self.__book_inventory = BooksInventory()
 
     def add_book(self, book: Book):
 
