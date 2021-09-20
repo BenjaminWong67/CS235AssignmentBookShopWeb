@@ -73,3 +73,13 @@ class AbstractRepository(abc.ABC):
     def get_book_inventory(self):
         """returns the book inventory"""
         raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_number_of_books(self):
+        """returns number of books in the repo"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_books_by_id(self, id_list: int):
+        """returns list of books with the given list of ids"""
+        raise NotImplementedError

@@ -11,6 +11,12 @@ utilities_blueprint = Blueprint(
     "utilities_bp", __name__, )
 
 
+def get_selected_books(quantity=3):
+    books = services.get_random_books(quantity, repo.repo_instance)
+
+    return books
+
+
 class SearchForm(FlaskForm):
     attribute = SelectField('attribute', choices=[("title", "Title"),
                                                   ("author", "Author"),

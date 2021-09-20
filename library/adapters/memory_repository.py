@@ -57,6 +57,17 @@ class MemoryRepository(AbstractRepository):
     
     def get_book_inventory(self):
         return self.__book_inventory
+    
+    def get_number_of_books(self):
+        return len(self.__books)
+
+    def get_books_by_id(self, id_list):
+        # Strip out any ids in id_list that don't represent Article ids in the repository.
+        existing_ids = [id for id in id_list if id in self.__books_index]
+
+        # Fetch the Articles.
+        books = [self.__books_index[id] for id in existing_ids]
+        return books
 
 
 

@@ -16,5 +16,6 @@ def home():
 
     return render_template(
         "home/home.html",
-        form_search=form_search
+        form_search=form_search,
+        discount_articles=utilities.get_selected_books()
     )
