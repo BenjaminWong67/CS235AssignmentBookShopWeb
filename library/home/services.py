@@ -1,0 +1,56 @@
+from typing import Iterable
+
+import random
+
+from library.adapters.repository import AbstractRepository
+from library.domain.model import Book, Author, Publisher
+
+
+def get_random_books(quantity: int, repo: AbstractRepository):
+    book_count = repo.get_number_of_books()
+
+    if quantity >= book_count:
+        # Reduce the quantity of ids to generate if the repository has an insufficient number of articles.
+        quantity = book_count - 1
+    
+    random_ids = random.sample(range(1, book_count), quantity)
+    books = repo.get_books_by_id(random_ids)
+
+    return book_to_dict(books)
+
+
+# ============================================
+# Functions to convert model entities to dicts
+# ============================================
+
+def book_to_dict(book: Book):
+    book_dict = {
+        'id': book.book_id,
+        'title': book.title,
+        'release_year': book.release_year,
+        'description': book.description,
+        'publisher': publisher_to_dict(book.publisher),
+        'authors': authors_to_dict(book.authors),
+        'ebook': book.ebook,
+        'num_pages': book.num_pages,
+    }
+    return book_dict
+
+
+def publisher_to_dict(publisher: Publisher):
+    publisher_dict = {
+        'name': publisher.name,
+    }
+    return publisher_dict
+
+
+def author_to_dict(author: Author):
+    author_dict = {
+        'unique_id': author.unique_id,
+        'full_name': author.full_name,
+    }
+    return author_dict
+
+
+def authors_to_dict(authors: Iterable[Author]):
+    return [author_to_dict(author) for author in authors]
