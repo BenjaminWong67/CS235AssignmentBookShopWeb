@@ -546,3 +546,57 @@ class TestBooksInventory:
         assert isinstance(book.authors[1], Author)
         assert isinstance(book.publisher, Publisher)
         assert inventory.search_book_by_title("unknown") is None
+    
+    def test_books_inventory_discount(self):
+        inventory = BooksInventory()
+
+        publisher1 = Publisher("Avatar Press")
+        publisher2 = Publisher("Harpercollins")
+
+        author1 = Author(3675, "Barack Obama")
+        author2 = Author(1, "J.K. Rowling")
+        author3 = Author(199, "J.R.R. Tolkien")
+
+        book1 = Book(17, "Lord of the Rings")
+        book1.publisher = publisher2
+        book1.add_author(author3)
+
+        book2 = Book(64, "Our Memoires")
+        book2.publisher = publisher1
+        book2.add_author(author2)
+        book2.add_author(author1)
+
+        inventory.add_book(book1, 20, 7)
+        inventory.add_book(book2, 30, 2)
+
+        inventory.remove_book(64)
+        assert inventory.find_price(64) is None
+        assert inventory.find_stock_count(64) is None
+        assert inventory.find_stock_count(17) == 7
+
+    def test_find_books_successful_check_types(self):
+        inventory = BooksInventory()
+
+        publisher1 = Publisher("Avatar Press")
+        publisher2 = Publisher("Harpercollins")
+
+        author1 = Author(3675, "Barack Obama")
+        author2 = Author(1, "J.K. Rowling")
+        author3 = Author(199, "J.R.R. Tolkien")
+
+        book1 = Book(17, "Lord of the Rings")
+        book1.publisher = publisher2
+        book1.add_author(author3)
+
+        book2 = Book(64, "Our Memoires")
+        book2.publisher = publisher1
+        book2.add_author(author2)
+        book2.add_author(author1)
+
+        inventory.add_book(book1, 20, 7)
+        inventory.add_book(book2, 30, 2)
+
+        inventory.discount_book(17, 20)
+        assert inventory.get_book_discount(17) == 20
+        assert inventory.get_book_discount(0) == None
+        assert inventory.get_book_discount(64) == 0
