@@ -6,6 +6,8 @@
         <tr>
             <th>this is the book.html template </th>
         </tr>
+
+        <!-- checks current data to show on page-->
         {% if books == none %}
             <tr>
                 <td>nothing to see here.</td>
@@ -26,18 +28,33 @@
             {% endfor %}
         {% endif %}
         
-            {% if prev_page_url is not none  %}
-                <tr>
-                    <td>
-                        <button class="btn-general" onclick="location.href='{{prev_page_url}}'">Previous</button>
-                    </td>
-            {% endif %}
-            {% if next_page_url is not none  %}
-                    <td>
-                        <button class="btn-general" onclick="location.href='{{next_page_url}}'">Next</button>
-                    </td>
-                </tr>
-            {% endif %}
     </table>
+
+
+    <div id='next-previous'>
+        <!-- checking for next and previous pages-->
+        <tr>
+            {% if prev_page_url is not none  %}
+                <td>
+                    <button class="btn-general" onclick="location.href='{{prev_page_url}}'">Previous</button>
+                </td>
+            {% else %}
+                <td>
+                    <button class="btn-general" onclick="location.href='{{prev_page_url}}'" disabled>Previous</button>
+                </td>
+            {% endif %}
+
+            {% if next_page_url is not none  %}
+                <td>
+                    <button class="btn-general" onclick="location.href='{{next_page_url}}'">Next</button>
+                </td>
+            {% else %}
+                <td>
+                    <button class="btn-general" onclick="location.href='{{next_page_url}}'" disabled>Next</button>
+                </td>
+            {% endif %}
+        </tr>
+    </div>
+    
 
 {% endblock %}
