@@ -145,16 +145,52 @@ def test_get_comments_for_article_without_reviews(in_memory_repo):
 
 
 def test_search_with_title(in_memory_repo):
-    pass
+    assert util_services.search_with_title("book1", in_memory_repo) == [{
+        'id': 10,
+        'title': "book1",
+        'release_year': None,
+        'description': None,
+        'publisher': None,
+        'authors': list(),
+        'ebook': None,
+        'num_pages': None,
+    }]
 
 
 def test_search_with_author(in_memory_repo):
-    pass
+    assert util_services.search_with_author("Tim", in_memory_repo) == [{
+        'id': 30,
+        'title': "book3",
+        'release_year': None,
+        'description': None,
+        'publisher': None,
+        'authors': [{'unique_id': 10, 'full_name': 'Tim',}],
+        'ebook': None,
+        'num_pages': None,
+    }]
 
 
 def test_search_with_publisher(in_memory_repo):
-    pass
+    assert util_services.search_with_publisher("Ben", in_memory_repo) == [{
+        'id': 20,
+        'title': "book2",
+        'release_year': 1000,
+        'description': None,
+        'publisher': {'name':'Ben'},
+        'authors': list(),
+        'ebook': None,
+        'num_pages': None,
+    }]
 
 
-def test_search_with_search(in_memory_repo):
-    pass
+def test_search_with_release_year(in_memory_repo):
+    assert util_services.search_with_release_year("1000", in_memory_repo) == [{
+        'id': 20,
+        'title': "book2",
+        'release_year': 1000,
+        'description': None,
+        'publisher': {'name':'Ben'},
+        'authors': [],
+        'ebook': None,
+        'num_pages': None,
+    }]

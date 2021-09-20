@@ -40,6 +40,8 @@ def search_with_publisher(input: str, repo: AbstractRepository):
     books = list()
 
     for book in books_catalogue:
+        if book.publisher is None:
+            continue
         publisher = book.publisher
         if publisher.name == input:
             books.append(book_to_dict(book))
@@ -79,9 +81,13 @@ def book_to_dict(book: Book):
 
 
 def publisher_to_dict(publisher: Publisher):
-    publisher_dict = {
-        'name': publisher.name,
-    }
+    publisher_dict = None
+    
+    if publisher is not None:
+        publisher_dict = {
+            'name': publisher.name,
+        }
+
     return publisher_dict
 
 
@@ -94,4 +100,6 @@ def author_to_dict(author: Author):
 
 
 def authors_to_dict(authors: Iterable[Author]):
+    if len(authors) == 0:
+        return list()
     return [author_to_dict(author) for author in authors]
