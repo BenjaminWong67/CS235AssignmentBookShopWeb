@@ -4,6 +4,8 @@ from flask import url_for
 
 from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review, make_review
+class UnknownUserException(Exception):
+    pass
 
 
 class NonExistentBookException(Exception):
@@ -45,6 +47,9 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
 
     if book_to_review is None:
         raise NonExistentBookException
+
+    if user_reviewing is None:
+        raise UnknownUserException
 
     review = make_review(review_text, rating, book_to_review, user_reviewing)
     repo.add_review(review)
