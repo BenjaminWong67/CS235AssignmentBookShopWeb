@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, session, reques
 import library.adapters.repository as repo
 
 import library.utilities.utilities as utilities
+import library.home.services as services
 
 # configure blueprint
 home_blueprint = Blueprint(
@@ -14,8 +15,10 @@ def home():
 
     form_search = utilities.SearchForm()
 
+    featured_books = services.get_random_books()
+
     return render_template(
         "home/home.html",
         form_search=form_search,
-        discount_articles=utilities.get_selected_books()
+        featured_books=featured_books
     )

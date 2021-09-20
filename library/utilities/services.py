@@ -6,19 +6,6 @@ from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, Author, Publisher
 
 
-def get_random_books(quantity: int, repo: AbstractRepository):
-    book_count = repo.get_number_of_books()
-
-    if quantity >= book_count:
-        # Reduce the quantity of ids to generate if the repository has an insufficient number of articles.
-        quantity = book_count - 1
-    
-    random_ids = random.sample(range(1, book_count), quantity)
-    books = repo.get_books_by_id(random_ids)
-
-    return book_to_dict(books)
-
-
 def search_with_title(input: str, repo: AbstractRepository):
     books_catalogue = repo.get_book_catalogue()
 
