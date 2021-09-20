@@ -96,6 +96,8 @@ class Author:
         return hash(self.unique_id)
 
 
+
+
 class Book:
 
     def __init__(self, book_id: int, book_title: str):
@@ -354,7 +356,7 @@ class User:
         return other.user_name == self.user_name
 
     def __lt__(self, other):
-        return self.user_name < other.user_name
+        return self.user_name.lower() < other.user_name.lower()
 
     def __hash__(self):
         return hash(self.user_name)

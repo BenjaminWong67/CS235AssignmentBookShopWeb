@@ -288,42 +288,51 @@ class TestReview:
         book = Book(2675376, "Harry Potter")
         review_text = "  This book was very enjoyable.   "
         rating = 4
-        review = Review(book, review_text, rating)
+        user = User('Dummy', '123456789')
+        review = Review(book, review_text, rating, user)
 
         assert str(review.book) == "<Book Harry Potter, book id = 2675376>"
         assert str(review.review_text) == "This book was very enjoyable."
         assert review.rating == 4
+        assert user == review.user
 
     def test_attributes_access(self):
         book = Book(2675376, "Harry Potter")
-        review = Review(book, 42, 3)
+        user = User('Dummy', '123456789')
+        review = Review(book, 42, 3, user)
         assert str(review.book) == "<Book Harry Potter, book id = 2675376>"
         assert str(review.review_text) == "N/A"
         assert review.rating == 3
+        assert user == review.user
 
     def test_invalid_parameters(self):
         book = Book(2675376, "Harry Potter")
+        user = User('Dummy', '123456789')
         review_text = "This book was very enjoyable."
 
         with pytest.raises(ValueError):
-            review = Review(book, review_text, -1)
+            review = Review(book, review_text, -1, user)
 
         with pytest.raises(ValueError):
-            review = Review(book, review_text, 6)
+            review = Review(book, review_text, 6, user)
 
     def test_set_of_reviews(self):
         book1 = Book(2675376, "Harry Potter")
         book2 = Book(874658, "Lord of the Rings")
-        review1 = Review(book1, "I liked this book", 4)
-        review2 = Review(book2, "This book was ok", 3)
-        review3 = Review(book1, "This book was exceptional", 5)
+        user = User('Dummy', '123456789')
+        user2 = User('Dummy', '123456789')
+        user3 = User('Dummy', '123456789')
+        review1 = Review(book1, "I liked this book", 4, user)
+        review2 = Review(book2, "This book was ok", 3, user2)
+        review3 = Review(book1, "This book was exceptional", 5, user3)
         assert review1 != review2
         assert review1 != review3
         assert review3 != review2
 
     def test_wrong_book_object(self):
         publisher = Publisher("DC Comics")
-        review = Review(publisher, "I liked this book", 4)
+        user = User('Dummy', '123456789')
+        review = Review(publisher, "I liked this book", 4, user)
         assert review.book is None
 
 class TestUser:
@@ -333,14 +342,15 @@ class TestUser:
         user1 = User('Shyamli', 'pw12345')
         user2 = User('Martin', 'pw67890')
         user3 = User('Daniel', 'pw87465')
-        assert str(user1) == "<User shyamli>"
-        assert str(user2) == "<User martin>"
-        assert str(user3) == "<User daniel>"
+        assert str(user1) == "<User Shyamli>"
+        assert str(user2) == "<User Martin>"
+        assert str(user3) == "<User Daniel>"
 
     def test_sort_ordering(self):
         user1 = User("Shyamli", "pw12345")
         user2 = User("Martin", "pw67890")
         user3 = User("daniel", "pw12345")
+
         assert user1 > user2
         assert user1 > user3
         assert user2 > user3
@@ -348,7 +358,7 @@ class TestUser:
     def test_comparison(self):
         user1 = User("Martin", "pw12345")
         user2 = User("Shyamli", "pw67890")
-        user3 = User("martin", "pw45673")
+        user3 = User("Martin", "pw45673")
         assert user1 == user3
         assert user1 != user2
         assert user3 != user2
@@ -356,12 +366,12 @@ class TestUser:
     def test_set_operations(self):
         user1 = User('Shyamli', 'pw12345')
         user2 = User('Martin', 'pw67890')
-        user3 = User('Daniel', 'pw87465')
+        user3 = User('daniel', 'pw87465')
         set_of_users = set()
         set_of_users.add(user1)
         set_of_users.add(user2)
         set_of_users.add(user3)
-        assert str(sorted(set_of_users)) == "[<User daniel>, <User martin>, <User shyamli>]"
+        assert str(sorted(set_of_users)) == "[<User daniel>, <User Martin>, <User Shyamli>]"
 
     def test_reading_a_book(self):
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
@@ -379,8 +389,8 @@ class TestUser:
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
         user = User("Martin", "pw12345")
         assert user.reviews == []
-        review1 = Review(books[0], "I liked this book", 4)
-        review2 = Review(books[1], "This book was ok", 2)
+        review1 = Review(books[0], "I liked this book", 4, user)
+        review2 = Review(books[1], "This book was ok", 2, user)
         user.add_review(review1)
         user.add_review(review2)
         assert str(user.reviews[0].review_text) == "I liked this book"
@@ -391,9 +401,9 @@ class TestUser:
     def test_passwords(self):
         user1 = User('  Shyamli   ', 'pw12345')
         user2 = User('Martin', 'p90')
-        assert str(user1) == "<User shyamli>"
+        assert str(user1) == "<User Shyamli>"
         assert str(user1.password) == "pw12345"
-        assert str(user2) == "<User martin>"
+        assert str(user2) == "<User Martin>"
         assert user2.password is None
 
 

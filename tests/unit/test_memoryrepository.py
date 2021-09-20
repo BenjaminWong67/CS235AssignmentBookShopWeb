@@ -11,12 +11,13 @@ def test_repository_construction(in_memory_repo):
     assert in_memory_repo.get_book(1234) == book
 
 
-def test_repository_can_add_book(in_memory_repo, book):
+def test_repository_can_add_book(in_memory_repo):
+    book = Book(1234, "random_book")
     in_memory_repo.add_book(book)
     assert in_memory_repo.get_book(book.book_id) == book
 
 
-def test_repository_does_not_add_non_book_item(in_memory_repo, book):
+def test_repository_does_not_add_non_book_item(in_memory_repo):
     with pytest.raises(ValueError):
         in_memory_repo.add_book("not a book")
 
@@ -56,10 +57,16 @@ def test_repository_can_add_review(in_memory_repo):
     book = Book(123456, "Test")
     user = User("testing", "12345")
     review = Review(book, "test review", 5, user)
+    in_memory_repo.add_book(book)
+    in_memory_repo.add_user(user)
     book.add_review(review)
     in_memory_repo.add_review(review)
+    print(in_memory_repo.get_user(review.user.user_name))
 
     assert review in in_memory_repo.get_reviews()
+    assert review in in_memory_repo.get_user(review.user.user_name).reviews
+    assert review in in_memory_repo.get_book(123456).reviews
+
 
 
 def test_repository_can_get_reviews(in_memory_repo):
