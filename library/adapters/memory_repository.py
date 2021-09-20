@@ -70,6 +70,21 @@ class MemoryRepository(AbstractRepository):
         return books
 
 
+def three_random_book_discount(repo: MemoryRepository):
+    book_count = repo.get_number_of_books()
+    quantity = 3
+    book_inv = repo.get_book_inventory()
+
+    if quantity >= book_count:
+        # Reduce the quantity of ids to generate if the repository has an insufficient number of books.
+        quantity = book_count - 1
+    
+    random_ids = random.sample(range(1, book_count), quantity)
+    books = repo.get_books_by_id(random_ids)
+
+    for book_id in books:
+        book_inv.discount_book(book_id, 50)
+
 
 def random_book_price_and_stock_count():
     price = random.randint(3, 200)
@@ -91,4 +106,7 @@ def populate(data_path: Path, repo: MemoryRepository):
     for book in books_data.dataset_of_books:
         price, stock_count = random_book_price_and_stock_count()
         book_inventory.add_book(book, price, stock_count)
+
+        three_random_book_discount(repo)
+
         repo.add_book(book)

@@ -15,7 +15,7 @@ def home():
 
     form_search = utilities.SearchForm()
 
-    featured_books = services.get_random_books()
+    featured_books = services.get_random_books(3, repo.repo_instance)
 
     return render_template(
         "home/home.html",
