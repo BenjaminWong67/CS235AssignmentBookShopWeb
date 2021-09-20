@@ -39,11 +39,17 @@
                 <div style="clear:both">
     
                     {% for review in book.reviews %}
-    
-                        <p>{{review.review_text}} by {{review.user_name}}, {{review.timestamp}}</p>
-    
-                        <p>{{review.rating}}</p>
-    
+
+                        <div id='review-comment'>
+                            
+                            <div id="review-text">
+                                <p id="quote"><i>"{{review.review_text}}"</i></p>
+                                <p id="name-review">{{review.user_name}} - {{review.rating}}/5☆</p>
+                                <p id='time-review'>{{review.timestamp}}</p>
+                            </div>
+                            
+                        </div>
+                        
                     {% endfor %}
                 </div>
     

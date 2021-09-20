@@ -174,14 +174,36 @@ div#authentication input[type=submit] {
     width: 60%;
 }
 #book-view button {
-    margin: 50px 0px 80px 0px;
+    margin: 50px 0px 10px 0px;
 }
+#review-comment {
+    background:#F3F3F3;
+    border:1px solid #F3AD78;
+    border-radius: 7px;
+    padding:0px 10px 0px 10px;
+    margin: 10px 0px 0px 0px;
+}
+#quote {
+    margin: 12px 0px 0px 0px;
+    padding: 0px;
+}
+#name-review {
+    margin: 0px 0px 0px 20px;
+    padding:0px;
+}
+#time-review {
+    font-size: 8pt;
+    text-align: right;
+    margin:0px;
+    padding:0px 0px 5px 0px;
+}
+
 
 
 /*review page styles*/
 #review-form {
     background-color: #F3F3F3;
-    border-radius: 7px;
+    border-radius: 0px 0px 7px 7px;
 }
 #review-form form {
     text-align: center;

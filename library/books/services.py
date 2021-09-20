@@ -100,7 +100,8 @@ def review_to_dict(review: Review):
         'user_name': review.user.user_name,
         'book_id': review.book,
         'review_text': review.review_text,
-        'timestamp': review.timestamp
+        'timestamp': review.timestamp,
+        'rating':review.rating
     }
     return review_dict
 
