@@ -119,7 +119,6 @@ class Book:
         self.__ebook = None
         self.__num_pages = None
         self.__reviews = []
-        self.__display_reviews = False
 
     @property
     def book_id(self) -> int:
@@ -206,13 +205,6 @@ class Book:
 
         if review in self.__reviews:
             self.__reviews.remove(review)
-
-    @property
-    def display_reviews(self):
-        return self.__display_reviews
-
-    def change_display_reviews(self):
-        self.__display_reviews = not self.display_reviews
 
     @property
     def ebook(self) -> bool:

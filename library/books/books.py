@@ -59,7 +59,6 @@ def books_catalogue():
 @books_blueprint.route('/review', methods=['GET', 'POST'])
 @login_required
 def book_review():
-
     user_name = session['user_name']
     form_search = utilities.SearchForm()
     form_review = ReviewForm()

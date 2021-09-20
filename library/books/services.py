@@ -67,11 +67,6 @@ def get_reviews_for_book(book_id, repo: AbstractRepository):
     return reviews_to_dict(book.reviews)
 
 
-def decide_to_display_reviews(book_id: int, repo: AbstractRepository):
-    reviews_to_display = repo.get_book(book_id)
-    reviews_to_display.change_display_reviews()
-
-
 # ============================================
 # Functions to convert model entities to dicts
 # ============================================
