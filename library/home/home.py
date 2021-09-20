@@ -6,10 +6,10 @@ import library.utilities.utilities as utilities
 
 # configure blueprint
 home_blueprint = Blueprint(
-    "home_bp", __name__, url_prefix="/")
+    "home_bp", __name__)
 
 
-@home_blueprint.route('/')
+@home_blueprint.route('/', methods=['GET'])
 def home():
 
     form_search = utilities.SearchForm()

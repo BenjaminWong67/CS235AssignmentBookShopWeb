@@ -1,4 +1,6 @@
 """Name: Benjamin Wong UPI:BLU378 last-Modified:1:07pm 2/8/2021"""
+import random
+
 from pathlib import Path
 
 from bisect import bisect, bisect_left, insort_left
@@ -15,6 +17,7 @@ class MemoryRepository(AbstractRepository):
         self.__books_index = dict()
         self.__reviews = list()
         self.__users = list()
+        self.__book_inventory = BooksInventory()
 
     def add_book(self, book: Book):
 
@@ -50,6 +53,17 @@ class MemoryRepository(AbstractRepository):
 
     def get_user(self, user_name) -> User:
         return next((user for user in self.__users if user.user_name == user_name), None)
+    
+    def get_book_inventory(self):
+        return self.__book_inventory
+
+
+
+def random_book_price_and_stock_count():
+    price = random.randint(3, 200)
+    stock_count = random.randint(0, 20)
+
+    return price, stock_count
 
 
 # populates the memory repository with the provided json files
@@ -60,5 +74,9 @@ def populate(data_path: Path, repo: MemoryRepository):
     books_data = BooksJSONReader(authors_data_path, book_data_path)
     books_data.read_json_files()
 
+    book_inventory = repo.get_book_inventory()
+
     for book in books_data.dataset_of_books:
+        price, stock_count = random_book_price_and_stock_count()
+        book_inventory.add_book(book, price, stock_count)
         repo.add_book(book)
