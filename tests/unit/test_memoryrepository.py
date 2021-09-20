@@ -68,6 +68,8 @@ def test_repository_can_add_review(in_memory_repo):
     assert review in in_memory_repo.get_book(123456).reviews
 
 
-
 def test_repository_can_get_reviews(in_memory_repo):
     assert len(in_memory_repo.get_reviews()) == 2
+
+def test_repository_can_retrieve_from_book_inventory(in_memory_repo):
+    assert isinstance(in_memory_repo.get_book_inventory(), BooksInventory) == True
