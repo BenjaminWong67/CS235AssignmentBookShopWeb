@@ -15,6 +15,7 @@ class MemoryRepository(AbstractRepository):
         self.__books_index = dict()
         self.__reviews = list()
         self.__users = list()
+        self.__book_inventory = BooksInventory
 
     def add_book(self, book: Book):
 
@@ -50,7 +51,22 @@ class MemoryRepository(AbstractRepository):
 
     def get_user(self, user_name) -> User:
         return next((user for user in self.__users if user.user_name == user_name), None)
+    
+    def get_book_inventory(self):
+        return self.__book_inventory
+    
+    def add_inventory(self, book: Book, price: int, stock_count: int):
+        pass
 
+    def get_book_price(self, book: Book):
+        pass
+
+    def get_book_stock(self, book: Book):
+        pass
+
+
+def random_book_price(book: Book):
+    pass
 
 # populates the memory repository with the provided json files
 def populate(data_path: Path, repo: MemoryRepository):

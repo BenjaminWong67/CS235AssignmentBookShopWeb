@@ -68,3 +68,23 @@ class AbstractRepository(abc.ABC):
     def add_user(self, user):
         """Adds user to user database """
         raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_book_inventory(self):
+        """returns the book inventory"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def add_inventory(self, book: Book, price: int, stock_count: int):
+        """adds book price and stock_count to inventory"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_book_price(self, book: Book):
+        """gets the price of the given book"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_book_stock(self, book: Book):
+        """gets the stock of the given book"""
+        raise NotImplementedError
