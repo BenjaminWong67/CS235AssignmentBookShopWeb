@@ -6,14 +6,18 @@ from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review, make_review
 
 
+class NonExistentBookException(Exception):
+    pass
+
+
+class KeyErrorException(Exception):
+    pass
+
+
 def get_book(book_id: int, repo: AbstractRepository):
     book = repo.get_book(book_id)
 
     return book_to_dict(book)
-
-
-class KeyErrorException:
-    pass
 
 
 def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: int):
@@ -27,16 +31,12 @@ def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: in
     else:
         for j in range(cursor, len(book_list)):
             books_to_show.append(book_to_dict(book_list[j]))
-            
+
     return books_to_show
 
 
 def get_number_of_books(repo: AbstractRepository):
     return len(repo.get_book_catalogue())
-
-
-class NonExistentBookException:
-    pass
 
 
 def add_review(book_id: int, review_text: str, rating: int, repo: AbstractRepository, user_name):
@@ -48,6 +48,15 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
 
     review = make_review(review_text, rating, book_to_review, user_reviewing)
     repo.add_review(review)
+
+
+def get_reviews_for_book(book_id, repo: AbstractRepository):
+    book = repo.get_book(book_id)
+
+    if book is None:
+        raise NonExistentBookException
+
+    return reviews_to_dict(book.reviews)
 
 
 def decide_to_display_reviews(book_id: int, repo: AbstractRepository):
@@ -97,7 +106,7 @@ def authors_to_dict(authors: Iterable[Author]):
 def review_to_dict(review: Review):
     review_dict = {
         'user_name': review.user.user_name,
-        'book_id': review.book,
+        'book': review.book,
         'review_text': review.review_text,
         'timestamp': review.timestamp
     }
