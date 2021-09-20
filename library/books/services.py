@@ -71,7 +71,6 @@ def book_to_dict(book: Book):
         'ebook': book.ebook,
         'num_pages': book.num_pages,
         'reviews': reviews_to_dict(book.reviews),
-        'url': url_for('books_bp.books_view', id=book.book_id)
     }
     return book_dict
 
