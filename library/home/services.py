@@ -19,6 +19,19 @@ def get_random_books(quantity: int, repo: AbstractRepository):
     return book_to_dict(books)
 
 
+def get_discounted_books(repo: AbstractRepository):
+    books = repo.get_book_catalogue()
+    book_inv = repo.get_book_inventory()
+
+    discounted_books = list()
+
+    for book in books:
+        if book_inv.get_discounted_book(book.book_id) != 0:
+            discounted_books.append(book)
+    
+    return book_to_dict
+
+
 # ============================================
 # Functions to convert model entities to dicts
 # ============================================
@@ -35,6 +48,9 @@ def book_to_dict(book: Book):
         'num_pages': book.num_pages,
     }
     return book_dict
+
+def books_to_dict(books: list[int]):
+    return [book_to_dict(book) for book in books]
 
 
 def publisher_to_dict(publisher: Publisher):
