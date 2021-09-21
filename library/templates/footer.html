@@ -1,3 +1,25 @@
 <footer>
-    this is the footer tag. idk why its here tbh... it just looks cool.
+    {% if featured_books|length > 0 %}
+        <div>
+            <h3 id='feature-title'>Featured books</h3>
+        </div>
+        <div id='footer-feature'>
+            
+            {% for book in featured_books %}
+                
+                <div id='feature-book'>
+                    {% if book.stock_count > 0 %}
+                        <p id='stock' style='background-color:rgb(84, 155, 75)'>✓ In Stock</p>
+                    {% else %}
+                        <p id='stock' style='background-color:rgb(209, 88, 88)'>Out of Stock</p>
+                    {% endif %}
+                    <p>{{book.title|truncate(30)}}</p>
+                    <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                </div>
+                
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>this is the footer tage. idk what to put here tbh. it just looks cool</p>
+    {% endif %}
 </footer>

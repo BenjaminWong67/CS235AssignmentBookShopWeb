@@ -359,11 +359,13 @@ class BooksInventory:
     def __init__(self):
         self.__books = {}
         self.__prices = {}
+        self.__discount = {}
         self.__stock_count = {}
 
     def add_book(self, book: Book, price: int, nr_books_in_stock: int):
         self.__books[book.book_id] = book
         self.__prices[book.book_id] = price
+        self.__discount[book.book_id] = 0
         self.__stock_count[book.book_id] = nr_books_in_stock
 
     def remove_book(self, book_id: int):
@@ -391,6 +393,19 @@ class BooksInventory:
             if self.__books[book_id].title == book_title:
                 return self.__books[book_id]
         return None
+    
+    def discount_book(self, book_id: int, discount: int):
+        if book_id in self.__discount.keys():
+            self.__discount[book_id] = discount
+    
+    def get_book_discount(self, book_id: int):
+        discount = 0
+
+        if book_id in self.__discount.keys():
+            discount = self.__discount[book_id]
+        
+        return discount
+        
 
 
 def make_review(review_text: str, rating: int, book_to_review: Book, user: User):

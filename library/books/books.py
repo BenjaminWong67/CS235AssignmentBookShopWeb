@@ -16,6 +16,9 @@ books_blueprint = Blueprint(
 
 @books_blueprint.route('/', methods=['GET'])
 def books_catalogue():
+
+    form_search = utilities.SearchForm()
+    featured_books = utilities.get_featured_books(3, repo.repo_instance)
     
     books_per_page = 2
     # read query parameters
@@ -45,14 +48,13 @@ def books_catalogue():
         next_page_url = url_for('books_bp.books_catalogue', cursor=cursor+books_per_page)
         prev_page_url = url_for('books_bp.books_catalogue', cursor=cursor-books_per_page)
 
-    form_search = utilities.SearchForm()
-
     return render_template(
         "books/books.html",
         form_search=form_search,
         books=books,
         next_page_url=next_page_url,
-        prev_page_url=prev_page_url
+        prev_page_url=prev_page_url,
+        featured_books=featured_books
     )
 
 
@@ -79,12 +81,16 @@ def book_review():
         id=book_id,
         form_search=form_search,
         form_review=form_review,
-        book=book
+        book=book,
+        featured_books=list()
     )
 
 
 @books_blueprint.route('/book', methods=['GET'])
 def books_view():
+
+    form_search = utilities.SearchForm()
+    featured_books = utilities.get_featured_books(3, repo.repo_instance)
 
     book_id = int(request.args.get('id'))
     show_reviews_for_book = request.args.get('show_reviews_for_book')
@@ -99,13 +105,17 @@ def books_view():
     return render_template(
         "books/books_view.html",
         book=book,
-        form_search=utilities.SearchForm(),
-        show_reviews_for_book=show_reviews_for_book
+        form_search=form_search,
+        show_reviews_for_book=show_reviews_for_book,
+        featured_books=featured_books
     )
 
 
 @books_blueprint.route('/search', methods=['GET'])
 def books_search():
+
+    form_search = utilities.SearchForm()
+    featured_books = utilities.get_featured_books(3, repo.repo_instance)
 
     next_page_url = request.args.get('next_page_url')
     prev_page_url = request.args.get('prev_page_url')
@@ -142,11 +152,12 @@ def books_search():
 
     return render_template(
         'books/books.html',
-        form_search=utilities.SearchForm(),
+        form_search=form_search,
         books=part_of_searched_books,
         next_page_url=next_page_url,
         prev_page_url=prev_page_url,
-        cursor=cursor
+        cursor=cursor,
+        featured_books=featured_books
     )
 
 

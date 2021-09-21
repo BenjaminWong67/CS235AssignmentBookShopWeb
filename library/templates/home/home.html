@@ -2,13 +2,51 @@
 
 {% block content %}
 
-<table>
-    <tr>
-        <th>This is the home page.... idk what to put here, so idk go click somewhere else instead.</th>
-    </tr>
-    <tr>
-        <td>you should really just go somewhere else</td>
-    </tr>
-</table>
+<div id='home'>
+    <div id='home-header'>
+        {% if 'user_name' in session %}
+            <h1>Welcome,</h1>
+            <h2>{{ session['user_name']}}</h2>
+        {% else %}
+            <h1>Welcome</h1>
+        {% endif %}
+    </div>
+    
+    <div id='home-feature'>
+        <div>
+            <h1 id='home-sale'>SALE 50% OFF SELECTED BOOKS</h1>
+        </div>
+        {% for book in discounted_books %}
+            <div id='discount-feature'>
+                
+                <div>
+                    {% if book.discount == 0 %}
+                    <p id='price'><b>${{ '%.2f'|format(book.price/1) }}</b></p>
+                    {% else %} 
+                        <p id='price'>
+                            <b>${{ '%.2f'|format(book.price * (book.discount / 100)) }}</b> 
+                            <br>
+                            <del>${{ '%.2f'|format(book.price/1) }}</del>
+                        </p>
+                    {% endif %}
+                    {% if book.stock_count > 0 %}
+                        <p id='stock' style='background-color:rgb(84, 155, 75)'>✓ In Stock</p>
+                    {% else %}
+                        <p id='stock' style='background-color:rgb(209, 88, 88)'>Out of Stock</p>
+                    {% endif %}
+                </div>
+
+                <div id='discount-title'>
+                    <h2>{{book.title}}</h2>
+                    <div>
+                        <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">BUY NOW</button>
+                    </div>
+                </div>
+                
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
 
 {% endblock %}

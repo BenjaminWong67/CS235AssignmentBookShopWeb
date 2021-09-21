@@ -2,7 +2,7 @@
 import pytest
 
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review
-from library.adapters.repository import RepositoryException
+from library.adapters.repository import AbstractRepository, RepositoryException
 
 
 def test_repository_construction(in_memory_repo):
@@ -68,6 +68,20 @@ def test_repository_can_add_review(in_memory_repo):
     assert review in in_memory_repo.get_book(123456).reviews
 
 
-
 def test_repository_can_get_reviews(in_memory_repo):
     assert len(in_memory_repo.get_reviews()) == 2
+
+
+def test_repository_can_retrieve_from_book_inventory(in_memory_repo):
+    assert isinstance(in_memory_repo.get_book_inventory(), BooksInventory) == True
+
+
+def test_get_books_by_ids(small_memory_repo: AbstractRepository):
+    list_ids = [10, 20, 30]
+
+    books = small_memory_repo.get_books_by_id(list_ids)
+
+    assert len(books) == 3
+
+def test_get_number_of_books(small_memory_repo: AbstractRepository):
+    assert small_memory_repo.get_number_of_books() == 3

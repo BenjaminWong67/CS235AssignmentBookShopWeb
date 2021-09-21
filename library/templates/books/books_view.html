@@ -7,55 +7,57 @@
     </div>
     <div id='book-view'>
         <div id='attributes-left'>
-            
-        
             <p>
-                
                 Author/s:<br>
                 <ul>
                     {% for author in book.authors %}
                         <li style='list-style-type:none;'>- {{author.full_name}}</li>
                     {% endfor %}
                 </ul>
-                
             </p>
-
             <p>Publisher: {{ book.publisher.name }}</p>
-
             <p>Release year: <b>{{ book.release_year }}</b></p>
 
-            <div>
+            <div id="shop-details">
+                {% if book.discount == 0 %}
+                    <p id='price'><b>${{ '%.2f'|format(book.price/1) }}</b></p>
+                {% else %}
+                    <p id='sale'><b>SALE {{book.discount}}% OFF</b></p> 
+                    <p id='price'>
+                        <b>${{ '%.2f'|format(book.price * (book.discount / 100)) }}</b> 
+                        <br>
+                        <del>${{ '%.2f'|format(book.price/1) }}</del>
+                    </p>
+                {% endif %}
 
+                {% if book.stock_count > 0 %}
+                    <p id='stock' style="background-color:rgb(84, 155, 75)">Stock: #{{ book.stock_count }}</p>
+                {% else %}
+                    <p id='stock' style="background-color:rgb(209, 88, 88)">Stock: #{{ book.stock_count }}</p>
+                {% endif %}
+            </div>
+
+            
+            <div>
                 {% if book.reviews|length > 0 and book.id != show_reviews_for_book %}
                     <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id, show_reviews_for_book=book.id)}}">{{book.reviews|length}} Reviews</button>
                 {% endif %}
-    
                 <button onclick=location.href="{{url_for('books_bp.book_review', id=book.id)}}">Review</button>
             </div>
-    
-            
             {% if book.id == show_reviews_for_book %}
-    
-                <div style="clear:both">
-    
+                <div id='reviews-book' style="clear:both">   
                     {% for review in book.reviews %}
-
                         <div id='review-comment'>
-                            
                             <div id="review-text">
                                 <p id="quote"><i>"{{review.review_text}}"</i></p>
                                 <p id="name-review">{{review.user_name}} - {{review.rating}}/5☆</p>
                                 <p id='time-review'>{{review.timestamp}}</p>
                             </div>
-                            
                         </div>
-                        
                     {% endfor %}
                 </div>
-    
             {% endif %}
         </div>
-
         <div id='attributes-right'>
             <p>Description: <br><br>{{ book.description }}</p>
         </div>

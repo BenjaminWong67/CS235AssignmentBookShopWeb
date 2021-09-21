@@ -2,9 +2,17 @@
 
 {% block content %}
 
+
+
     <table>
         <tr>
-            <th>this is the book.html template </th>
+            {% if request.args.get('cursor') is not none %}
+                {% set cursor = request.args.get('cursor')|int %}
+                
+            {% else %}
+                {% set cursor = 0 %}
+            {% endif %}
+            <th>Page {{ '%.0f'|format(cursor / 2 + 1) }}</th>
         </tr>
 
         <!-- checks current data to show on page-->
@@ -20,10 +28,23 @@
             {% for book in books %}
                 <tr>
                     <td>
-                        {{ book.title }}
-                        <br>
-                        <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                        <div id='book-listing'>
+                            <div>
+                                <p id='price'>${{book.price}}</p>
+                                {% if book.stock_count > 0 %}
+                                    <p id='stock' style='background-color:rgb(84, 155, 75)'>✓ In Stock</p>
+                                {% else %}
+                                    <p id='stock' style='background-color:rgb(209, 88, 88)'>✖ Out of Stock</p>
+                                {% endif %}
+                            </div>
+                            <div id='listing-info'>
+                                {{ book.title }}
+                                <br>
+                                <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                            </div>
+                        </div>
                     </td>
+                    
                 </tr>
             {% endfor %}
         {% endif %}
