@@ -16,7 +16,10 @@ shopping_blueprint = Blueprint(
 @shopping_blueprint.route('/shoppingcart', methods=['GET'])
 @login_required
 def shoppingcart():
-    pass
+    user_name = session['user_name']
+    form_search = utilities.SearchForm()
+    books = services.get_shopping_cart(user_name, repo.repo_instance)
+    return render_template('shopping/shopping_cart.html', form_search=form_search, books=books)
 
 
 @shopping_blueprint.route('/purchased_books', methods=['GET'])
