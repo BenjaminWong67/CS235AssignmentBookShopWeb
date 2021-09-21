@@ -3,8 +3,9 @@ import pytest
 
 from utils import get_project_root
 
-from library.domain.model import Publisher, Author, Book, Review, User, BooksInventory
+from library.domain.model import Publisher, Author, Book, Review, User, BooksInventory, ShoppingCart
 from library.adapters.jsondatareader import BooksJSONReader
+
 
 class TestPublisher:
 
@@ -119,7 +120,8 @@ class TestAuthor:
         set_of_authors.add(author1)
         set_of_authors.add(author2)
         set_of_authors.add(author3)
-        assert str(sorted(set_of_authors)) == "[<Author Neil Gaiman, author id = 2>, <Author J.R.R. Tolkien, author id = 13>, <Author J.K. Rowling, author id = 98>]"
+        assert str(sorted(
+            set_of_authors)) == "[<Author Neil Gaiman, author id = 2>, <Author J.R.R. Tolkien, author id = 13>, <Author J.K. Rowling, author id = 98>]"
 
     def test_coauthors(self):
         author1 = Author(1, "Neil Gaiman")
@@ -248,7 +250,8 @@ class TestBook:
         set_of_books.add(book1)
         set_of_books.add(book2)
         set_of_books.add(book3)
-        assert str(sorted(set_of_books)) == "[<Book West Side Story, book id = 89576>, <Book Harry Potter, book id = 874658>, <Book Hitchhiker's Guide to the Galaxy, book id = 2675376>]"
+        assert str(sorted(
+            set_of_books)) == "[<Book West Side Story, book id = 89576>, <Book Harry Potter, book id = 874658>, <Book Hitchhiker's Guide to the Galaxy, book id = 2675376>]"
 
     def test_comparison(self):
         book1 = Book(874658, "Harry Potter")
@@ -271,15 +274,18 @@ class TestBook:
         for author in authors:
             book.add_author(author)
 
-        assert str(book.authors) == "[<Author J.R.R. Tolkien, author id = 1>, <Author Neil Gaiman, author id = 2>, <Author Ernest Hemingway, author id = 3>, <Author J.K. Rowling, author id = 4>]"
+        assert str(
+            book.authors) == "[<Author J.R.R. Tolkien, author id = 1>, <Author Neil Gaiman, author id = 2>, <Author Ernest Hemingway, author id = 3>, <Author J.K. Rowling, author id = 4>]"
 
         # remove an Author who is not in the list
         book.remove_author(Author(5, "George Orwell"))
-        assert str(book.authors) == "[<Author J.R.R. Tolkien, author id = 1>, <Author Neil Gaiman, author id = 2>, <Author Ernest Hemingway, author id = 3>, <Author J.K. Rowling, author id = 4>]"
+        assert str(
+            book.authors) == "[<Author J.R.R. Tolkien, author id = 1>, <Author Neil Gaiman, author id = 2>, <Author Ernest Hemingway, author id = 3>, <Author J.K. Rowling, author id = 4>]"
 
         # remove an Author who is in the list
         book.remove_author(author2)
-        assert str(book.authors) == "[<Author J.R.R. Tolkien, author id = 1>, <Author Ernest Hemingway, author id = 3>, <Author J.K. Rowling, author id = 4>]"
+        assert str(
+            book.authors) == "[<Author J.R.R. Tolkien, author id = 1>, <Author Ernest Hemingway, author id = 3>, <Author J.K. Rowling, author id = 4>]"
 
 
 class TestReview:
@@ -335,10 +341,10 @@ class TestReview:
         review = Review(publisher, "I liked this book", 4, user)
         assert review.book is None
 
+
 class TestUser:
 
     def test_construction(self):
-
         user1 = User('Shyamli', 'pw12345')
         user2 = User('Martin', 'pw67890')
         user3 = User('Daniel', 'pw87465')
@@ -382,7 +388,8 @@ class TestUser:
         assert user.pages_read == 0
         for book in books:
             user.read_a_book(book)
-        assert str(user.read_books) == "[<Book Harry Potter, book id = 874658>, <Book Lord of the Rings, book id = 89576>]"
+        assert str(
+            user.read_books) == "[<Book Harry Potter, book id = 874658>, <Book Lord of the Rings, book id = 89576>]"
         assert user.pages_read == 228
 
     def test_user_reviews(self):
@@ -441,7 +448,8 @@ class TestBooksJSONReader:
     def test_read_books_from_file_and_check_other_attributes(self, read_books_and_authors):
         dataset_of_books = read_books_and_authors
         assert dataset_of_books[2].release_year == 2012
-        assert dataset_of_books[19].description == "Lenalee is determined to confront a Level 4 Akuma that's out to kill Komui, but her only chance is to reclaim her Innocence and synchronize with it. The Level 4 is not inclined to wait around and pursues its mission even against the best efforts of Lavi and Kanda. It's left to Allen to hold the line, but it soon becomes obvious he has no hope of doing it all by himself!"
+        assert dataset_of_books[
+                   19].description == "Lenalee is determined to confront a Level 4 Akuma that's out to kill Komui, but her only chance is to reclaim her Innocence and synchronize with it. The Level 4 is not inclined to wait around and pursues its mission even against the best efforts of Lavi and Kanda. It's left to Allen to hold the line, but it soon becomes obvious he has no hope of doing it all by himself!"
         assert str(dataset_of_books[4].publisher) == "<Publisher DC Comics>"
         assert isinstance(dataset_of_books[4].publisher, Publisher)
         assert isinstance(dataset_of_books[4].authors[0], Author)
@@ -454,6 +462,7 @@ class TestBooksJSONReader:
     def test_read_books_from_file_special_characters(self, read_books_and_authors):
         dataset_of_books = read_books_and_authors
         assert dataset_of_books[17].title == "續．星守犬"
+
 
 class TestBooksInventory:
 
@@ -546,3 +555,36 @@ class TestBooksInventory:
         assert isinstance(book.authors[1], Author)
         assert isinstance(book.publisher, Publisher)
         assert inventory.search_book_by_title("unknown") is None
+
+
+class TestShoppingCart:
+    def test_construction(self):
+        shopping_cart1 = ShoppingCart()
+        shopping_cart2 = ShoppingCart()
+
+        assert shopping_cart1 != shopping_cart2
+
+    def test_can_add_book(self):
+        user = User("Dave", "1098273")
+        book = Book(619, "Rey")
+        user.shoppingcart.add_book(book)
+
+        assert book.book_id in user.shoppingcart.books()
+
+    def test_can_remove_book(self):
+        user = User("Jonas", "67584")
+        book = Book(42, "Answers to Life")
+        user.shoppingcart.add_book(book)
+        user.shoppingcart.remove_book(book.book_id)
+
+        assert book.book_id not in user.shoppingcart.books()
+
+    def test_clear_all_books(self):
+        user = User("Jonas", "67584")
+        book = Book(65, "Running out of variable names")
+        book2 = Book(19, "COVID")
+        user.shoppingcart.add_book(book)
+        user.shoppingcart.add_book(book2)
+        user.shoppingcart.clear_cart()
+
+        assert len(user.shoppingcart.books()) == 0
