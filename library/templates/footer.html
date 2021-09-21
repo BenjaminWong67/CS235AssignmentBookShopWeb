@@ -1,3 +1,5 @@
 <footer>
-    this is the footer tag. idk why its here tbh... it just looks cool.
+    {% for book in featured_books %}
+        <p>{{book.title}}</p>
+    {% endfor %}
 </footer>

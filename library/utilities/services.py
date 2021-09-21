@@ -8,20 +8,20 @@ from library.domain.model import Book, Author, Publisher
 
 def get_random_books(quantity: int, repo: AbstractRepository):
     book_count = repo.get_number_of_books()
+    book_catalogue = repo.get_book_catalogue()
     
-    books = list()
+    selected_books = list()
 
     if quantity >= book_count:
         # Reduce the quantity of ids to generate if the repository has an insufficient number of books.
         quantity = book_count - 1
     
-    random_ids = random.sample(range(1, book_count), quantity)
-    random_books = repo.get_books_by_id(random_ids)
+    random_books = random.sample(book_catalogue, quantity)
 
     for book in random_books:
-        books.append(book_to_dict(book))
+        selected_books.append(book_to_dict(book))
 
-    return books
+    return selected_books
 
 
 def search_with_title(input: str, repo: AbstractRepository):
