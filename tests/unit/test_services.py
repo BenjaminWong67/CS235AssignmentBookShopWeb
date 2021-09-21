@@ -156,6 +156,9 @@ def test_search_with_title(in_memory_repo):
         'authors': list(),
         'ebook': None,
         'num_pages': None,
+        'price':10,
+        'stock_count':1,
+        'discount':0
     }]
 
 
@@ -169,6 +172,9 @@ def test_search_with_author(in_memory_repo):
         'authors': [{'unique_id': 10, 'full_name': 'Tim',}],
         'ebook': None,
         'num_pages': None,
+        'price':30,
+        'stock_count':3,
+        'discount':0
     }]
 
 
@@ -182,6 +188,9 @@ def test_search_with_publisher(in_memory_repo):
         'authors': list(),
         'ebook': None,
         'num_pages': None,
+        'price':20,
+        'stock_count':2,
+        'discount':0
     }]
 
 
@@ -195,6 +204,9 @@ def test_search_with_release_year(in_memory_repo):
         'authors': [],
         'ebook': None,
         'num_pages': None,
+        'price':20,
+        'stock_count':2,
+        'discount':0
     }]
 
 def test_get_discounted_books(small_memory_repo: AbstractRepository):
@@ -209,4 +221,7 @@ def test_get_discounted_books(small_memory_repo: AbstractRepository):
         'authors': list(),
         'ebook': None,
         'num_pages': None,
+        'price':20,
+        'stock_count':2,
+        'discount':50
     }]

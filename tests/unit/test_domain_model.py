@@ -598,5 +598,5 @@ class TestBooksInventory:
 
         inventory.discount_book(17, 20)
         assert inventory.get_book_discount(17) == 20
-        assert inventory.get_book_discount(0) == None
+        assert inventory.get_book_discount(0) == 0
         assert inventory.get_book_discount(64) == 0

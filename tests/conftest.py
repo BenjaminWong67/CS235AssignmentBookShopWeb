@@ -47,6 +47,10 @@ def in_memory_repo():
     repo.add_book(book2)
     repo.add_book(book3)
 
+    repo.get_book_inventory().add_book(book1, 10, 1)
+    repo.get_book_inventory().add_book(book2, 20, 2)
+    repo.get_book_inventory().add_book(book3, 30, 3)
+
     return repo
 
 
