@@ -296,6 +296,81 @@ button[disabled] {
 }
 
 
+/*shopping cart styles*/
+#cart {
+    background-color: #F3F3F3;
+    border-radius: 7px;
+    text-align: center;
+}
+#cart-user {
+    text-align: center;
+    font-size: 20pt;
+    color: white;
+    width: 60%;
+    margin: 40px auto -60px auto;
+    padding: 5px;
+    background-color: #30C3CD;
+    border-radius: 7px;
+}
+#cart-empty {
+    color: white;
+    font-size: 32pt;
+    border: 1px solid #30C3CD;
+    border-radius: 7px;
+    margin: 30px;
+    padding: 100px 0px;
+    background-color: #48d6e0;
+}
+#cart-empty button, #cart-empty h3 {
+    margin: 0px;
+}
+#cart-full {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #30C3CD;
+    border-radius: 7px;
+    margin: 30px;
+    text-align: left;
+}
+#cart-full table {
+    background-color: #48d6e0;
+}
+#cart-full th, #cart-full tr, #cart-full td {
+    border: 0px;
+}
+#cart-purchase {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+#cart-purchase button {
+    width: 250px;
+    padding:15px 0px;
+    margin: -10px 30px 30px auto;
+    background-color: #48d6e0;
+    color: white;
+    border: 1px solid #30C3CD;
+    border-radius: 7px;
+}
+#cart-purchase button:hover {
+    background-color: #1e777e;
+}
+#cart-purchase p {
+    color: white;
+    font-size: 15pt;
+    margin: auto 30px 0px auto;
+    width: 250px;
+    padding:15px 0px;
+    background-color: #30c3cd86;
+    border-radius: 7px 7px 0px 0px;
+}
+
+
+/*purchased book styles*/
+
+
+
 /*home page styles*/
 #home {
     background-color: #F3F3F3;
@@ -379,6 +454,11 @@ button[disabled] {
     color: black;
     font-size: 12pt;
     margin: 0px 10px 10px 10px;
+}
+#feature-book p#stock {
+    color: white;
+    font-size: 10pt;
+    width: 100px;
 }
 #feature-book button {
     margin: 2px;

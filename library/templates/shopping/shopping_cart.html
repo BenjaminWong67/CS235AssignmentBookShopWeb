@@ -1,42 +1,53 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <table>
-        <tr>
-            <th> Shopping cart of {{ session['user_name'] }}</th>
-        </tr>
-                <!-- checks current data to show on page-->
-        {% if books == none %}
-            <tr>
-                <td>nothing to see here.</td>
-            </tr>
-        {% elif books|length == 0 %}
-            <tr>
-                <td>Search did not return any results.</td>
-            </tr>
+
+    <div id='cart'>
+        <div id='cart-user'>
+            <h3>{{ session['user_name'] }}'s Cart</h3>
+        </div>
+        
+        {% if books|length == 0 %}
+            <div id='cart-empty'>
+                <h3>Cart is empty 🛒</h3>
+                <div>
+                    <button onclick=location.href="{{url_for('books_bp.books_catalogue')}}">return to catalogue</button>
+                </div>
+            </div>
         {% else %}
-            {% for book in books %}
-                <tr>
-                    <td>
-                        {{ book.title }}                                                  Price: ${{book.price}}    Stock: {{book.stock_count}}
-                        <br>
-                        <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
-                        <button onclick=location.href="{{url_for('shopping_bp.remove_book_from_cart', id=book.id)}}"> Remove Book From Cart</button>
-                    </td>
-                </tr>
-            {% endfor %}
-        {% endif %}
-        {% if books|length > 0 %}
-            <tr>
-                <td>
+            <div id='cart-full'>
+                <table>
+                    <th>Items</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Remove</th>
+                    <th>Total</th>
+                    {% for book in books %}
+                        <tr>
+                            <td>
+                                {{ book.title }}
+                                <br>
+                                <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                            </td>
+                            <td>
+                                <p id='price'>${{book.price}}</p>
+                            </td>
+                            <td>
+                                <!-- { form_cart.quantity } -->
+                            </td>
+                            <td>
+                                <button onclick=location.href="{{url_for('shopping_bp.remove_book_from_cart', id=book.id)}}">✖</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            <div id='cart-purchase'>
+                <p>$0.00</p>
                 <button onclick=location.href="{{url_for('shopping_bp.purchase_books')}}">Purchase Books</button>
-                </td>
-                <td>
-                    Total Price: $0.00
-                </td>
-            </tr>
+            </div>
         {% endif %}
-    </table>
+    </div>
 
 
 {% endblock %}
