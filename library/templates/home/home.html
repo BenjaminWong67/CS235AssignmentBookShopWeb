@@ -4,8 +4,12 @@
 
 <div id='home'>
     <div id='home-header'>
-        <h1>Welcome,</h1>
-        <h2>Place username here</h2>
+        {% if 'user_name' in session %}
+            <h1>Hello,</h1>
+            <h2>Place username here</h2>
+        {% else %}
+            <h1>HOMEPAGE</h1>
+        {% endif %}
     </div>
     
     <div id='home-feature'>

@@ -46,9 +46,9 @@ body {
 #footer {
     /* footer container */
     border-radius: 10px;
-    padding:20px;
+    padding:10px;
     background: #F3AD78;
-
+    margin-bottom: 80px;
     text-align: center;
     font-size: 30px;
 }
@@ -294,8 +294,8 @@ button[disabled] {
     font-size: 15px;
     color: white;
     width: 60%;
-    margin: 40px auto;
-    padding: 5px;
+    margin: 40px auto -60px auto;
+    padding: 25px;
     background-color: #30C3CD;
     border-radius: 7px;
 }
@@ -305,7 +305,7 @@ button[disabled] {
     color: white;
     margin: 50px auto;
     padding-bottom: 10px;
-    width: 70%;
+    width: 80%;
     text-align: center;
 }
 #home-sale {
@@ -342,6 +342,37 @@ button[disabled] {
 }
 
 
+/*footer styles*/
+#feature-title {
+    margin:30px auto -30px auto;
+    padding: 20px;
+    background-color: #30C3CD;
+    width: 50%;
+    border-radius: 7px;
+}
+#footer-feature {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+#feature-book {
+    background-color: #F3F3F3;
+    border-radius: 7px;
+    height: 150px;
+    width: 30%;
+    margin: 25px;
+    padding: 0px 15px 15px 15px;
+}
+#feature-book p {
+    color: black;
+    font-size: 12pt;
+    margin: 0px 10px 10px 10px;
+}
+#feature-book button {
+    margin: 2px;
+}
+
+
 /*table styles*/
 table {
     border-radius: 7px;
@@ -369,7 +400,13 @@ tr, td, th {
     padding: 25px;
 }
 
-
-h2, header, footer {
+h2, footer {
     color: white;
+}
+header {
+    color: white;
+    background-color: #30c3cd;
+    border-radius: 7px;
+    margin: 0px;
+    padding: 25px;
 }
