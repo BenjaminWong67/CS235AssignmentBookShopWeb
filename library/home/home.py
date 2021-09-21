@@ -14,8 +14,8 @@ home_blueprint = Blueprint(
 def home():
 
     form_search = utilities.SearchForm()
+    featured_books = utilities.get_featured_books(3, repo.repo_instance)
 
-    featured_books = services.get_random_books(3, repo.repo_instance)
     discounted_books = services.get_discounted_books(repo.repo_instance)
 
     return render_template(
