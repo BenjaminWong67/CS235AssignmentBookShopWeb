@@ -1,5 +1,9 @@
 <footer>
-    {% for book in featured_books %}
-        <p>{{book.title}}</p>
-    {% endfor %}
+    {% if featured_books is not none %}
+        {% for book in featured_books %}
+            <p>{{book.title}}</p>
+        {% endfor %}
+    {% else %}
+        <p>this is the footer tage. idk what to put here tbh. it just looks cool</p>
+    {% endif %}
 </footer>

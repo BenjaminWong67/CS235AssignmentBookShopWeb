@@ -23,7 +23,9 @@
                         {{ book.title }}
                         <br>
                         <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                        <p>Price: {{book.price}}</p>
                     </td>
+                    
                 </tr>
             {% endfor %}
         {% endif %}

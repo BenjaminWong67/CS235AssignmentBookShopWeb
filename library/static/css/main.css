@@ -261,6 +261,6 @@ tr, td, th {
 }
 
 
-h2, header {
+h2, header, footer {
     color: white;
 }
