@@ -82,7 +82,7 @@ def book_review():
         form_search=form_search,
         form_review=form_review,
         book=book,
-        featured_books=None
+        featured_books=list()
     )
 
 

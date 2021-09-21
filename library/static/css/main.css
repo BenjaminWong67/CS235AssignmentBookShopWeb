@@ -147,6 +147,11 @@ div#authentication input[type=submit] {
     width:150px;
     margin-top:60px;
 }
+div#authentication div#credentials ul li {
+    list-style: none;
+    margin-left: -24px;
+    color: rgb(209, 88, 88);
+}
 
 
 
@@ -261,6 +266,9 @@ div#authentication input[type=submit] {
     background-color: #30C3CD;
     border-radius: 7px 7px 0px 0px;
     padding: 0px 20px;
+}
+#review-form input[type=submit]:hover {
+    background-color: #6e6e6e;    
 }
 
 
