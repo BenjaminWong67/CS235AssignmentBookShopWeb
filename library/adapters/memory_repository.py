@@ -85,7 +85,6 @@ def three_random_book_discount(repo: MemoryRepository):
     for book in random_books:
         book_inv.discount_book(book.book_id, 50)
 
-
 def random_book_price_and_stock_count():
     price = random.randint(3, 200)
     stock_count = random.randint(0, 20)

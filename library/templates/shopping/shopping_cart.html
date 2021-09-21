@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <table>
+        <tr>
+            <th> Shopping cart of {{ session['user_name'] }}</th>
+        </tr>
+                <!-- checks current data to show on page-->
+        {% if books == none %}
+            <tr>
+                <td>nothing to see here.</td>
+            </tr>
+        {% elif books|length == 0 %}
+            <tr>
+                <td>Search did not return any results.</td>
+            </tr>
+        {% else %}
+            {% for book in books %}
+                <tr>
+                    <td>
+                        {{ book.title }}                                                  Price: ${{book.price}}    Stock: {{book.stock_count}}
+                        <br>
+                        <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                        <button onclick=location.href="{{url_for('shopping_bp.remove_book_from_cart', id=book.id)}}"> Remove Book From Cart</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        {% if books|length > 0 %}
+            <tr>
+                <td>
+                <button onclick=location.href="{{url_for('shopping_bp.purchase_books')}}">Purchase Books</button>
+                </td>
+                <td>
+                    Total Price: $0.00
+                </td>
+            </tr>
+        {% endif %}
+    </table>
+
+
+{% endblock %}

@@ -141,7 +141,7 @@ def test_get_reviews_for_non_existent_book(in_memory_repo):
         reviews_as_dict = book_services.get_reviews_for_book(7, in_memory_repo)
 
 
-def test_get_comments_for_article_without_reviews(in_memory_repo):
+def test_get_reviews_for_article_without_reviews(in_memory_repo):
     reviews_as_dict = book_services.get_reviews_for_book(27036538, in_memory_repo)
     assert len(reviews_as_dict) == 0
 

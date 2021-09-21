@@ -307,6 +307,8 @@ class User:
         self.__read_books = []
         self.__reviews = []
         self.__pages_read = 0
+        self.__shoppingcart = ShoppingCart()
+        self.__purchased_books = list()
 
     @property
     def user_name(self) -> str:
@@ -328,6 +330,14 @@ class User:
     def pages_read(self) -> int:
         return self.__pages_read
 
+    @property
+    def shoppingcart(self):
+        return self.__shoppingcart
+
+    @property
+    def purchased_books(self):
+        return self.__purchased_books
+
     def read_a_book(self, book: Book):
         if isinstance(book, Book):
             self.__read_books.append(book)
@@ -338,6 +348,17 @@ class User:
         if isinstance(review, Review):
             # Review objects are in practice always considered different due to their timestamp.
             self.__reviews.append(review)
+
+    def add_book_to_cart(self, book: Book):
+        self.shoppingcart.add_book(book)
+
+    def remove_book_from_cart(self, book: Book):
+        self.shoppingcart.remove_book(book)
+
+    def purchase_books_in_cart(self):
+        for book_id in self.shoppingcart:
+            self.__purchased_books.append(self.shoppingcart.get_book(book_id))
+        self.shoppingcart.clear_cart()
 
     def __repr__(self):
         return f'<User {self.user_name}>'
@@ -406,6 +427,37 @@ class BooksInventory:
         
         return discount
         
+
+
+class ShoppingCart:
+
+    def __init__(self):
+        self.__books = {}
+
+    def __iter__(self):
+        for book_id in self.__books:
+            yield book_id
+
+    def __len__(self):
+        return len(self.__books)
+
+    def books(self):
+        return self.__books
+
+    def add_book(self, book: Book):
+
+        self.__books[book.book_id] = book
+
+    def remove_book(self, book: Book):
+        self.__books.pop(book.book_id)
+
+    def get_book(self, book_id: int):
+        return self.__books[book_id]
+
+    def clear_cart(self):
+        self.__books = {}
+
+
 
 
 def make_review(review_text: str, rating: int, book_to_review: Book, user: User):
