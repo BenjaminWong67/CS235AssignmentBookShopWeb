@@ -430,6 +430,7 @@ class ShoppingCart:
         return self.__books
 
     def add_book(self, book: Book):
+
         self.__books[book.book_id] = book
 
     def remove_book(self, book: Book):

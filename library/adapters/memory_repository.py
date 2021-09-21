@@ -59,7 +59,6 @@ class MemoryRepository(AbstractRepository):
         return self.__book_inventory
 
 
-
 def random_book_price_and_stock_count():
     price = random.randint(3, 200)
     stock_count = random.randint(0, 20)

@@ -21,18 +21,34 @@ def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
 def get_shopping_cart(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
     user_shopping_cart = shopping_cart_to_list(user.shoppingcart)
+    for book in user_shopping_cart:
+        book['price'] = get_book_price(book['id'], repo)
+        book['stock_count'] = get_book_stock(book['id'], repo)
     return user_shopping_cart
 
 
 def get_purchased_books(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
     user_purchased_list = user.purchased_books
-    return user_purchased_list
+    user_purchased_books_as_dict = purchased_books_list_to_list_of_dicts(user_purchased_list)
+    return user_purchased_books_as_dict
 
 
 def purchase_books(user_name, repo: AbstractRepository):
     user = repo.get_user(user_name)
     user.purchase_books_in_cart()
+
+
+def get_book_price(book_id: int, repo: AbstractRepository):
+    book_inventory = repo.get_book_inventory()
+    book_price = book_inventory.find_price(book_id)
+    return book_price
+
+
+def get_book_stock(book_id: int, repo: AbstractRepository):
+    book_inventory = repo.get_book_inventory()
+    book_stock_count = book_inventory.find_stock_count(book_id)
+    return book_stock_count
 
 
 # ============================================
@@ -94,3 +110,9 @@ def shopping_cart_to_list(shoppingcart):
         book = book_to_dict(shoppingcart.get_book(book_id))
         shopping_cart_to_list.append(book)
     return shopping_cart_to_list
+
+def purchased_books_list_to_list_of_dicts(purchased_books):
+    purchased_books_with_dict = list()
+    for book in purchased_books:
+        purchased_books_with_dict.append(book_to_dict(book))
+    return purchased_books_with_dict
