@@ -3,12 +3,13 @@ from typing import Iterable
 import random
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import Book, Author, Publisher
+from library.domain.model import Book, Author, BooksInventory, Publisher
 
 
 def get_random_books(quantity: int, repo: AbstractRepository):
     book_count = repo.get_number_of_books()
     book_catalogue = repo.get_book_catalogue()
+    book_inv = repo.get_book_inventory()
     
     selected_books = list()
 
@@ -19,26 +20,27 @@ def get_random_books(quantity: int, repo: AbstractRepository):
     random_books = random.sample(book_catalogue, quantity)
 
     for book in random_books:
-        selected_books.append(book_to_dict(book))
+        selected_books.append(book_to_dict(book, book_inv))
 
     return selected_books
 
 
 def search_with_title(input: str, repo: AbstractRepository):
     books_catalogue = repo.get_book_catalogue()
+    book_inv = repo.get_book_inventory()
 
     books = list()
 
     for book in books_catalogue:
         if book.title == input:
-            books.append(book_to_dict(book))
+            books.append(book_to_dict(book, book_inv))
 
     return books
 
 
 def search_with_author(input: str, repo: AbstractRepository):
-    
     books_catalogue = repo.get_book_catalogue()
+    book_inv = repo.get_book_inventory()
 
     books = list()
 
@@ -46,7 +48,7 @@ def search_with_author(input: str, repo: AbstractRepository):
         authors = book.authors
         for author in authors:
             if author.full_name == input:
-                books.append(book_to_dict(book))
+                books.append(book_to_dict(book, book_inv))
                 break
 
     return books
@@ -54,6 +56,7 @@ def search_with_author(input: str, repo: AbstractRepository):
 
 def search_with_publisher(input: str, repo: AbstractRepository):
     books_catalogue = repo.get_book_catalogue()
+    books_inv = repo.get_book_inventory()
 
     books = list()
 
@@ -62,20 +65,21 @@ def search_with_publisher(input: str, repo: AbstractRepository):
             continue
         publisher = book.publisher
         if publisher.name == input:
-            books.append(book_to_dict(book))
+            books.append(book_to_dict(book, books_inv))
 
     return books
 
 
 def search_with_release_year(input: str, repo: AbstractRepository):
     books_catalogue = repo.get_book_catalogue()
+    book_inv = repo.get_book_inventory()
 
     books = list()
 
     for book in books_catalogue:
         release_year = book.release_year
         if str(release_year) == input:
-            books.append(book_to_dict(book))
+            books.append(book_to_dict(book, book_inv))
 
     return books
 
@@ -84,7 +88,7 @@ def search_with_release_year(input: str, repo: AbstractRepository):
 # Functions to convert model entities to dicts
 # ============================================
 
-def book_to_dict(book: Book):
+def book_to_dict(book: Book, book_inv: BooksInventory):
     book_dict = {
         'id': book.book_id,
         'title': book.title,
@@ -94,6 +98,9 @@ def book_to_dict(book: Book):
         'authors': authors_to_dict(book.authors),
         'ebook': book.ebook,
         'num_pages': book.num_pages,
+        'price':book_inv.find_price(book.book_id),
+        'stock_count':book_inv.find_stock_count(book.book_id),
+        'discount':book_inv.get_book_discount(book.book_id)
     }
     return book_dict
 

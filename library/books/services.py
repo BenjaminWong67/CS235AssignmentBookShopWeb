@@ -18,24 +18,26 @@ class KeyErrorException(Exception):
 
 def get_book(book_id: int, repo: AbstractRepository):
     book = repo.get_book(book_id)
+    book_inv = repo.get_book_inventory()
 
     if book is None:
         raise NonExistentBookException
 
-    return book_to_dict(book)
+    return book_to_dict(book, book_inv)
 
 
 def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: int):
     books_to_show = list()
 
     book_list = repo.get_book_catalogue()
+    book_inv = repo.get_book_inventory()
 
     if cursor + books_per_page < len(book_list):
         for i in range(cursor, cursor + books_per_page):
-            books_to_show.append(book_to_dict(book_list[i]))
+            books_to_show.append(book_to_dict(book_list[i], book_inv))
     else:
         for j in range(cursor, len(book_list)):
-            books_to_show.append(book_to_dict(book_list[j]))
+            books_to_show.append(book_to_dict(book_list[j], book_inv))
 
     return books_to_show
 
@@ -72,7 +74,7 @@ def get_reviews_for_book(book_id, repo: AbstractRepository):
 # ============================================
 
 
-def book_to_dict(book: Book):
+def book_to_dict(book: Book, book_inv: BooksInventory):
     book_dict = {
         'id': book.book_id,
         'title': book.title,
@@ -83,6 +85,9 @@ def book_to_dict(book: Book):
         'ebook': book.ebook,
         'num_pages': book.num_pages,
         'reviews': reviews_to_dict(book.reviews),
+        'price':book_inv.find_price(book.book_id),
+        'stock_count':book_inv.find_stock_count(book.book_id),
+        'discount':book_inv.get_book_discount(book.book_id)
     }
     return book_dict
 

@@ -3,7 +3,7 @@ from typing import Iterable
 import random
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import Book, Author, Publisher
+from library.domain.model import Book, Author, BooksInventory, Publisher
 
 
 def get_discounted_books(repo: AbstractRepository):
@@ -14,7 +14,7 @@ def get_discounted_books(repo: AbstractRepository):
 
     for book in books:
         if book_inv.get_book_discount(book.book_id) != 0:
-            discounted_books.append(book_to_dict(book))
+            discounted_books.append(book_to_dict(book, book_inv))
     
     return discounted_books
 
@@ -23,7 +23,7 @@ def get_discounted_books(repo: AbstractRepository):
 # Functions to convert model entities to dicts
 # ============================================
 
-def book_to_dict(book: Book):
+def book_to_dict(book: Book, book_inv: BooksInventory):
     book_dict = {
         'id': book.book_id,
         'title': book.title,
@@ -33,6 +33,9 @@ def book_to_dict(book: Book):
         'authors': authors_to_dict(book.authors),
         'ebook': book.ebook,
         'num_pages': book.num_pages,
+        'price': book_inv.find_price(book.book_id),
+        'stock_count':book_inv.find_stock_count(book.book_id),
+        'discount':book_inv.get_book_discount(book.book_id)
     }
     return book_dict
 
