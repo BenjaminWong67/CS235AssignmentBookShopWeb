@@ -413,6 +413,39 @@ class TestUser:
         assert str(user2) == "<User Martin>"
         assert user2.password is None
 
+    def test_can_add_book_to_cart(self):
+        user1 = User("YoYo", "123456")
+        book = Book(8888, "Jojo")
+        user1.add_book_to_cart(book)
+
+        assert book.book_id in user1.shoppingcart
+
+    def test_can_remove_book_to_cart(self):
+        user1 = User("Goliath", "86868658")
+        book = Book(2020, "What a Year")
+        book2 = Book(2021, "What a Year, 2nd edition")
+        user1.add_book_to_cart(book)
+        user1.add_book_to_cart(book2)
+        user1.remove_book_from_cart(2021)
+
+        assert book2.book_id not in user1.shoppingcart
+        assert len(user1.shoppingcart) == 1
+
+    def test_can_purchase_books(self):
+        user = User("Lorax", "Treehugger23")
+        book = Book(2020, "What a Year")
+        book2 = Book(2021, "What a Year, 2nd edition")
+        user.add_book_to_cart(book)
+        user.add_book_to_cart(book2)
+        user.purchase_books_in_cart()
+
+        assert book in user.purchased_books
+        assert book2 in user.purchased_books
+        assert len(user.shoppingcart) == 0
+
+
+
+
 
 @pytest.fixture
 def read_books_and_authors():
@@ -565,26 +598,43 @@ class TestShoppingCart:
         assert shopping_cart1 != shopping_cart2
 
     def test_can_add_book(self):
-        user = User("Dave", "1098273")
+        shoppingcart = ShoppingCart()
         book = Book(619, "Rey")
-        user.shoppingcart.add_book(book)
+        shoppingcart.add_book(book)
 
-        assert book.book_id in user.shoppingcart.books()
+        assert book.book_id in shoppingcart.books()
 
     def test_can_remove_book(self):
-        user = User("Jonas", "67584")
+        shoppingcart = ShoppingCart()
         book = Book(42, "Answers to Life")
-        user.shoppingcart.add_book(book)
-        user.shoppingcart.remove_book(book.book_id)
+        shoppingcart.add_book(book)
+        shoppingcart.remove_book(book)
 
-        assert book.book_id not in user.shoppingcart.books()
+        assert book.book_id not in shoppingcart.books()
 
     def test_clear_all_books(self):
-        user = User("Jonas", "67584")
+        shoppingcart = ShoppingCart()
         book = Book(65, "Running out of variable names")
         book2 = Book(19, "COVID")
-        user.shoppingcart.add_book(book)
-        user.shoppingcart.add_book(book2)
-        user.shoppingcart.clear_cart()
+        shoppingcart.add_book(book)
+        shoppingcart.add_book(book2)
+        shoppingcart.clear_cart()
 
-        assert len(user.shoppingcart.books()) == 0
+        assert len(shoppingcart.books()) == 0
+
+    def test_iterable_shopping_cart(self):
+        shoppingcart = ShoppingCart()
+        book = Book(65, "Running out of variable names")
+        book2 = Book(19, "COVID")
+        shoppingcart.add_book(book)
+        shoppingcart.add_book(book2)
+        for book_id in shoppingcart:
+            print(book_id)
+
+    def test_get_book(self):
+        shoppingcart = ShoppingCart()
+        book = Book(42, "Answers to Life")
+        shoppingcart.add_book(book)
+
+        assert book == shoppingcart.get_book(42)
+
