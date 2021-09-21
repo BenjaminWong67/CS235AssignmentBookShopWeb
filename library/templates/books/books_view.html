@@ -45,7 +45,7 @@
                 <button onclick=location.href="{{url_for('books_bp.book_review', id=book.id)}}">Review</button>
             </div>
             {% if book.id == show_reviews_for_book %}
-                <div style="clear:both">   
+                <div id='reviews-book' style="clear:both">   
                     {% for review in book.reviews %}
                         <div id='review-comment'>
                             <div id="review-text">
