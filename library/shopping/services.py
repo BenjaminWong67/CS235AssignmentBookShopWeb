@@ -11,6 +11,11 @@ def add_book_to_user_cart(user_name: str, book_id: int, repo : AbstractRepositor
     user = repo.get_user(user_name)
     user.add_book_to_cart(book_to_add)
 
+def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
+    book_to_remove = repo.get_book(book_id)
+    user = repo.get_user(user_name)
+    user.remove_book_from_cart(book_to_remove)
+
 
 def get_shopping_cart(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
@@ -76,3 +81,5 @@ def shopping_cart_to_list(shoppingcart):
         book = book_to_dict(shoppingcart.get_book(book_id))
         shopping_cart_to_list.append(book)
     return shopping_cart_to_list
+
+

@@ -33,6 +33,13 @@ def purchased_books():
 def add_book_to_cart():
     user_name = session['user_name']
     book_id = int(request.args.get('id'))
-
     services.add_book_to_user_cart(user_name, book_id, repo.repo_instance)
     return redirect(url_for('books_bp.books_view', id=book_id))
+
+@shopping_blueprint.route('/removing_book_from_cart', methods=['GET'])
+@login_required
+def remove_book_from_cart():
+    user_name = session['user_name']
+    book_id = int(request.args.get('id'))
+    services.remove_book_from_user_cart(user_name, book_id, repo.repo_instance)
+    return redirect(url_for('shopping_bp.shoppingcart'))
