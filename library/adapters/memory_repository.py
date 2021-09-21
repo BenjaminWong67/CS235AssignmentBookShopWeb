@@ -57,7 +57,33 @@ class MemoryRepository(AbstractRepository):
     
     def get_book_inventory(self):
         return self.__book_inventory
+    
+    def get_number_of_books(self):
+        return len(self.__books)
 
+    def get_books_by_id(self, id_list):
+        # Strip out any ids in id_list that don't represent Article ids in the repository.
+        existing_ids = [id for id in id_list if id in self.__books_index]
+
+        # Fetch the Articles.
+        books = [self.__books_index[id] for id in existing_ids]
+        return books
+
+
+def three_random_book_discount(repo: MemoryRepository):
+    book_count = repo.get_number_of_books()
+    book_catalogue = repo.get_book_catalogue()
+    book_inv = repo.get_book_inventory()
+    quantity = 3
+
+    if quantity >= book_count:
+        # Reduce the quantity of ids to generate if the repository has an insufficient number of books.
+        quantity = book_count - 1
+    
+    random_books = random.sample(book_catalogue, quantity)
+
+    for book in random_books:
+        book_inv.discount_book(book.book_id, 50)
 
 def random_book_price_and_stock_count():
     price = random.randint(3, 200)
@@ -80,3 +106,5 @@ def populate(data_path: Path, repo: MemoryRepository):
         price, stock_count = random_book_price_and_stock_count()
         book_inventory.add_book(book, price, stock_count)
         repo.add_book(book)
+    
+    three_random_book_discount(repo)

@@ -45,7 +45,8 @@ def register():
         form=form_register,
         user_name_error_message=user_name_not_unique,
         password_error_message=None,
-        handler_url=url_for('authentication_bp.register')
+        handler_url=url_for('authentication_bp.register'),
+        featured_books=[]
     )
 
 
@@ -86,7 +87,8 @@ def login():
         user_name_error_message=user_name_not_recognised,
         password_error_message=password_does_not_match_user_name,
         form_search=form_search,
-        form=form_login
+        form=form_login,
+        featured_books=[]
     )
 
 

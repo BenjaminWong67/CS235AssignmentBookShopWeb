@@ -1,10 +1,13 @@
 from datetime import date
+from library.adapters.repository import AbstractRepository
 
 import pytest
 
 from library.authentication.services import AuthenticationException
 from library.books import services as book_services
 from library.authentication import services as auth_services
+from library.utilities import services as util_services
+from library.home import services as home_services
 from library.books.services import NonExistentBookException
 
 
@@ -141,3 +144,84 @@ def test_get_reviews_for_non_existent_book(in_memory_repo):
 def test_get_reviews_for_article_without_reviews(in_memory_repo):
     reviews_as_dict = book_services.get_reviews_for_book(27036538, in_memory_repo)
     assert len(reviews_as_dict) == 0
+
+
+def test_search_with_title(in_memory_repo):
+    assert util_services.search_with_title("book1", in_memory_repo) == [{
+        'id': 10,
+        'title': "book1",
+        'release_year': None,
+        'description': None,
+        'publisher': None,
+        'authors': list(),
+        'ebook': None,
+        'num_pages': None,
+        'price':10,
+        'stock_count':1,
+        'discount':0
+    }]
+
+
+def test_search_with_author(in_memory_repo):
+    assert util_services.search_with_author("Tim", in_memory_repo) == [{
+        'id': 30,
+        'title': "book3",
+        'release_year': None,
+        'description': None,
+        'publisher': None,
+        'authors': [{'unique_id': 10, 'full_name': 'Tim',}],
+        'ebook': None,
+        'num_pages': None,
+        'price':30,
+        'stock_count':3,
+        'discount':0
+    }]
+
+
+def test_search_with_publisher(in_memory_repo):
+    assert util_services.search_with_publisher("Ben", in_memory_repo) == [{
+        'id': 20,
+        'title': "book2",
+        'release_year': 1000,
+        'description': None,
+        'publisher': {'name':'Ben'},
+        'authors': list(),
+        'ebook': None,
+        'num_pages': None,
+        'price':20,
+        'stock_count':2,
+        'discount':0
+    }]
+
+
+def test_search_with_release_year(in_memory_repo):
+    assert util_services.search_with_release_year("1000", in_memory_repo) == [{
+        'id': 20,
+        'title': "book2",
+        'release_year': 1000,
+        'description': None,
+        'publisher': {'name':'Ben'},
+        'authors': [],
+        'ebook': None,
+        'num_pages': None,
+        'price':20,
+        'stock_count':2,
+        'discount':0
+    }]
+
+def test_get_discounted_books(small_memory_repo: AbstractRepository):
+    discounted_books = home_services.get_discounted_books(small_memory_repo)
+
+    assert discounted_books == [{
+        'id': 20,
+        'title': "book2",
+        'release_year': None,
+        'description': None,
+        'publisher': None,
+        'authors': list(),
+        'ebook': None,
+        'num_pages': None,
+        'price':20,
+        'stock_count':2,
+        'discount':50
+    }]
