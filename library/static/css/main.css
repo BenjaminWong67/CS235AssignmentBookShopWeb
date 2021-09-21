@@ -1,5 +1,5 @@
-
 @import url(https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap);
+
 
 body {
     background-color: #E8804C;
@@ -10,6 +10,7 @@ body {
     padding: 0px;
     font-family: 'Lato', sans-serif;
 }
+
 
 /* Container styles and layout */
 #header {
@@ -114,6 +115,7 @@ div#next-previous button {
     width: 150px;
 }
 
+
 /*authentication form styles*/
 div#authentication form {
     display: flex;
@@ -152,7 +154,6 @@ div#authentication div#credentials ul li {
     margin-left: -24px;
     color: rgb(209, 88, 88);
 }
-
 
 
 /*book view styles*/
@@ -243,7 +244,6 @@ div#authentication div#credentials ul li {
     margin:0px;
     padding:0px 0px 5px 0px;
 }
-
 
 
 /*review page styles*/
