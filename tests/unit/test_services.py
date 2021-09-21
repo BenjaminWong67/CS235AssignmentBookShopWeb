@@ -1,4 +1,5 @@
 from datetime import date
+from library.adapters.repository import AbstractRepository
 
 import pytest
 
@@ -6,6 +7,7 @@ from library.authentication.services import AuthenticationException
 from library.books import services as book_services
 from library.authentication import services as auth_services
 from library.utilities import services as util_services
+from library.home import services as home_services
 from library.books.services import NonExistentBookException
 
 
@@ -191,6 +193,20 @@ def test_search_with_release_year(in_memory_repo):
         'description': None,
         'publisher': {'name':'Ben'},
         'authors': [],
+        'ebook': None,
+        'num_pages': None,
+    }]
+
+def test_get_discounted_books(small_memory_repo: AbstractRepository):
+    discounted_books = home_services.get_discounted_books(small_memory_repo)
+
+    assert discounted_books == [{
+        'id': 20,
+        'title': "book2",
+        'release_year': None,
+        'description': None,
+        'publisher': None,
+        'authors': list(),
         'ebook': None,
         'num_pages': None,
     }]

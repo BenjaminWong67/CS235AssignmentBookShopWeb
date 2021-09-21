@@ -399,7 +399,7 @@ class BooksInventory:
             self.__discount[book_id] = discount
     
     def get_book_discount(self, book_id: int):
-        discount = None
+        discount = 0
 
         if book_id in self.__discount.keys():
             discount = self.__discount[book_id]

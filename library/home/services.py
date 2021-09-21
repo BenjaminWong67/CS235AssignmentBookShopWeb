@@ -38,9 +38,13 @@ def book_to_dict(book: Book):
 
 
 def publisher_to_dict(publisher: Publisher):
-    publisher_dict = {
-        'name': publisher.name,
-    }
+    publisher_dict = None
+
+    if publisher is not None:
+        publisher_dict = {
+            'name': publisher.name,
+        }
+    
     return publisher_dict
 
 
