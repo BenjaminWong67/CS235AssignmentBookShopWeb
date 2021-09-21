@@ -17,8 +17,23 @@
             </p>
             <p>Publisher: {{ book.publisher.name }}</p>
             <p>Release year: <b>{{ book.release_year }}</b></p>
-            <p>Price: {{book.price}} Discount: {{book.discount}}</p>
-            <p>Stock: {{book.stock_count}}</p>
+
+            <div id="shop-details">
+                {% if book.discount == 0 %}
+                    <p id='price'><b>${{ '%.2f'|format(book.price/1) }}</b></p>
+                {% else %}
+                    <p id='sale'><b>SALE %{{book.discount}} OFF</b></p> 
+                    <p id='price'>
+                        <b>${{ '%.2f'|format(book.price * (book.discount / 100)) }}</b> 
+                        <br>
+                        <del>${{ '%.2f'|format(book.price/1) }}</del>
+                    </p>
+                {% endif %}
+
+                <p id='stock'>Stock: #{{ book.stock_count }}</p>
+            </div>
+
+            
             <div>
                 {% if book.reviews|length > 0 and book.id != show_reviews_for_book %}
                     <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id, show_reviews_for_book=book.id)}}">{{book.reviews|length}} Reviews</button>
