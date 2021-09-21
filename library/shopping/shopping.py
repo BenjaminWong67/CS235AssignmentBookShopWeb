@@ -21,11 +21,21 @@ def shoppingcart():
     books = services.get_shopping_cart(user_name, repo.repo_instance)
     return render_template('shopping/shopping_cart.html', form_search=form_search, books=books)
 
+@shopping_blueprint.route('/purchase', methods=['GET'])
+@login_required
+def purchase_books():
+    user_name = session['user_name']
+    services.purchase_books(user_name, repo.repo_instance)
+    return redirect(url_for('shopping_bp.shoppingcart'))
+
 
 @shopping_blueprint.route('/purchased_books', methods=['GET'])
 @login_required
 def purchased_books():
-    pass
+    user_name = session['user_name']
+    form_search = utilities.SearchForm()
+    books = services.get_purchased_books(user_name, repo.repo_instance)
+    return render_template('shopping/purchased_books.html', form_search=form_search, books=books)
 
 
 @shopping_blueprint.route('/adding_book_to_cart', methods=['GET'])

@@ -6,10 +6,11 @@ from library.adapters.repository import AbstractRepository
 from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review, make_review, ShoppingCart
 
 
-def add_book_to_user_cart(user_name: str, book_id: int, repo : AbstractRepository):
+def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository):
     book_to_add = repo.get_book_inventory().find_book(book_id)
     user = repo.get_user(user_name)
     user.add_book_to_cart(book_to_add)
+
 
 def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
     book_to_remove = repo.get_book(book_id)
@@ -21,6 +22,17 @@ def get_shopping_cart(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
     user_shopping_cart = shopping_cart_to_list(user.shoppingcart)
     return user_shopping_cart
+
+
+def get_purchased_books(user_name: str, repo: AbstractRepository):
+    user = repo.get_user(user_name)
+    user_purchased_list = user.purchased_books
+    return user_purchased_list
+
+
+def purchase_books(user_name, repo: AbstractRepository):
+    user = repo.get_user(user_name)
+    user.purchase_books_in_cart()
 
 
 # ============================================
@@ -40,6 +52,7 @@ def book_to_dict(book: Book):
         'reviews': reviews_to_dict(book.reviews),
     }
     return book_dict
+
 
 def publisher_to_dict(publisher: Publisher):
     publisher_dict = {
@@ -66,7 +79,7 @@ def review_to_dict(review: Review):
         'book': review.book,
         'review_text': review.review_text,
         'timestamp': review.timestamp,
-        'rating':review.rating
+        'rating': review.rating
     }
     return review_dict
 
@@ -81,5 +94,3 @@ def shopping_cart_to_list(shoppingcart):
         book = book_to_dict(shoppingcart.get_book(book_id))
         shopping_cart_to_list.append(book)
     return shopping_cart_to_list
-
-
