@@ -51,5 +51,9 @@ def create_app(test_config=None):
         from .utilities import utilities
         app.register_blueprint(utilities.utilities_blueprint)
 
+        # shopping blueprint
+        from.shopping import shopping
+        app.register_blueprint(shopping.shopping_blueprint)
+
     return app
 

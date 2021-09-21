@@ -2,13 +2,15 @@ from flask import Blueprint, render_template, redirect, url_for, session, reques
 from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SelectField, RadioField, TextField, SubmitField, IntegerField, HiddenField
 from wtforms.validators import DataRequired
+from library.authentication.authentication import login_required
 
 import library.adapters.repository as repo
 import library.utilities.utilities as utilities
 import library.books.services as services
 
+
 # configure blueprint
-from library.authentication.authentication import login_required
+
 
 books_blueprint = Blueprint(
     "books_bp", __name__, url_prefix="/catalogue")
