@@ -180,7 +180,18 @@ div#authentication div#credentials ul li {
     width: 60%;
 }
 #book-view button {
-    margin: 50px 0px 10px 0px;
+    margin: 30px 0px 10px 0px;
+}
+#book-view button#add-to-cart {
+    margin: 20px auto;
+    padding: 14px 16px;
+    width: 150px;
+    border: 3px solid #30C3CD;
+    background-color: #aaa2bd;
+    color: white;
+}
+#book-view button#add-to-cart:hover {
+    background-color: #625b7e;
 }
 #shop-details {
     display: flex;
