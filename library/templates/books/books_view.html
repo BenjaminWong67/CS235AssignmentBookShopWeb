@@ -31,7 +31,8 @@
                 {% endif %}
     
                 <button onclick=location.href="{{url_for('books_bp.book_review', id=book.id)}}">Review</button>
-                <button>Add To Cart</button>
+
+                <button onclick=location.href="{{url_for('shopping_bp.add_book_to_cart',id=book.id)}}">Add To Cart</button>
             </div>
     
             
