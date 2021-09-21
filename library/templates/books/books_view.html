@@ -22,7 +22,7 @@
                 {% if book.discount == 0 %}
                     <p id='price'><b>${{ '%.2f'|format(book.price/1) }}</b></p>
                 {% else %}
-                    <p id='sale'><b>SALE %{{book.discount}} OFF</b></p> 
+                    <p id='sale'><b>SALE {{book.discount}}% OFF</b></p> 
                     <p id='price'>
                         <b>${{ '%.2f'|format(book.price * (book.discount / 100)) }}</b> 
                         <br>
@@ -30,7 +30,11 @@
                     </p>
                 {% endif %}
 
-                <p id='stock'>Stock: #{{ book.stock_count }}</p>
+                {% if book.stock_count > 0 %}
+                    <p id='stock' style="background-color:rgb(84, 155, 75)">Stock: #{{ book.stock_count }}</p>
+                {% else %}
+                    <p id='stock' style="background-color:rgb(209, 88, 88)">Stock: #{{ book.stock_count }}</p>
+                {% endif %}
             </div>
 
             

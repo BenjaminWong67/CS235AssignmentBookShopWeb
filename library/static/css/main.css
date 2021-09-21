@@ -190,7 +190,7 @@ div#authentication input[type=submit] {
     font-weight: bold;
     border-radius: 0px 0px 10px 10px;
     margin: 0px 0px -30px 140px;
-    background-color: #30c3cdbc;
+    background-color: #525195;
     padding: 10px;
 }
 #price {
@@ -214,7 +214,8 @@ div#authentication input[type=submit] {
     padding: 6px;
     border-radius: 0px 0px 10px 10px;
     background-color: #adadad;
-    width: 65px;
+    width: 80px;
+    text-align: center;
 }
 #review-comment {
     background:#F3F3F3;
@@ -283,6 +284,64 @@ button[disabled] {
 }
 
 
+/*home page styles*/
+#home {
+    background-color: #F3F3F3;
+    border-radius: 7px;
+}
+#home-header {
+    text-align: center;
+    font-size: 15px;
+    color: white;
+    width: 60%;
+    margin: 40px auto;
+    padding: 5px;
+    background-color: #30C3CD;
+    border-radius: 7px;
+}
+#home-feature {
+    background-color: #525195;
+    border-radius: 7px;
+    color: white;
+    margin: 50px auto;
+    padding-bottom: 10px;
+    width: 70%;
+    text-align: center;
+}
+#home-sale {
+    background-color: #F3AD78;
+    width: 80%;
+    margin: 0px auto;
+    padding:20px;
+    border-radius: 0px 0px 7px 7px;
+}
+#discount-feature {
+    background-color: #7271b9;
+    margin:30px;
+    border-radius: 7px;
+    display:flex;
+    padding: 20px;
+}
+#discount-title h2 {
+    margin-left: 30px;
+    text-align: left;
+}
+#discount-title div {
+    margin: 2px 0px 0px 50px;
+    text-align: left;
+}
+#discount-title button {
+    margin: 0px;
+    padding:15px 65px;
+    border: 3px solid #30C3CD;
+    background-color: #aaa2bd;
+    color: white;
+}
+#discount-title button:hover {
+    background-color: #625b7e;
+}
+
+
 /*table styles*/
 table {
     border-radius: 7px;
@@ -298,6 +357,16 @@ tr, td {
 }
 tr, td, th {
     padding: 14px 16px;
+}
+
+/*book listing styles*/
+#book-listing {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+#listing-info {
+    padding: 25px;
 }
 
 
