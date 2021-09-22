@@ -444,8 +444,6 @@ class ShoppingCart:
         for book_id in self.__books:
             yield book_id
 
-    def __len__(self):
-        return len(self.__books)
 
     @property
     def books(self):
