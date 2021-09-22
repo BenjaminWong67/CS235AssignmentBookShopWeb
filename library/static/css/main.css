@@ -206,7 +206,7 @@ div#authentication div#credentials ul li {
     color: white;
     font-weight: bold;
     border-radius: 0px 0px 10px 10px;
-    margin: 0px 0px -30px 140px;
+    margin: 0px 0px 0px 140px;
     background-color: #525195;
     padding: 10px;
 }
@@ -214,7 +214,9 @@ div#authentication div#credentials ul li {
     border-radius: 7px;
     font-size: 20pt;
     background-color: #dedede8a;
-    width: 100px;
+    width: auto;
+    min-width: 100px;
+    max-width: 200px;
     padding: 15px;
     margin: 17px 2px 2px 2px;
 }
@@ -340,12 +342,14 @@ button[disabled] {
     display: flex;
     flex-direction: column;
     border: 1px solid #30C3CD;
-    border-radius: 7px;
+    border-radius: 7px 7px 0px 7px;
     margin: 30px;
     text-align: left;
 }
 #cart-full table {
     background-color: #48d6e0;
+    border-radius: 7px 7px 0px 7px;
+    
 }
 #cart-full th, #cart-full tr, #cart-full td {
     border: 0px;
@@ -354,11 +358,12 @@ button[disabled] {
     display:flex;
     flex-direction: column;
     justify-content: flex-end;
+    text-align: center;
 }
 #cart-purchase button {
     width: 250px;
     padding:15px 0px;
-    margin: -10px 30px 30px auto;
+    margin: -30px auto 40px auto;
     background-color: #48d6e0;
     color: white;
     border: 1px solid #30C3CD;
@@ -369,12 +374,12 @@ button[disabled] {
 }
 #cart-purchase p {
     color: white;
-    font-size: 15pt;
-    margin: auto 30px 0px auto;
+    font-size: 25pt;
+    margin: -30px 30px 0px auto;
     width: 250px;
     padding:15px 0px;
-    background-color: #30c3cd86;
-    border-radius: 7px 7px 0px 0px;
+    background-color: #30c3cd;
+    border-radius: 0px 0px 7px 7px;
 }
 #cart-view-item {
     background-color: #dedede8a;
