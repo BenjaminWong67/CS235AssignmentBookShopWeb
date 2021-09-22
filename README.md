@@ -25,8 +25,7 @@ when running this webapp please makesure you configure a virtual environment wit
 
 ## Testing with the pytest unit tests
 
-From a terminal in the root folder of the project, you can also call 'python -m pytest tests' to run all the tests. PyCharm also provides a built-in terminal, which uses the configured virtual environment. 
-
+From a terminal in the root folder of the project, you can also call 'python -m pytest tests' to run all the tests. 
 
 ## Execution of the web application
 
