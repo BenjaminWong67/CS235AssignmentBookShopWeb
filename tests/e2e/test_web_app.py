@@ -81,8 +81,31 @@ def test_index(client):
     assert b'TimBen Book Catalogue' in response.data
 
 
-def test_login_required_to_comment(client):
+def test_login_required_to_review(client):
     response = client.post('catalogue/review')
     assert response.headers['Location'] == 'http://localhost/authentication/login'
 
 
+def test_login_required_to_access_shopping_cart(client):
+    response = client.post('shopping/shoppingcart')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+
+def test_login_required_to_purchase(client):
+    response = client.post('shopping/purchase')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+
+def test_login_required_to_access_purchased_books(client):
+    response = client.post('shopping/purchased_books')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+
+def test_login_required_to_add_book_to_cart(client):
+    response = client.post('shopping/adding_book_to_cart')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+
+def test_login_required_to_remove_book_from_cart(client):
+    response = client.post('shopping/removing_book_from_cart')
+    assert response.headers['Location'] == 'http://localhost/authentication/login'
