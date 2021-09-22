@@ -225,3 +225,5 @@ def test_get_discounted_books(small_memory_repo: AbstractRepository):
         'stock_count':2,
         'discount':50
     }]
+
+

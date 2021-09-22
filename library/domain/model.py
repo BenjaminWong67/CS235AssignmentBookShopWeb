@@ -96,8 +96,6 @@ class Author:
         return hash(self.unique_id)
 
 
-
-
 class Book:
 
     def __init__(self, book_id: int, book_title: str):
@@ -308,7 +306,7 @@ class User:
         self.__reviews = []
         self.__pages_read = 0
         self.__shoppingcart = ShoppingCart()
-        self.__purchased_books = list()
+        self.__purchased_books = {}
 
     @property
     def user_name(self) -> str:
@@ -356,8 +354,11 @@ class User:
         self.shoppingcart.remove_book(book)
 
     def purchase_books_in_cart(self):
-        for book_id in self.shoppingcart:
-            self.__purchased_books.append(self.shoppingcart.get_book(book_id))
+        for book_id in self.shoppingcart.books:
+            if book_id in self.purchased_books:
+                self.purchased_books[book_id] += self.shoppingcart.books[book_id]
+            else:
+                self.purchased_books[book_id] = self.shoppingcart.books[book_id]
         self.shoppingcart.clear_cart()
 
     def __repr__(self):
@@ -409,24 +410,29 @@ class BooksInventory:
             return self.__stock_count[book_id]
         return None
 
+    def adjust_stock_count(self, book_id: int, amount_to_deduct: int):
+        if book_id in self.__books.keys():
+            self.__stock_count[book_id] = self.__stock_count[book_id] - amount_to_deduct
+        else:
+            return None
+
     def search_book_by_title(self, book_title: str):
         for book_id in self.__books.keys():
             if self.__books[book_id].title == book_title:
                 return self.__books[book_id]
         return None
-    
+
     def discount_book(self, book_id: int, discount: int):
         if book_id in self.__discount.keys():
             self.__discount[book_id] = discount
-    
+
     def get_book_discount(self, book_id: int):
         discount = 0
 
         if book_id in self.__discount.keys():
             discount = self.__discount[book_id]
-        
+
         return discount
-        
 
 
 class ShoppingCart:
@@ -441,23 +447,30 @@ class ShoppingCart:
     def __len__(self):
         return len(self.__books)
 
+    @property
     def books(self):
         return self.__books
 
     def add_book(self, book: Book):
-
-        self.__books[book.book_id] = book
+        if book.book_id not in self.__books.keys():
+            self.books[book.book_id] = 1
+        else:
+            self.__books[book.book_id] += 1
 
     def remove_book(self, book: Book):
-        self.__books.pop(book.book_id)
+        if self.books[book.book_id] > 1:
+            self.books[book.book_id] -= 1
+        else:
+            self.books.pop(book.book_id)
 
-    def get_book(self, book_id: int):
-        return self.__books[book_id]
+    def quantity_of_book(self, book_id):
+        if book_id not in self.__books.keys():
+            return 0
+        else:
+            return self.__books[book_id]
 
     def clear_cart(self):
         self.__books = {}
-
-
 
 
 def make_review(review_text: str, rating: int, book_to_review: Book, user: User):
@@ -466,3 +479,15 @@ def make_review(review_text: str, rating: int, book_to_review: Book, user: User)
     book_to_review.add_review(review)
 
     return review
+
+
+def get_total_price(dict_of_book_ids, inventory: BooksInventory):
+    total_price_of_order = 0
+    for book_id in dict_of_book_ids:
+        discount = inventory.get_book_discount(book_id)
+        price_of_book = inventory.find_price(book_id)
+        if discount == 0:
+            total_price_of_order += dict_of_book_ids[book_id] * price_of_book
+        else:
+            total_price_of_order += dict_of_book_ids[book_id] * price_of_book * discount / 100
+    return total_price_of_order

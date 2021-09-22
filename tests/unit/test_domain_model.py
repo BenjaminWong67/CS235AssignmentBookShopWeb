@@ -420,13 +420,13 @@ class TestUser:
 
         assert book.book_id in user1.shoppingcart
 
-    def test_can_remove_book_to_cart(self):
+    def test_can_remove_book_from_cart(self):
         user1 = User("Goliath", "86868658")
         book = Book(2020, "What a Year")
         book2 = Book(2021, "What a Year, 2nd edition")
         user1.add_book_to_cart(book)
         user1.add_book_to_cart(book2)
-        user1.remove_book_from_cart(2021)
+        user1.remove_book_from_cart(book2)
 
         assert book2.book_id not in user1.shoppingcart
         assert len(user1.shoppingcart) == 1
@@ -434,14 +434,17 @@ class TestUser:
     def test_can_purchase_books(self):
         user = User("Lorax", "Treehugger23")
         book = Book(2020, "What a Year")
+        book3 = Book(2020, "What a Year")
         book2 = Book(2021, "What a Year, 2nd edition")
         user.add_book_to_cart(book)
         user.add_book_to_cart(book2)
+        user.add_book_to_cart(book3)
         user.purchase_books_in_cart()
 
-        assert book in user.purchased_books
-        assert book2 in user.purchased_books
+        assert book.book_id in user.purchased_books
+        assert book2.book_id in user.purchased_books
         assert len(user.shoppingcart) == 0
+        assert user.purchased_books[book.book_id] == 2
 
 
 
@@ -589,7 +592,7 @@ class TestBooksInventory:
         assert isinstance(book.publisher, Publisher)
         assert inventory.search_book_by_title("unknown") is None
 
-            def test_books_inventory_discount(self):
+    def test_books_inventory_discount(self):
         inventory = BooksInventory()
 
         publisher1 = Publisher("Avatar Press")
@@ -643,6 +646,15 @@ class TestBooksInventory:
         assert inventory.get_book_discount(0) == 0
         assert inventory.get_book_discount(64) == 0
 
+    def test_adjust_stock_count(self):
+        inventory = BooksInventory()
+        book = Book(64, "Our Memoires")
+        inventory.add_book(book, 20, 7)
+        inventory.adjust_stock_count(book.book_id, 2)
+
+        assert inventory.find_stock_count(book.book_id) == 5
+
+
 
 class TestShoppingCart:
     def test_construction(self):
@@ -656,7 +668,18 @@ class TestShoppingCart:
         book = Book(619, "Rey")
         shoppingcart.add_book(book)
 
-        assert book.book_id in shoppingcart.books()
+        assert book.book_id in shoppingcart.books
+
+    def test_can_add_duplicate_book(self):
+        shoppingcart = ShoppingCart()
+        book = Book(619, "Rey")
+        book2 = Book(619, "Rey")
+        shoppingcart.add_book(book)
+        shoppingcart.add_book(book2)
+
+        assert book.book_id in shoppingcart.books
+        assert len(shoppingcart.books[book.book_id]) == 2
+
 
     def test_can_remove_book(self):
         shoppingcart = ShoppingCart()
@@ -664,7 +687,17 @@ class TestShoppingCart:
         shoppingcart.add_book(book)
         shoppingcart.remove_book(book)
 
-        assert book.book_id not in shoppingcart.books()
+        assert book.book_id not in shoppingcart.books
+
+    def test_can_remove_book_with_multiple_copies(self):
+        shoppingcart = ShoppingCart()
+        book = Book(42, "Answers to Life")
+        book2 = Book(42, "Answers to Life")
+        shoppingcart.add_book(book)
+        shoppingcart.add_book(book2)
+        shoppingcart.remove_book(book)
+        assert book.book_id in shoppingcart.books
+        assert len(shoppingcart.books[book.book_id]) == 1
 
     def test_clear_all_books(self):
         shoppingcart = ShoppingCart()
@@ -674,7 +707,7 @@ class TestShoppingCart:
         shoppingcart.add_book(book2)
         shoppingcart.clear_cart()
 
-        assert len(shoppingcart.books()) == 0
+        assert len(shoppingcart.books) == 0
 
     def test_iterable_shopping_cart(self):
         shoppingcart = ShoppingCart()
