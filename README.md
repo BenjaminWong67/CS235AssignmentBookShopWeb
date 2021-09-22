@@ -1,16 +1,10 @@
-# COMPSCI 235 Starter Repository for Assignment 2
-
-# 20/9/2021 - From Tim and Ben : Follow the instructions here to run the web app :)
+# TimBen Book Catalogue WebApp
 
 ## Description
 
-This repository contains an implementation of the domain model from Assignment 1. 
-It contains unit tests which can be run through pytest. 
-It also contains a simple Flask application that renders content of a Book object instance from our domain model on a blank html page.
+This webapp is an implementation of a library book catalogue/shop. The webapp features a homepage, catalogue, register, login, and also provides the functionality to review bookks and also add them to a shopping cart. Our implementation requires that a user is logged in to perform a review and to access the 'shopping cart' or 'purchased books' pages. Each user object of the webapp contains the reiviews that a user has made, the current shopping cart instance and the list of books that a user has purchased. When logging out, the shopping cart is cleared and cannot be retrieved. The list of purchased books is saved and can be retrieved upon logging back in.
 
-Please note that this sample implementation from Assignment 1 contains a more comprehensive superset of tests compared with what we had as hidden tests on Coderunner. 
-Your domain model implementation may have to be extended to meet all test cases in the sample implementation, but you may also decide to remove or modify test cases as it suits you. 
-From here on you can choose if you want to use the provided domain model or your implementation, just make sure your chosen set of test cases always work with your implementation.
+Something to note is that currently the webapp has no implementation of a database. Any data not part of the provided json files in 'library/adapters/data' e.g. registered users, purchased books, shopping cart etc, will be lost upon stopping the app in the terminal it is running in. Another thing to note is that our implementation of prices and discounts are randomized and are also lost when stopping the webapp.
 
 
 ## Python version
@@ -27,15 +21,11 @@ $ py -3 -m venv venv
 $ venv\Scripts\activate
 $ pip install -r requirements.txt
 ```
-
-When using PyCharm for requirements installation, set the virtual environment using 'File'->'Settings' and select your project from the left menu. Select 'Project Interpreter', click on the gearwheel button and select 'Add'. Click the 'Existing environment' radio button to select the virtual environment. 
-
+when running this webapp please makesure you configure a virtual environment with the requirements.txt file installed as shown above. (this assumes that you have pip installed).
 
 ## Testing with the pytest unit tests
 
-After you have configured pytest as the testing tool for PyCharm (File - Settings - Tools - Python Integrated Tools - Testing), you can then run tests from within PyCharm by right-clicking the tests folder and selecting "Run pytest in tests".
-
-Alternatively, from a terminal in the root folder of the project, you can also call 'python -m pytest tests' to run all the tests. PyCharm also provides a built-in terminal, which uses the configured virtual environment. 
+From a terminal in the root folder of the project, you can also call 'python -m pytest tests' to run all the tests. PyCharm also provides a built-in terminal, which uses the configured virtual environment. 
 
 
 ## Execution of the web application
@@ -47,6 +37,7 @@ From the project directory, and within the activated virtual environment (see *v
 ````shell
 $ flask run
 ```` 
+The application will run on a local server and the webapp can be viewed through any standard browser of your choice. Executing the above command will start the webapp on the server and output the address to access it.
 
 ## Data sources 
 
