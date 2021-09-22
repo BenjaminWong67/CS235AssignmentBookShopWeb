@@ -47,22 +47,24 @@ def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
 
 def get_shopping_cart(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
+    book_inv = repo.get_book_inventory()
 
     if user is None:
         raise UnknownUserException
 
-    user_shopping_cart = shopping_cart_to_dict(user.shoppingcart, repo)
+    user_shopping_cart = shopping_cart_to_dict(user.shoppingcart, repo, book_inv)
     
     return user_shopping_cart
 
 
 def get_purchased_books(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
+    book_inv = repo.get_book_inventory()
 
     if user is None:
         raise UnknownUserException
 
-    user_purchased_books_as_dict = purchased_books_dict_to_list(user.purchased_books, repo)
+    user_purchased_books_as_dict = purchased_books_dict_to_list(user.purchased_books, repo, book_inv)
 
     return user_purchased_books_as_dict
 
@@ -91,7 +93,7 @@ def get_book_stock(book_id: int, repo: AbstractRepository):
 
 def adjust_stock_count(shoppingcart: ShoppingCart, repo: AbstractRepository):
     book_inventory = repo.get_book_inventory()
-    books_to_purchase = shopping_cart_to_dict(shoppingcart, repo)
+    books_to_purchase = shopping_cart_to_dict(shoppingcart, repo, book_inventory)
     for book in books_to_purchase:
         book_inventory.adjust_stock_count(book['id'], book['quantity'])
 
@@ -172,20 +174,20 @@ def reviews_to_dict(reviews: Iterable[Review]):
 
 
 
-def shopping_cart_to_dict(books_in_shopping_cart, repo: AbstractRepository):
+def shopping_cart_to_dict(books_in_shopping_cart, repo: AbstractRepository, book_inv):
     shopping_cart_to_list = list()
     for book_id in books_in_shopping_cart.books:
-        book = book_to_dict(repo.get_book(int(book_id)))
+        book = book_to_dict(repo.get_book(int(book_id)), book_inv)
         book['quantity'] = books_in_shopping_cart.books[book_id]
         book['price'] = repo.get_book_inventory().find_price(book_id)
         shopping_cart_to_list.append(book)
     return shopping_cart_to_list
 
 
-def purchased_books_dict_to_list(purchased_books_dict, repo: AbstractRepository):
+def purchased_books_dict_to_list(purchased_books_dict, repo: AbstractRepository, book_inv):
     purchased_books_with_dict = list()
     for book_id in purchased_books_dict:
-        book = book_to_dict(repo.get_book(int(book_id)))
+        book = book_to_dict(repo.get_book(int(book_id)), book_inv)
         book['quantity'] = purchased_books_dict[book_id]
         book['price'] = repo.get_book_inventory().find_price(book_id)
         purchased_books_with_dict.append(book)
