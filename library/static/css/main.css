@@ -1,5 +1,5 @@
-
 @import url(https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap);
+
 
 body {
     background-color: #E8804C;
@@ -10,6 +10,7 @@ body {
     padding: 0px;
     font-family: 'Lato', sans-serif;
 }
+
 
 /* Container styles and layout */
 #header {
@@ -114,6 +115,7 @@ div#next-previous button {
     width: 150px;
 }
 
+
 /*authentication form styles*/
 div#authentication form {
     display: flex;
@@ -154,7 +156,6 @@ div#authentication div#credentials ul li {
 }
 
 
-
 /*book view styles*/
 #book-title {
     background-color: #30C3CD;
@@ -179,7 +180,18 @@ div#authentication div#credentials ul li {
     width: 60%;
 }
 #book-view button {
-    margin: 50px 0px 10px 0px;
+    margin: 30px 0px 10px 0px;
+}
+#book-view button#add-to-cart {
+    margin: 20px auto;
+    padding: 14px 16px;
+    width: 150px;
+    border: 3px solid #30C3CD;
+    background-color: #aaa2bd;
+    color: white;
+}
+#book-view button#add-to-cart:hover {
+    background-color: #625b7e;
 }
 #shop-details {
     display: flex;
@@ -214,12 +226,12 @@ div#authentication div#credentials ul li {
 }
 #stock {
     color: white;
-    font-size: 10pt;
+    font-size: 8pt;
     margin: -4px 0px 17px 10px;
     padding: 6px;
     border-radius: 0px 0px 10px 10px;
     background-color: #adadad;
-    width: 90px;
+    width: 80px;
     text-align: center;
 }
 #review-comment {
@@ -243,7 +255,6 @@ div#authentication div#credentials ul li {
     margin:0px;
     padding:0px 0px 5px 0px;
 }
-
 
 
 /*review page styles*/
@@ -294,6 +305,81 @@ button[disabled] {
     border: 0px;
     color: white;
 }
+
+
+/*shopping cart styles*/
+#cart {
+    background-color: #F3F3F3;
+    border-radius: 7px;
+    text-align: center;
+}
+#cart-user {
+    text-align: center;
+    font-size: 20pt;
+    color: white;
+    width: 60%;
+    margin: 40px auto -60px auto;
+    padding: 5px;
+    background-color: #30C3CD;
+    border-radius: 7px;
+}
+#cart-empty {
+    color: white;
+    font-size: 32pt;
+    border: 1px solid #30C3CD;
+    border-radius: 7px;
+    margin: 30px;
+    padding: 100px 0px;
+    background-color: #48d6e0;
+}
+#cart-empty button, #cart-empty h3 {
+    margin: 0px;
+}
+#cart-full {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #30C3CD;
+    border-radius: 7px;
+    margin: 30px;
+    text-align: left;
+}
+#cart-full table {
+    background-color: #48d6e0;
+}
+#cart-full th, #cart-full tr, #cart-full td {
+    border: 0px;
+}
+#cart-purchase {
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+#cart-purchase button {
+    width: 250px;
+    padding:15px 0px;
+    margin: -10px 30px 30px auto;
+    background-color: #48d6e0;
+    color: white;
+    border: 1px solid #30C3CD;
+    border-radius: 7px;
+}
+#cart-purchase button:hover {
+    background-color: #1e777e;
+}
+#cart-purchase p {
+    color: white;
+    font-size: 15pt;
+    margin: auto 30px 0px auto;
+    width: 250px;
+    padding:15px 0px;
+    background-color: #30c3cd86;
+    border-radius: 7px 7px 0px 0px;
+}
+
+
+/*purchased book styles*/
+
 
 
 /*home page styles*/
@@ -379,6 +465,11 @@ button[disabled] {
     color: black;
     font-size: 12pt;
     margin: 0px 10px 10px 10px;
+}
+#feature-book p#stock {
+    color: white;
+    font-size: 10pt;
+    width: 100px;
 }
 #feature-book button {
     margin: 2px;

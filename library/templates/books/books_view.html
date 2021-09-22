@@ -35,6 +35,7 @@
                 {% else %}
                     <p id='stock' style="background-color:rgb(209, 88, 88)">Stock: #{{ book.stock_count }}</p>
                 {% endif %}
+                <button id='add-to-cart' onclick=location.href="{{url_for('shopping_bp.add_book_to_cart',id=book.id)}}">Add To Cart</button>
             </div>
 
             
@@ -43,8 +44,6 @@
                     <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id, show_reviews_for_book=book.id)}}">{{book.reviews|length}} Reviews</button>
                 {% endif %}
                 <button onclick=location.href="{{url_for('books_bp.book_review', id=book.id)}}">Review</button>
-
-                <button onclick=location.href="{{url_for('shopping_bp.add_book_to_cart',id=book.id)}}">Add To Cart</button>
             </div>
             {% if book.id == show_reviews_for_book %}
                 <div id='reviews-book' style="clear:both">   
