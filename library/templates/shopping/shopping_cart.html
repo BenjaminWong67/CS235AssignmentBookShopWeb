@@ -11,7 +11,7 @@
             <div id='cart-empty'>
                 <h3>Cart is empty 🛒</h3>
                 <div>
-                    <button onclick=location.href="{{url_for('books_bp.books_catalogue')}}">return to catalogue</button>
+                    <button id="cart-view-item" onclick=location.href="{{url_for('books_bp.books_catalogue')}}">return to catalogue</button>
                 </div>
             </div>
         {% else %}
@@ -27,7 +27,7 @@
                             <td>
                                 {{ book.title }}
                                 <br>
-                                <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view details</button>
+                                <button id='cart-view-item' onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view item</button>
                             </td>
                             <td>
                                 <p id='price'>${{book.price}}</p>
@@ -36,7 +36,7 @@
                                 <!-- { form_cart.quantity } -->
                             </td>
                             <td>
-                                <button onclick=location.href="{{url_for('shopping_bp.remove_book_from_cart', id=book.id)}}">✖</button>
+                                <button id="cart-remove" onclick=location.href="{{url_for('shopping_bp.remove_book_from_cart', id=book.id)}}">✖</button>
                             </td>
                         </tr>
                     {% endfor %}

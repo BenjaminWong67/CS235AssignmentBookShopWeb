@@ -376,10 +376,35 @@ button[disabled] {
     background-color: #30c3cd86;
     border-radius: 7px 7px 0px 0px;
 }
+#cart-view-item {
+    background-color: #dedede8a;
+    color: white;
+    border: 0px;
+}
+#cart-view-item:hover {
+    background-color: #1e777e;
+}
+#cart-remove {
+    border: 0px;
+}
+#cart-remove:hover {
+    background-color: #1e777e;
+}
+
 
 
 /*purchased book styles*/
-
+#purchased {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 80px 120px;
+}
+#purchased h3#cart-user {
+    margin: 20px auto -20px auto;
+    padding: 30px;
+}
 
 
 /*home page styles*/
