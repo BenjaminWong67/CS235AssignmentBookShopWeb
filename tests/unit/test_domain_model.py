@@ -678,7 +678,7 @@ class TestShoppingCart:
         shoppingcart.add_book(book2)
 
         assert book.book_id in shoppingcart.books
-        assert len(shoppingcart.books[book.book_id]) == 2
+        assert shoppingcart.books[book.book_id] == 2
 
 
     def test_can_remove_book(self):
@@ -697,7 +697,7 @@ class TestShoppingCart:
         shoppingcart.add_book(book2)
         shoppingcart.remove_book(book)
         assert book.book_id in shoppingcart.books
-        assert len(shoppingcart.books[book.book_id]) == 1
+        assert shoppingcart.books[book.book_id] == 1
 
     def test_clear_all_books(self):
         shoppingcart = ShoppingCart()
@@ -718,12 +718,6 @@ class TestShoppingCart:
         for book_id in shoppingcart:
             print(book_id)
 
-    def test_get_book(self):
-        shoppingcart = ShoppingCart()
-        book = Book(42, "Answers to Life")
-        shoppingcart.add_book(book)
-
-        assert book == shoppingcart.get_book(42)
 
     
 
