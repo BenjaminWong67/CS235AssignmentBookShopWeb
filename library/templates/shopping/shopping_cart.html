@@ -25,7 +25,7 @@
                     {% for book in books %}
                         <tr>
                             <td>
-                                {{ book.title }}
+                                {{ book.title|truncate(90) }}
                                 <br>
                                 <button id='cart-view-item' onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view item</button>
                             </td>

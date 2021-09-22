@@ -12,9 +12,14 @@
                     {% for book in books %}
                         <tr>
                             <td>
-                                {{ book.title }}
-                                <br>
-                                <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view book</button>
+                                
+                                <div id='purchased-view'>
+                                    <div>
+                                        <p>{{ book.title|truncate(90) }}</p>
+                                        <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view book</button>
+                                    </div>
+                                    <p id='price'>x{{ book.quantity }}</p>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}

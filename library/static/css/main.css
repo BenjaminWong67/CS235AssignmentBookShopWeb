@@ -405,6 +405,12 @@ button[disabled] {
     margin: 20px auto -20px auto;
     padding: 30px;
 }
+#purchased-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+}
 
 
 /*home page styles*/

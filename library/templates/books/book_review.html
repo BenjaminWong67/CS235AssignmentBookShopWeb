@@ -3,7 +3,7 @@
 {% block content %}
 
     <div id='review-title'>
-        <h2>Review for {{book.title}}</h2>
+        <h2>Review for {{book.title|truncate(90)}}</h2>
     </div>
 
     <div id='review-form'>
