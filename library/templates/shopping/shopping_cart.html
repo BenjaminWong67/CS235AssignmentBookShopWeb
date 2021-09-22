@@ -41,20 +41,28 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <!-- { form_cart.quantity } -->
+                                {{ book.quantity }}
                             </td>
                             <td>
                                 <button id="cart-remove" onclick=location.href="{{url_for('shopping_bp.remove_book_from_cart', id=book.id)}}">✖</button>
                             </td>
                             <td>
-                                <!-- total -->
+                                {% if book.discount == 0 %}
+                                    <p id='price'>
+                                        ${{ '%.2f'|format(book.price/1 * book.quantity) }}
+                                    </p>
+                                {% else %}
+                                    <p id='price'>
+                                        ${{ '%.2f'|format(book.price/1 * book.discount/100 * book.quantity) }}
+                                    </p>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
                 </table>
             </div>
             <div id='cart-purchase'>
-                <p>$0.00</p>
+                <p id='price'>${{ '%.2f'|format(total_price/1) }}</p>
                 <button onclick=location.href="{{url_for('shopping_bp.purchase_books')}}">Purchase Books</button>
             </div>
         {% endif %}
