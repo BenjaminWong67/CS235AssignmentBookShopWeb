@@ -52,6 +52,7 @@ def get_shopping_cart(user_name: str, repo: AbstractRepository):
         raise UnknownUserException
 
     user_shopping_cart = shopping_cart_to_dict(user.shoppingcart, repo)
+    
     return user_shopping_cart
 
 
@@ -62,6 +63,7 @@ def get_purchased_books(user_name: str, repo: AbstractRepository):
         raise UnknownUserException
 
     user_purchased_books_as_dict = purchased_books_dict_to_list(user.purchased_books, repo)
+
     return user_purchased_books_as_dict
 
 
@@ -117,7 +119,7 @@ def get_total_price_of_purchased(user_name: str, repo: AbstractRepository):
 # Functions to convert model entities to dicts
 # ============================================
 
-def book_to_dict(book: Book):
+def book_to_dict(book: Book, book_inv: BooksInventory):
     book_dict = {
         'id': book.book_id,
         'title': book.title,
@@ -128,6 +130,9 @@ def book_to_dict(book: Book):
         'ebook': book.ebook,
         'num_pages': book.num_pages,
         'reviews': reviews_to_dict(book.reviews),
+        'price':book_inv.find_price(book.book_id),
+        'stock_count':book_inv.find_stock_count(book.book_id),
+        'discount':book_inv.get_book_discount(book.book_id)
     }
     return book_dict
 
@@ -166,6 +171,7 @@ def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
 
 
+
 def shopping_cart_to_dict(books_in_shopping_cart, repo: AbstractRepository):
     shopping_cart_to_list = list()
     for book_id in books_in_shopping_cart.books:
@@ -183,4 +189,5 @@ def purchased_books_dict_to_list(purchased_books_dict, repo: AbstractRepository)
         book['quantity'] = purchased_books_dict[book_id]
         book['price'] = repo.get_book_inventory().find_price(book_id)
         purchased_books_with_dict.append(book)
+
     return purchased_books_with_dict

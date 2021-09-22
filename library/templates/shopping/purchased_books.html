@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+
     <table>
         <tr>
             <th> Books Purchased by {{ session['user_name'] }}</th>
@@ -32,5 +33,25 @@
         </tr>
     </table>
 
+    <div id='purchased'>
+        <h3 id='cart-user'>{{ session['user_name'] }}'s books</h3>
+        
+            {% if books|length == 0 %}
+                    <h3 id='cart-empty'>Your Library is empty</h3>
+            {% else %}
+                <table>
+                    {% for book in books %}
+                        <tr>
+                            <td>
+                                {{ book.title }}
+                                <br>
+                                <button onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view book</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        
+    </div>
 
 {% endblock %}
