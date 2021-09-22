@@ -96,8 +96,6 @@ class Author:
         return hash(self.unique_id)
 
 
-
-
 class Book:
 
     def __init__(self, book_id: int, book_title: str):
@@ -414,19 +412,18 @@ class BooksInventory:
             if self.__books[book_id].title == book_title:
                 return self.__books[book_id]
         return None
-    
+
     def discount_book(self, book_id: int, discount: int):
         if book_id in self.__discount.keys():
             self.__discount[book_id] = discount
-    
+
     def get_book_discount(self, book_id: int):
         discount = 0
 
         if book_id in self.__discount.keys():
             discount = self.__discount[book_id]
-        
+
         return discount
-        
 
 
 class ShoppingCart:
@@ -445,19 +442,23 @@ class ShoppingCart:
         return self.__books
 
     def add_book(self, book: Book):
-
-        self.__books[book.book_id] = book
+        if book.book_id not in self.__books.keys():
+            self.__books[book.book_id] = list()
+            self.__books[book.book_id].append(book)
+        else:
+            self.__books[book.book_id].append(book)
 
     def remove_book(self, book: Book):
-        self.__books.pop(book.book_id)
+        if len(self.books()[book.book_id]) > 1:
+            self.books()[book.book_id].remove(book)
+        else:
+            self.__books.pop(book.book_id)
 
     def get_book(self, book_id: int):
         return self.__books[book_id]
 
     def clear_cart(self):
         self.__books = {}
-
-
 
 
 def make_review(review_text: str, rating: int, book_to_review: Book, user: User):

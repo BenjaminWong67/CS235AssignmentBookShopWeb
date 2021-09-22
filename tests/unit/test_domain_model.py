@@ -589,7 +589,7 @@ class TestBooksInventory:
         assert isinstance(book.publisher, Publisher)
         assert inventory.search_book_by_title("unknown") is None
 
-            def test_books_inventory_discount(self):
+    def test_books_inventory_discount(self):
         inventory = BooksInventory()
 
         publisher1 = Publisher("Avatar Press")
@@ -658,6 +658,17 @@ class TestShoppingCart:
 
         assert book.book_id in shoppingcart.books()
 
+    def test_can_add_duplicate_book(self):
+        shoppingcart = ShoppingCart()
+        book = Book(619, "Rey")
+        book2 = Book(619, "Rey")
+        shoppingcart.add_book(book)
+        shoppingcart.add_book(book2)
+
+        assert book.book_id in shoppingcart.books()
+        assert len(shoppingcart.books()[book.book_id]) == 2
+
+
     def test_can_remove_book(self):
         shoppingcart = ShoppingCart()
         book = Book(42, "Answers to Life")
@@ -665,6 +676,16 @@ class TestShoppingCart:
         shoppingcart.remove_book(book)
 
         assert book.book_id not in shoppingcart.books()
+
+    def test_can_remove_book_with_multiple_copies(self):
+        shoppingcart = ShoppingCart()
+        book = Book(42, "Answers to Life")
+        book2 = Book(42, "Answers to Life")
+        shoppingcart.add_book(book)
+        shoppingcart.add_book(book2)
+        shoppingcart.remove_book(book)
+        assert book.book_id in shoppingcart.books()
+        assert len(shoppingcart.books()[book.book_id]) == 1
 
     def test_clear_all_books(self):
         shoppingcart = ShoppingCart()
