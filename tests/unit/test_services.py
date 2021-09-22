@@ -8,6 +8,7 @@ from library.books import services as book_services
 from library.authentication import services as auth_services
 from library.utilities import services as util_services
 from library.home import services as home_services
+from library.shopping import services as shopping_services
 from library.books.services import NonExistentBookException
 
 
@@ -152,13 +153,13 @@ def test_search_with_title(in_memory_repo):
         'title': "book1",
         'release_year': None,
         'description': None,
-        'publisher': None,
+        'publisher': {'name': 'Ben'},
         'authors': list(),
         'ebook': None,
         'num_pages': None,
-        'price':10,
-        'stock_count':1,
-        'discount':0
+        'price': 10,
+        'stock_count': 1,
+        'discount': 0
     }]
 
 
@@ -168,29 +169,54 @@ def test_search_with_author(in_memory_repo):
         'title': "book3",
         'release_year': None,
         'description': None,
-        'publisher': None,
-        'authors': [{'unique_id': 10, 'full_name': 'Tim',}],
+        'publisher': {'name': 'Ben'},
+        'authors': [{'unique_id': 10, 'full_name': 'Tim', }],
         'ebook': None,
         'num_pages': None,
-        'price':30,
-        'stock_count':3,
-        'discount':0
+        'price': 30,
+        'stock_count': 3,
+        'discount': 0
     }]
 
 
 def test_search_with_publisher(in_memory_repo):
     assert util_services.search_with_publisher("Ben", in_memory_repo) == [{
-        'id': 20,
-        'title': "book2",
-        'release_year': 1000,
+        'id': 10,
+        'title': "book1",
+        'release_year': None,
         'description': None,
-        'publisher': {'name':'Ben'},
+        'publisher': {'name': 'Ben'},
         'authors': list(),
         'ebook': None,
         'num_pages': None,
-        'price':20,
-        'stock_count':2,
-        'discount':0
+        'price': 10,
+        'stock_count': 1,
+        'discount': 0
+        },
+        {
+            'id': 20,
+            'title': "book2",
+            'release_year': 1000,
+            'description': None,
+            'publisher': {'name': 'Ben'},
+            'authors': [],
+            'ebook': None,
+            'num_pages': None,
+            'price': 20,
+            'stock_count': 2,
+            'discount': 0
+        },
+    {        'id': 30,
+        'title': "book3",
+        'release_year': None,
+        'description': None,
+        'publisher': {'name': 'Ben'},
+        'authors': [{'unique_id': 10, 'full_name': 'Tim', }],
+        'ebook': None,
+        'num_pages': None,
+        'price': 30,
+        'stock_count': 3,
+        'discount': 0
     }]
 
 
@@ -200,14 +226,15 @@ def test_search_with_release_year(in_memory_repo):
         'title': "book2",
         'release_year': 1000,
         'description': None,
-        'publisher': {'name':'Ben'},
+        'publisher': {'name': 'Ben'},
         'authors': [],
         'ebook': None,
         'num_pages': None,
-        'price':20,
-        'stock_count':2,
-        'discount':0
+        'price': 20,
+        'stock_count': 2,
+        'discount': 0
     }]
+
 
 def test_get_discounted_books(small_memory_repo: AbstractRepository):
     discounted_books = home_services.get_discounted_books(small_memory_repo)
@@ -221,9 +248,126 @@ def test_get_discounted_books(small_memory_repo: AbstractRepository):
         'authors': list(),
         'ebook': None,
         'num_pages': None,
-        'price':20,
-        'stock_count':2,
-        'discount':50
+        'price': 20,
+        'stock_count': 2,
+        'discount': 50
     }]
 
 
+def test_add_book_to_user_cart(in_memory_repo: AbstractRepository):
+    shopping_services.add_book_to_user_cart("Ben", 20, in_memory_repo)
+    user = in_memory_repo.get_user("Ben")
+    user_shopping_cart = user.shoppingcart.books
+    assert 20 in user_shopping_cart
+
+
+def test_cannot_add_non_existent_book_to_user_cart(in_memory_repo: AbstractRepository):
+    with pytest.raises(shopping_services.NonExistentBookException):
+        shopping_services.add_book_to_user_cart("Ben", 66666, in_memory_repo)
+
+
+def test_cannot_add_book_to_non_existent_user_cart(in_memory_repo: AbstractRepository):
+    with pytest.raises(shopping_services.UnknownUserException):
+        shopping_services.add_book_to_user_cart("Bob", 20, in_memory_repo)
+
+
+def test_remove_book_from_user_cart(in_memory_repo: AbstractRepository):
+    shopping_services.add_book_to_user_cart("Ben", 20, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 30, in_memory_repo)
+    shopping_services.remove_book_from_user_cart("Ben", 20, in_memory_repo)
+    user = in_memory_repo.get_user("Ben")
+    user_shopping_cart = user.shoppingcart.books
+
+    assert 27036538 not in user_shopping_cart
+
+
+def test_cannot_remove_non_existent_book(in_memory_repo: AbstractRepository):
+    with pytest.raises(shopping_services.NonExistentBookException):
+        shopping_services.remove_book_from_user_cart("Ben", 66666, in_memory_repo)
+
+
+def test_cannot_remove_book_from_non_existent_user_cart(in_memory_repo: AbstractRepository):
+    with pytest.raises(shopping_services.UnknownUserException):
+        shopping_services.remove_book_from_user_cart("Bob", 20, in_memory_repo)
+
+
+def test_can_get_user_shopping_cart(in_memory_repo: AbstractRepository):
+    shopping_services.add_book_to_user_cart("Ben", 20, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 30, in_memory_repo)
+    user_shopping_cart = shopping_services.get_shopping_cart("Ben", in_memory_repo)
+
+    assert len(user_shopping_cart) == 2
+
+
+def test_cannot_get_non_existent_user_cart(in_memory_repo: AbstractRepository):
+    with pytest.raises(shopping_services.UnknownUserException):
+        user_shopping_cart = shopping_services.get_shopping_cart("Bob", in_memory_repo)
+
+
+def test_can_get_user_purchased_books(in_memory_repo: AbstractRepository):
+    shopping_services.add_book_to_user_cart("Ben", 20, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 30, in_memory_repo)
+    shopping_services.purchase_books("Ben", in_memory_repo)
+    user_purchased_books = shopping_services.get_purchased_books("Ben", in_memory_repo)
+
+    assert len(user_purchased_books) == 2
+
+
+def test_cannot_get_non_existent_user_purchased_books(in_memory_repo: AbstractRepository):
+    with pytest.raises(shopping_services.UnknownUserException):
+        user_purchased_books = shopping_services.get_purchased_books("HUE", in_memory_repo)
+
+
+def test_can_purchase_books(in_memory_repo):
+    shopping_services.add_book_to_user_cart("Ben", 20, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 30, in_memory_repo)
+    shopping_services.purchase_books("Ben", in_memory_repo)
+
+    user_purchased_books = shopping_services.get_purchased_books("Ben", in_memory_repo)
+
+    assert len(user_purchased_books) == 2
+    assert len(shopping_services.get_shopping_cart("Ben", in_memory_repo)) == 0
+
+
+def test_can_get_book_price(in_memory_repo):
+    book_id = 30
+    book_price = shopping_services.get_book_price(book_id, in_memory_repo)
+
+    assert book_price == 30
+
+
+def test_can_get_book_stock(in_memory_repo):
+    book_id = 20
+    book_stock = shopping_services.get_book_stock(book_id, in_memory_repo)
+
+    assert book_stock == 2
+
+
+def test_can_adjust_stock(in_memory_repo):
+    book_id = 20
+    shopping_services.add_book_to_user_cart("Ben", book_id, in_memory_repo)
+    user = in_memory_repo.get_user("Ben")
+    user_shopping_cart = user.shoppingcart
+    shopping_services.adjust_stock_count(user_shopping_cart, in_memory_repo)
+    book_stock = shopping_services.get_book_stock(book_id, in_memory_repo)
+
+    assert book_stock == 1
+
+
+def test_can_get_total_price_of_shopping_cart(in_memory_repo):
+    shopping_services.add_book_to_user_cart("Ben", 10, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 20, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 30, in_memory_repo)
+    shopping_cart_price = shopping_services.get_total_price_shopping_cart("Ben", in_memory_repo)
+
+    assert shopping_cart_price == 60
+
+
+def test_can_get_total_price_of_purchased_books(in_memory_repo):
+    shopping_services.add_book_to_user_cart("Ben", 10, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 20, in_memory_repo)
+    shopping_services.add_book_to_user_cart("Ben", 30, in_memory_repo)
+    shopping_services.purchase_books("Ben", in_memory_repo)
+    purchased_books = shopping_services.get_total_price_of_purchased("Ben", in_memory_repo)
+
+    assert purchased_books == 60

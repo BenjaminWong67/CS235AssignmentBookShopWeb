@@ -429,7 +429,7 @@ class TestUser:
         user1.remove_book_from_cart(book2)
 
         assert book2.book_id not in user1.shoppingcart
-        assert len(user1.shoppingcart) == 1
+        assert len(user1.shoppingcart.books) == 1
 
     def test_can_purchase_books(self):
         user = User("Lorax", "Treehugger23")
@@ -443,7 +443,7 @@ class TestUser:
 
         assert book.book_id in user.purchased_books
         assert book2.book_id in user.purchased_books
-        assert len(user.shoppingcart) == 0
+        assert len(user.shoppingcart.books) == 0
         assert user.purchased_books[book.book_id] == 2
 
 

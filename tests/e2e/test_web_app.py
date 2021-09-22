@@ -84,3 +84,5 @@ def test_index(client):
 def test_login_required_to_comment(client):
     response = client.post('catalogue/review')
     assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+

@@ -53,7 +53,7 @@ def get_shopping_cart(user_name: str, repo: AbstractRepository):
         raise UnknownUserException
 
     user_shopping_cart = shopping_cart_to_dict(user.shoppingcart, repo, book_inv)
-    
+
     return user_shopping_cart
 
 
@@ -107,6 +107,7 @@ def get_total_price_shopping_cart(user_name: str, repo: AbstractRepository):
 
     return get_total_price(user.shoppingcart.books, books_inventory)
 
+
 def get_total_price_of_purchased(user_name: str, repo: AbstractRepository):
     books_inventory = repo.get_book_inventory()
     user = repo.get_user(user_name)
@@ -132,9 +133,9 @@ def book_to_dict(book: Book, book_inv: BooksInventory):
         'ebook': book.ebook,
         'num_pages': book.num_pages,
         'reviews': reviews_to_dict(book.reviews),
-        'price':book_inv.find_price(book.book_id),
-        'stock_count':book_inv.find_stock_count(book.book_id),
-        'discount':book_inv.get_book_discount(book.book_id)
+        'price': book_inv.find_price(book.book_id),
+        'stock_count': book_inv.find_stock_count(book.book_id),
+        'discount': book_inv.get_book_discount(book.book_id)
     }
     return book_dict
 
@@ -171,7 +172,6 @@ def review_to_dict(review: Review):
 
 def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
-
 
 
 def shopping_cart_to_dict(books_in_shopping_cart, repo: AbstractRepository, book_inv):
