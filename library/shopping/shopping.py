@@ -19,7 +19,8 @@ def shoppingcart():
     user_name = session['user_name']
     form_search = utilities.SearchForm()
     books = services.get_shopping_cart(user_name, repo.repo_instance)
-    return render_template('shopping/shopping_cart.html', form_search=form_search, books=books)
+    total_price = services.get_total_price_shopping_cart(user_name, repo.repo_instance)
+    return render_template('shopping/shopping_cart.html', form_search=form_search, books=books, total_price=total_price)
 
 @shopping_blueprint.route('/purchase', methods=['GET'])
 @login_required
@@ -35,7 +36,8 @@ def purchased_books():
     user_name = session['user_name']
     form_search = utilities.SearchForm()
     books = services.get_purchased_books(user_name, repo.repo_instance)
-    return render_template('shopping/purchased_books.html', form_search=form_search, books=books)
+    total_price = services.get_total_price_of_purchased(user_name, repo.repo_instance)
+    return render_template('shopping/purchased_books.html', form_search=form_search, books=books, total_price=total_price)
 
 
 @shopping_blueprint.route('/adding_book_to_cart', methods=['GET'])

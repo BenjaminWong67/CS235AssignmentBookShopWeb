@@ -3,7 +3,8 @@ from typing import Iterable
 from flask import url_for
 
 from library.adapters.repository import AbstractRepository
-from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review, make_review, ShoppingCart
+from library.domain.model import Book, User, BooksInventory, Author, Publisher, Review, make_review, ShoppingCart, \
+    get_total_price
 
 
 class NonExistentBookException(Exception):
@@ -25,6 +26,8 @@ def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository
         raise UnknownUserException
 
     if repo.get_book_inventory().find_stock_count(book_id) == 0:
+        pass
+    elif repo.get_book_inventory().find_stock_count(book_id) == user.shoppingcart.quantity_of_book(book_id):
         pass
     else:
         user.add_book_to_cart(book_to_add)
@@ -91,6 +94,25 @@ def adjust_stock_count(shoppingcart: ShoppingCart, repo: AbstractRepository):
         book_inventory.adjust_stock_count(book['id'], book['quantity'])
 
 
+def get_total_price_shopping_cart(user_name: str, repo: AbstractRepository):
+    books_inventory = repo.get_book_inventory()
+    user = repo.get_user(user_name)
+
+    if user is None:
+        raise UnknownUserException
+
+    return get_total_price(user.shoppingcart.books, books_inventory)
+
+def get_total_price_of_purchased(user_name: str, repo: AbstractRepository):
+    books_inventory = repo.get_book_inventory()
+    user = repo.get_user(user_name)
+
+    if user is None:
+        raise UnknownUserException
+
+    return get_total_price(user.purchased_books, books_inventory)
+
+
 # ============================================
 # Functions to convert model entities to dicts
 # ============================================
@@ -147,8 +169,8 @@ def reviews_to_dict(reviews: Iterable[Review]):
 def shopping_cart_to_dict(books_in_shopping_cart, repo: AbstractRepository):
     shopping_cart_to_list = list()
     for book_id in books_in_shopping_cart.books:
-        book = book_to_dict(books_in_shopping_cart.get_book(book_id))
-        book['quantity'] = len(books_in_shopping_cart.books[book_id])
+        book = book_to_dict(repo.get_book(int(book_id)))
+        book['quantity'] = books_in_shopping_cart.books[book_id]
         book['price'] = repo.get_book_inventory().find_price(book_id)
         shopping_cart_to_list.append(book)
     return shopping_cart_to_list
