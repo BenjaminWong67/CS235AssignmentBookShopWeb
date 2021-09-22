@@ -30,7 +30,15 @@
                                 <button id='cart-view-item' onclick=location.href="{{url_for('books_bp.books_view', id=book.id)}}">view item</button>
                             </td>
                             <td>
-                                <p id='price'>${{book.price}}</p>
+                                {% if book.discount == 0 %}
+                                    <p id='price'><b>${{ '%.2f'|format(book.price/1) }}</b></p>
+                                {% else %}
+                                    <p id='price'>
+                                        <b>${{ '%.2f'|format(book.price * (book.discount / 100)) }}</b> 
+                                        <br>
+                                        <del>${{ '%.2f'|format(book.price/1) }}</del>
+                                    </p>
+                                {% endif %}
                             </td>
                             <td>
                                 <!-- { form_cart.quantity } -->

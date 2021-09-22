@@ -20,7 +20,8 @@ def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
 
 def get_shopping_cart(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
-    user_shopping_cart = shopping_cart_to_list(user.shoppingcart)
+    book_inv = repo.get_book_inventory()
+    user_shopping_cart = shopping_cart_to_list(user.shoppingcart, book_inv)
     for book in user_shopping_cart:
         book['price'] = get_book_price(book['id'], repo)
         book['stock_count'] = get_book_stock(book['id'], repo)
@@ -29,8 +30,9 @@ def get_shopping_cart(user_name: str, repo: AbstractRepository):
 
 def get_purchased_books(user_name: str, repo: AbstractRepository):
     user = repo.get_user(user_name)
+    book_inv = repo.get_book_inventory()
     user_purchased_list = user.purchased_books
-    user_purchased_books_as_dict = purchased_books_list_to_list_of_dicts(user_purchased_list)
+    user_purchased_books_as_dict = purchased_books_list_to_list_of_dicts(user_purchased_list, book_inv)
     return user_purchased_books_as_dict
 
 
@@ -55,7 +57,7 @@ def get_book_stock(book_id: int, repo: AbstractRepository):
 # Functions to convert model entities to dicts
 # ============================================
 
-def book_to_dict(book: Book):
+def book_to_dict(book: Book, book_inv: BooksInventory):
     book_dict = {
         'id': book.book_id,
         'title': book.title,
@@ -66,6 +68,9 @@ def book_to_dict(book: Book):
         'ebook': book.ebook,
         'num_pages': book.num_pages,
         'reviews': reviews_to_dict(book.reviews),
+        'price':book_inv.find_price(book.book_id),
+        'stock_count':book_inv.find_stock_count(book.book_id),
+        'discount':book_inv.get_book_discount(book.book_id)
     }
     return book_dict
 
@@ -104,15 +109,15 @@ def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
 
 
-def shopping_cart_to_list(shoppingcart):
+def shopping_cart_to_list(shoppingcart, book_inv):
     shopping_cart_to_list = list()
     for book_id in shoppingcart:
-        book = book_to_dict(shoppingcart.get_book(book_id))
+        book = book_to_dict(shoppingcart.get_book(book_id), book_inv)
         shopping_cart_to_list.append(book)
     return shopping_cart_to_list
 
-def purchased_books_list_to_list_of_dicts(purchased_books):
+def purchased_books_list_to_list_of_dicts(purchased_books, book_inv):
     purchased_books_with_dict = list()
     for book in purchased_books:
-        purchased_books_with_dict.append(book_to_dict(book))
+        purchased_books_with_dict.append(book_to_dict(book, book_inv))
     return purchased_books_with_dict
