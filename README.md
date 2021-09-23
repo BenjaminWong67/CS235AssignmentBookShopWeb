@@ -38,6 +38,10 @@ $ flask run
 ```` 
 The application will run on a local server and the webapp can be viewed through any standard browser of your choice. Executing the above command will start the webapp on the server and output the address to access it.
 
+**Common error with the local server and browser cacheing**
+
+The web app local server can produce errors due to the cacheing of most common web browsers. The error occurs when the browser loads an instance of a previous user being logged upon starting the local server. However this produces a error as this user is not actually logged in. Due to this, the web app runs best in a private or incognito window that prevents previous sessions from interfering with new ones. Alternatively you can make sure that the home page only displys 'Welcome' and not 'Welcome, {user_name}' when starting the web app. If this is the case, simply just click the logout button in the navigation top bar.
+
 ## Data sources 
 
 The data in the excerpt files were downloaded from (Comic & Graphic):
