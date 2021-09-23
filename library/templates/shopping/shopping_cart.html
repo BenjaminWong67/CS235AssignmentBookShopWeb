@@ -5,10 +5,13 @@
     <div id='cart'>
         <div id='cart-user'>
             <h3>{{ session['user_name'] }}'s Cart</h3>
+            {% if remove_book_message is not none %}
+                <p id="remove-message">*{{remove_book_message}}*</p>
+            {% else %}
+                <P id="remove-message">-</P>
+            {% endif %}
         </div>
-        {% if remove_book_message is not none %}
-            <p>{{remove_book_message}}</p>
-        {% endif %}
+        
         {% if books|length == 0 %}
             {% if purchase_message is none %}
                 <div id='cart-empty'>

@@ -66,12 +66,13 @@ def add_book_to_cart():
         services.add_book_to_user_cart(user_name, book_id, repo.repo_instance)
         book_count = services.get_book_count_in_cart(user_name, book_id, repo.repo_instance)
 
-        book_added_message = str(book_count) + "books are in cart"
+        book_added_message = str(book_count) + "x books are in cart"
     
     except services.OutOfStockException:
         book_out_of_stock = "sorry we are currently out of stock"
     except services.NoMoreStockException:
-        book_no_more_stock = "all stock has been added to cart"
+        book_count = services.get_book_count_in_cart(user_name, book_id, repo.repo_instance)
+        book_no_more_stock = "all stock has been added to cart (" + str(book_count) + "x)"
 
     return redirect(url_for('books_bp.books_view',
                             id=book_id, book_out_of_stock=book_out_of_stock,

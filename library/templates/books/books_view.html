@@ -37,11 +37,11 @@
                 {% endif %}
 
                 {% if book_added_message is not none %}
-                    <p>{{book_added_message}}</p>
+                    <p id="add-message"><i>*{{book_added_message}}*</i></p>
                 {% elif book_out_of_stock is not none %}
-                    <p>{{book_out_of_stock}}</p>
+                    <p id="add-message"><i>*{{book_out_of_stock}}*</i></p>
                 {% elif book_no_more_stock is not none %}
-                    <p>{{book_no_more_stock}}</p>
+                    <p id="add-message"><i>*{{book_no_more_stock}}*</i></p>
                 {% endif %}
 
                 <button id='add-to-cart' onclick=location.href="{{url_for('shopping_bp.add_book_to_cart',id=book.id)}}">Add To Cart</button>

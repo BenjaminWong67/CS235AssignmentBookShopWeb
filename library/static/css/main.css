@@ -287,6 +287,11 @@ div#authentication div#credentials ul li {
     display:flex;
     flex-direction: column-reverse;
 }
+#add-message {
+    padding:0px;
+    margin:0px;
+    text-align: center;
+}
 
 
 button {
@@ -394,6 +399,11 @@ button[disabled] {
 }
 #cart-remove:hover {
     background-color: #1e777e;
+}
+#remove-message {
+    padding: 5px;
+    margin: -20px 0px 40px 0px;
+    font-size: 12pt;
 }
 
 
