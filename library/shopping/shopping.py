@@ -18,18 +18,28 @@ shopping_blueprint = Blueprint(
 def shoppingcart():
     user_name = session['user_name']
     remove_book_message=request.args.get("remove_book_message")
+    purchase_message=request.args.get("purchase_message")
 
     form_search = utilities.SearchForm()
     books = services.get_shopping_cart(user_name, repo.repo_instance)
     total_price = services.get_total_price_shopping_cart(user_name, repo.repo_instance)
-    return render_template('shopping/shopping_cart.html', form_search=form_search, books=books, total_price=total_price, remove_book_message=remove_book_message)
+    return render_template('shopping/shopping_cart.html',
+                            form_search=form_search,
+                            books=books,
+                            total_price=total_price,
+                            remove_book_message=remove_book_message,
+                            purchase_message=purchase_message
+                            )
 
 @shopping_blueprint.route('/purchase', methods=['GET', 'POST'])
 @login_required
 def purchase_books():
     user_name = session['user_name']
     services.purchase_books(user_name, repo.repo_instance)
-    return redirect(url_for('shopping_bp.shoppingcart'))
+
+    purchase_message = "Thank you for your purchase :)"
+
+    return redirect(url_for('shopping_bp.shoppingcart', purchase_message=purchase_message))
 
 
 @shopping_blueprint.route('/purchased_books', methods=['GET', 'POST'])

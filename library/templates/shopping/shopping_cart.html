@@ -10,13 +10,21 @@
             <p>{{remove_book_message}}</p>
         {% endif %}
         {% if books|length == 0 %}
-            
-            <div id='cart-empty'>
-                <h3>Cart is empty 🛒</h3>
-                <div>
-                    <button id="cart-view-item" onclick=location.href="{{url_for('books_bp.books_catalogue')}}">return to catalogue</button>
+            {% if purchase_message is none %}
+                <div id='cart-empty'>
+                    <h3>Cart is empty 🛒</h3>
+                    <div>
+                        <button id="cart-view-item" onclick=location.href="{{url_for('books_bp.books_catalogue')}}">return to catalogue</button>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div id='cart-empty'>
+                    <h3>{{purchase_message}}</h3>
+                    <div>
+                        <button id="cart-view-item" onclick=location.href="{{url_for('shopping_bp.purchased_books')}}">go to purchased books</button>
+                    </div>
+                </div>
+            {% endif %}
             
         {% else %}
             <div id='cart-full'>
