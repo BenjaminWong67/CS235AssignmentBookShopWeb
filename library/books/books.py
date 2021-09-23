@@ -88,7 +88,7 @@ def book_review():
     )
 
 
-@books_blueprint.route('/book', methods=['GET'])
+@books_blueprint.route('/book', methods=['GET', 'POST'])
 def books_view():
 
     form_search = utilities.SearchForm()

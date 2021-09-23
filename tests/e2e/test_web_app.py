@@ -128,4 +128,25 @@ def test_catalogue_with_cursor(client):
     # Check that without providing a cursor query parameter the page includes the first book.
     assert b'A.I. Revolution, Vol. 1' in response.data
     assert b'Sherlock Holmes: Year One' in response.data
+
+def test_review_article(client):
+    client.post(
+            'authentication/register',
+            data={'user_name': 'name', 'password': 'Test#6^0'}
+    )
+    client.post(
+            'authentication/login',
+            data={'user_name': 'name', 'password': 'Test#6^0'}
+    )
+
+    client.get('/catalogue/review?id=707611')
+
+    response = client.post(
+        '/catalogue/review?id=707611',
+        data={'review': 'this book is very boring', 'book_id': 707611, 'rating': '1'}
+    )
+    assert response.headers['Location'] == 'http://localhost/catalogue/book?id=707611'
+
+    response = client.get('/catalogue/book?id=707611&show_reviews_for_book=707611')
+    assert b'this book is very boring' in response.data
     
