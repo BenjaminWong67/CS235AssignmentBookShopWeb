@@ -88,11 +88,15 @@ def book_review():
     )
 
 
-@books_blueprint.route('/book', methods=['GET'])
+@books_blueprint.route('/book', methods=['GET', 'POST'])
 def books_view():
 
     form_search = utilities.SearchForm()
     featured_books = utilities.get_featured_books(3, repo.repo_instance)
+
+    book_added_message = request.args.get("book_added_message")
+    book_out_of_stock = request.args.get("book_out_of_stock")
+    book_no_more_stock = request.args.get("book_no_more_stock")
 
     book_id = int(request.args.get('id'))
     show_reviews_for_book = request.args.get('show_reviews_for_book')
@@ -109,7 +113,10 @@ def books_view():
         book=book,
         form_search=form_search,
         show_reviews_for_book=show_reviews_for_book,
-        featured_books=featured_books
+        featured_books=featured_books,
+        book_added_message=book_added_message,
+        book_out_of_stock=book_out_of_stock,
+        book_no_more_stock=book_no_more_stock
     )
 
 
