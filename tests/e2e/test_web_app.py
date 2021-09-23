@@ -109,3 +109,23 @@ def test_login_required_to_add_book_to_cart(client):
 def test_login_required_to_remove_book_from_cart(client):
     response = client.post('shopping/removing_book_from_cart')
     assert response.headers['Location'] == 'http://localhost/authentication/login'
+
+
+def test_catalogue_without_cursor(client):
+    # Check that we can retrieve the catalogue page.
+    response = client.get('/catalogue/')
+    assert response.status_code == 200
+
+    # Check that without providing a cursor query parameter the page includes the first book.
+    assert b'Superman Archives, Vol. 2' in response.data
+    assert b'The Thing: Idol of Millions' in response.data
+
+def test_catalogue_with_cursor(client):
+    # Check that we can retrieve the catalogue page.
+    response = client.get('/catalogue/?cursor=2')
+    assert response.status_code == 200
+
+    # Check that without providing a cursor query parameter the page includes the first book.
+    assert b'A.I. Revolution, Vol. 1' in response.data
+    assert b'Sherlock Holmes: Year One' in response.data
+    
