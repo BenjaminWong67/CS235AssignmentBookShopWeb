@@ -45,7 +45,6 @@ def purchased_books():
 def add_book_to_cart():
     user_name = session['user_name']
     book_id = int(request.args.get('id'))
-    stock_count = int(request.args.get('stock_count'))
 
     book_out_of_stock = None
     book_no_more_stock = None
@@ -53,7 +52,9 @@ def add_book_to_cart():
 
     try:
         services.add_book_to_user_cart(user_name, book_id, repo.repo_instance)
-        book_added_message = str(stock_count + " books are in cart")
+        book_count = services.get_book_count_in_cart(user_name, book_id, repo.repo_instance)
+
+        book_added_message = str(book_count) + "books are in cart"
     
     except services.OutOfStockException:
         book_out_of_stock = "sorry we are currently out of stock"

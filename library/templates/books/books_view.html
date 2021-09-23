@@ -35,7 +35,16 @@
                 {% else %}
                     <p id='stock' style="background-color:rgb(209, 88, 88)">Stock: #{{ book.stock_count }}</p>
                 {% endif %}
-                <button id='add-to-cart' onclick=location.href="{{url_for('shopping_bp.add_book_to_cart',id=book.id, stock_count=book.stock_count)}}">Add To Cart</button>
+
+                {% if book_added_message is not none %}
+                    <p>{{book_added_message}}</p>
+                {% elif book_out_of_stock is not none %}
+                    <p>{{book_out_of_stock}}</p>
+                {% elif book_no_more_stock is not none %}
+                    <p>{{book_no_more_stock}}</p>
+                {% endif %}
+
+                <button id='add-to-cart' onclick=location.href="{{url_for('shopping_bp.add_book_to_cart',id=book.id)}}">Add To Cart</button>
             </div>
 
             

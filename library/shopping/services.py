@@ -48,7 +48,7 @@ def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
 
     if user is None:
         raise UnknownUserException
-        
+
     user.remove_book_from_cart(book_to_remove)
 
 
@@ -123,6 +123,11 @@ def get_total_price_of_purchased(user_name: str, repo: AbstractRepository):
         raise UnknownUserException
 
     return get_total_price(user.purchased_books, books_inventory)
+
+
+def get_book_count_in_cart(user_name: str, book_id: int, repo: AbstractRepository):
+    shopping_cart = repo.get_user(user_name).shoppingcart
+    return shopping_cart.quantity_of_book(book_id)
 
 
 # ============================================
