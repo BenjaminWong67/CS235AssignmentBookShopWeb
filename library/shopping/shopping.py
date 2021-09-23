@@ -45,13 +45,35 @@ def purchased_books():
 def add_book_to_cart():
     user_name = session['user_name']
     book_id = int(request.args.get('id'))
-    services.add_book_to_user_cart(user_name, book_id, repo.repo_instance)
-    return redirect(url_for('books_bp.books_view', id=book_id))
+    stock_count = int(request.args.get('stock_count'))
+
+    book_out_of_stock = None
+    book_no_more_stock = None
+    book_added_message = None
+
+    try:
+        services.add_book_to_user_cart(user_name, book_id, repo.repo_instance)
+        book_added_message = str(stock_count + " books are in cart")
+    
+    except services.OutOfStockException:
+        book_out_of_stock = "sorry we are currently out of stock"
+    except services.NoMoreStockException:
+        book_no_more_stock = "all stock has been added to cart"
+
+    return redirect(url_for('books_bp.books_view',
+                            id=book_id, book_out_of_stock=book_out_of_stock,
+                            book_no_more_stock=book_no_more_stock,
+                            book_added_message=book_added_message)
+                            )
 
 @shopping_blueprint.route('/removing_book_from_cart', methods=['GET', 'POST'])
 @login_required
 def remove_book_from_cart():
     user_name = session['user_name']
     book_id = int(request.args.get('id'))
+
+    remove_book_message = "one book was removed from cart"
+
     services.remove_book_from_user_cart(user_name, book_id, repo.repo_instance)
-    return redirect(url_for('shopping_bp.shoppingcart'))
+
+    return redirect(url_for('shopping_bp.shoppingcart', remove_book_message=remove_book_message))

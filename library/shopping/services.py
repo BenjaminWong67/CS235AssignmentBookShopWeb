@@ -14,6 +14,12 @@ class NonExistentBookException(Exception):
 class UnknownUserException(Exception):
     pass
 
+class OutOfStockException(Exception):
+    pass
+
+class NoMoreStockException(Exception):
+    pass
+
 
 def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository):
     book_to_add = repo.get_book_inventory().find_book(book_id)
@@ -26,9 +32,9 @@ def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository
         raise UnknownUserException
 
     if repo.get_book_inventory().find_stock_count(book_id) == 0:
-        pass
+        raise OutOfStockException
     elif repo.get_book_inventory().find_stock_count(book_id) == user.shoppingcart.quantity_of_book(book_id):
-        pass
+        raise NoMoreStockException
     else:
         user.add_book_to_cart(book_to_add)
 
@@ -42,6 +48,7 @@ def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
 
     if user is None:
         raise UnknownUserException
+        
     user.remove_book_from_cart(book_to_remove)
 
 
