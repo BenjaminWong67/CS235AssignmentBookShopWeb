@@ -86,5 +86,12 @@ def map_model_to_tables():
         '_Review__rating': reviews_table.c.rating,
         '_Review__timestamp': reviews_table.c.timestamp
     })
-
+    mapper(model.User, users_table, properties={
+        '_User__user_name': users_table.c.user_name,
+        '_User__password': users_table.c.password,
+        '_User__read_books': relationship(model.Book),
+        '_User__reviews': relationship(model.Review, backref='_Review__user'),
+        '_User__pages_read': users_table.c.pages_read,
+        #'_User__purchased_books':
+    })
     # mapping will go here
