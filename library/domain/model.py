@@ -74,7 +74,7 @@ class Author:
         else:
             raise ValueError
 
-    def add_coauthor(self, coauthor):
+    def add_coauthor(self, coauthor: "Author"):
         if isinstance(coauthor, self.__class__) and coauthor.unique_id != self.unique_id:
             self.__authors_this_one_has_worked_with.add(coauthor)
 
@@ -290,7 +290,7 @@ class User:
             if book.num_pages is not None:
                 self.__pages_read += book.num_pages
 
-    def add_review(self, review: Review):
+    def add_review(self, review: "Review"):
         if isinstance(review, Review):
             # Review objects are in practice always considered different due to their timestamp.
             self.__reviews.append(review)
