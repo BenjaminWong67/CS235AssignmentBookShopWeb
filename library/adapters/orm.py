@@ -31,7 +31,7 @@ books_table = Table(
     Column('description', String(2000)),
     Column('release_year', Integer),
     Column('ebook', Boolean),
-    Column('price', Integer), # not sure if  this should be here
+    Column('prices', Integer), # not sure if  this should be here
     Column('discount', Integer), # not sure if  this should be here
     Column('stock_count', Integer) # not sure if  this should be here
 )
@@ -41,6 +41,8 @@ users_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
     Column('password', String(255), nullable=False),
+    Column('pages_read', Integer),
+    Column('shoppingcart' """TODO""")
 )
 
 reviews_table = Table(
@@ -49,7 +51,8 @@ reviews_table = Table(
     Column('review_text', String(1000), nullable=False),
     Column('rating', Integer, nullable=False),
     Column('timestamp', DateTime, nullable=False),
-    Column('user', ForeignKey('users.id'))
+    Column('user', ForeignKey('users.id')),
+    Column('book', ForeignKey('books.id'))
 )
 
 
@@ -72,26 +75,31 @@ def map_model_to_tables():
         '_Book__release_year' : books_table.c.release_year,
         '_Book__ebook' : books_table.c.ebook,
         '_Book__num_pages' : books_table.c.num_pages,
-        '_Book__authors' : relationship(model.Author, back_populates='_Book__authors'),
-        '_Book__reviews' : relationship(model.Review, back_populates='_Review__book')
+        '_Book__authors' : relationship(model.Author),
+        '_Book__reviews' : relationship(model.Review)
     })
 
     mapper(model.User, users_table, properties={
         '_User__user_name' : users_table.c.user_name,
         '_User_password' : users_table.c.password,
         '_User__read_books' : relationship(model.Book),
-        '_User__reviews' : relationship(model.Review, backref='_Review__user'),
+        '_User__reviews' : relationship(model.Review),
         '_User__pages_read' : users_table.c.pages_read,
-        '_User__purchased_books' : relationship(model.Book)
+        #TODO 
+        '_User__purchased_books' : relationship(model.Book) # wont work this is dict
     })
 
     mapper(model.Review, reviews_table, properties={
-        '_Review__book' : reviews_table.c.book,
         '_Review__review_text' : reviews_table.c.review_text,
         '_Review__rating' : reviews_table.c.rating,
         '_Review__timestamp' : reviews_table.c.timestamp,
+        '_Review__user' : reviews_table.c.user,
+        '_Review__book' : reviews_table.c.book
     })
 
     mapper(model.BooksInventory, books_table, properties={
-        # not sure what to put here yet
+        '_BooksInventory__books' : books_table.c.id,
+        '_BooksInventory__prices' : books_table.c.prices,
+        '_BooksInventory__dicount' : books_table.c.discount,
+        '_BooksInventory__stock_count' : books_table.c.stock_count
     })

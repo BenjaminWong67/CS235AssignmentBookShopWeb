@@ -376,7 +376,7 @@ class Review:
         return f'<Review of book {self.book}, rating = {self.rating}, timestamp = {self.timestamp}>'
 
 
-class BooksInventory:
+class BooksInventory: 
 
     def __init__(self):
         self.__books = {}
