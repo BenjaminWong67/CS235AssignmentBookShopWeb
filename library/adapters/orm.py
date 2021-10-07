@@ -10,7 +10,7 @@ from library.domain import model
 
 metadata = MetaData()
 
-# domainn and relationship tables will go here
+# domain and relationship tables will go here
 publisher_table = Table(
     'publishers', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
@@ -42,7 +42,8 @@ users_table = Table(
     Column('user_name', String(255), unique=True, nullable=False),
     Column('password', String(255), nullable=False),
     Column('pages_read', Integer),
-    Column('shoppingcart' """TODO""")
+    Column('purchased_books', ForeignKey('user_purchased_books.id')),
+    Column('shoppingcart', ForeignKey('shoppingcart.id'))
 )
 
 reviews_table = Table(
@@ -55,6 +56,19 @@ reviews_table = Table(
     Column('book', ForeignKey('books.id'))
 )
 
+shoppingcart_table = Table(
+    'shoppingcart', metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', ForeignKey('books.id')),
+    Column('quantity', Integer, nullable=False)
+)
+
+user_purchased_books_table = Table(
+    'user_purchased_books', metadata,
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', Integer, ForeignKey('books.id')),
+    Column('quantity', Integer, nullable=False)
+)
 
 def map_model_to_tables():
     mapper(model.Publisher, publisher_table, properties={
@@ -85,8 +99,8 @@ def map_model_to_tables():
         '_User__read_books' : relationship(model.Book),
         '_User__reviews' : relationship(model.Review),
         '_User__pages_read' : users_table.c.pages_read,
-        #TODO 
-        '_User__purchased_books' : relationship(model.Book) # wont work this is dict
+        '_User__purchased_books' : users_table.c.purchased_books,
+        '_User__shoppingcart' : users_table.c.shoppingcart
     })
 
     mapper(model.Review, reviews_table, properties={
@@ -102,4 +116,8 @@ def map_model_to_tables():
         '_BooksInventory__prices' : books_table.c.prices,
         '_BooksInventory__dicount' : books_table.c.discount,
         '_BooksInventory__stock_count' : books_table.c.stock_count
+    })
+
+    mapper(model.ShoppingCart, shoppingcart_table, properties={
+        '_ShoppingCart__books' : shoppingcart_table.c.book_id
     })
