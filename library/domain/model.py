@@ -269,7 +269,7 @@ class User:
         return self.__read_books
 
     @property
-    def reviews(self) -> List[Review]:
+    def reviews(self) -> List["Review"]:
         return self.__reviews
 
     @property
