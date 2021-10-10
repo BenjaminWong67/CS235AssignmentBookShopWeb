@@ -74,7 +74,7 @@ class Author:
         else:
             raise ValueError
 
-    def add_coauthor(self, coauthor):
+    def add_coauthor(self, coauthor: "Author"):
         if isinstance(coauthor, self.__class__) and coauthor.unique_id != self.unique_id:
             self.__authors_this_one_has_worked_with.add(coauthor)
 
@@ -237,9 +237,96 @@ class Book:
         return hash(self.book_id)
 
 
+class User:
+
+    def __init__(self, user_name: str, password: str):
+        if user_name == "" or not isinstance(user_name, str):
+            self.__user_name = None
+        else:
+            self.__user_name = user_name.strip()
+
+        if password == "" or not isinstance(password, str) or len(password) < 7:
+            self.__password = None
+        else:
+            self.__password = password
+
+        self.__read_books = []
+        self.__reviews = []
+        self.__pages_read = 0
+        self.__shoppingcart = ShoppingCart()
+        self.__purchased_books = {}
+
+    @property
+    def user_name(self) -> str:
+        return self.__user_name
+
+    @property
+    def password(self) -> str:
+        return self.__password
+
+    @property
+    def read_books(self) -> List[Book]:
+        return self.__read_books
+
+    @property
+    def reviews(self) -> List["Review"]:
+        return self.__reviews
+
+    @property
+    def pages_read(self) -> int:
+        return self.__pages_read
+
+    @property
+    def shoppingcart(self):
+        return self.__shoppingcart
+
+    @property
+    def purchased_books(self):
+        return self.__purchased_books
+
+    def read_a_book(self, book: Book):
+        if isinstance(book, Book):
+            self.__read_books.append(book)
+            if book.num_pages is not None:
+                self.__pages_read += book.num_pages
+
+    def add_review(self, review: "Review"):
+        if isinstance(review, Review):
+            # Review objects are in practice always considered different due to their timestamp.
+            self.__reviews.append(review)
+
+    def add_book_to_cart(self, book: Book):
+        self.shoppingcart.add_book(book)
+
+    def remove_book_from_cart(self, book: Book):
+        self.shoppingcart.remove_book(book)
+
+    def purchase_books_in_cart(self):
+        for book_id in self.shoppingcart.books:
+            if book_id in self.purchased_books:
+                self.purchased_books[book_id] += self.shoppingcart.books[book_id]
+            else:
+                self.purchased_books[book_id] = self.shoppingcart.books[book_id]
+        self.shoppingcart.clear_cart()
+
+    def __repr__(self):
+        return f'<User {self.user_name}>'
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return other.user_name == self.user_name
+
+    def __lt__(self, other):
+        return self.user_name.lower() < other.user_name.lower()
+
+    def __hash__(self):
+        return hash(self.user_name)
+
+
 class Review:
 
-    def __init__(self, book: Book, review_text: str, rating: int, user):
+    def __init__(self, book: Book, review_text: str, rating: int, user: User):
         if isinstance(book, Book):
             self.__book = book
         else:
@@ -289,94 +376,7 @@ class Review:
         return f'<Review of book {self.book}, rating = {self.rating}, timestamp = {self.timestamp}>'
 
 
-class User:
-
-    def __init__(self, user_name: str, password: str):
-        if user_name == "" or not isinstance(user_name, str):
-            self.__user_name = None
-        else:
-            self.__user_name = user_name.strip()
-
-        if password == "" or not isinstance(password, str) or len(password) < 7:
-            self.__password = None
-        else:
-            self.__password = password
-
-        self.__read_books = []
-        self.__reviews = []
-        self.__pages_read = 0
-        self.__shoppingcart = ShoppingCart()
-        self.__purchased_books = {}
-
-    @property
-    def user_name(self) -> str:
-        return self.__user_name
-
-    @property
-    def password(self) -> str:
-        return self.__password
-
-    @property
-    def read_books(self) -> List[Book]:
-        return self.__read_books
-
-    @property
-    def reviews(self) -> List[Review]:
-        return self.__reviews
-
-    @property
-    def pages_read(self) -> int:
-        return self.__pages_read
-
-    @property
-    def shoppingcart(self):
-        return self.__shoppingcart
-
-    @property
-    def purchased_books(self):
-        return self.__purchased_books
-
-    def read_a_book(self, book: Book):
-        if isinstance(book, Book):
-            self.__read_books.append(book)
-            if book.num_pages is not None:
-                self.__pages_read += book.num_pages
-
-    def add_review(self, review: Review):
-        if isinstance(review, Review):
-            # Review objects are in practice always considered different due to their timestamp.
-            self.__reviews.append(review)
-
-    def add_book_to_cart(self, book: Book):
-        self.shoppingcart.add_book(book)
-
-    def remove_book_from_cart(self, book: Book):
-        self.shoppingcart.remove_book(book)
-
-    def purchase_books_in_cart(self):
-        for book_id in self.shoppingcart.books:
-            if book_id in self.purchased_books:
-                self.purchased_books[book_id] += self.shoppingcart.books[book_id]
-            else:
-                self.purchased_books[book_id] = self.shoppingcart.books[book_id]
-        self.shoppingcart.clear_cart()
-
-    def __repr__(self):
-        return f'<User {self.user_name}>'
-
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        return other.user_name == self.user_name
-
-    def __lt__(self, other):
-        return self.user_name.lower() < other.user_name.lower()
-
-    def __hash__(self):
-        return hash(self.user_name)
-
-
-class BooksInventory:
+class BooksInventory: 
 
     def __init__(self):
         self.__books = {}
