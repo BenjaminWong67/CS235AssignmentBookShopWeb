@@ -20,12 +20,14 @@ publisher_table = Table(
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('full_name', String(255), unique=True, nullable=False)
+    Column('author_id', Integer, unique=True, nullable=False),
+    Column('full_name', String(255), nullable=False)
 )
 
 books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', Integer, nullable=False),
     Column('publisher_id', ForeignKey('publishers.id')),
     Column('title', String(500), unique=True, nullable=False),
     Column('description', String(2000)),
@@ -41,9 +43,7 @@ users_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
     Column('password', String(255), nullable=False),
-    Column('pages_read', Integer),
-    Column('purchased_books', ForeignKey('user_purchased_books.id')),
-    Column('shoppingcart', ForeignKey('shoppingcart.id'))
+    Column('pages_read', Integer)
 )
 
 reviews_table = Table(
@@ -56,19 +56,31 @@ reviews_table = Table(
     Column('book', ForeignKey('books.id'))
 )
 
-shoppingcart_table = Table(
-    'shoppingcart', metadata,
+coauthors_table = Table(
+    'coauthors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('author_id', ForeignKey('authors.id')),
+    Column('coauthor_id', ForeignKey('authors.id'))
+)
+
+purchased_books_table = Table(
+    'purchased_books', metadata,
+    Column('id', primary_key=True, autoincrement=True),
+    Column('user_id', ForeignKey('users.id')),
     Column('book_id', ForeignKey('books.id')),
     Column('quantity', Integer, nullable=False)
 )
 
-user_purchased_books_table = Table(
-    'user_purchased_books', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('book_id', Integer, ForeignKey('books.id')),
+
+# I dont think this needs to be part of the ORM
+shopping_cart_table = Table(
+    'shopping_cart', metadata,
+    Column('id', primary_key=True, autoincrement=True),
+    Column('user_id', ForeignKey('users.id')),
+    Column('book_id', ForeignKey('books.id')),
     Column('quantity', Integer, nullable=False)
 )
+
 
 def map_model_to_tables():
     mapper(model.Publisher, publisher_table, properties={
@@ -76,9 +88,11 @@ def map_model_to_tables():
     })
 
     mapper(model.Author, authors_table, properties={
-        '_Author__author_id' : authors_table.c.id,
+        '_Author__unique_id' : authors_table.c.author_id,
         '_Author__full_name' : authors_table.c.full_name,
-        '_Author__authors_this_one_has_worked_with' : relationship(model.Author)
+        '_Author__authors_this_one_has_worked_with' : relationship(model.Author, 
+                                                        secondary=coauthors_table,
+                                                        back_populates='_Author__authors_this_one_has_worked_with')
     })
 
     mapper(model.Book, books_table, properties={
@@ -99,8 +113,7 @@ def map_model_to_tables():
         '_User__read_books' : relationship(model.Book),
         '_User__reviews' : relationship(model.Review),
         '_User__pages_read' : users_table.c.pages_read,
-        '_User__purchased_books' : users_table.c.purchased_books,
-        '_User__shoppingcart' : users_table.c.shoppingcart
+        '_User__purchased_books' : relationship(model.Book, secondary=purchased_books_table)
     })
 
     mapper(model.Review, reviews_table, properties={
@@ -108,16 +121,5 @@ def map_model_to_tables():
         '_Review__rating' : reviews_table.c.rating,
         '_Review__timestamp' : reviews_table.c.timestamp,
         '_Review__user' : reviews_table.c.user,
-        '_Review__book' : reviews_table.c.book
-    })
-
-    mapper(model.BooksInventory, books_table, properties={
-        '_BooksInventory__books' : books_table.c.id,
-        '_BooksInventory__prices' : books_table.c.prices,
-        '_BooksInventory__dicount' : books_table.c.discount,
-        '_BooksInventory__stock_count' : books_table.c.stock_count
-    })
-
-    mapper(model.ShoppingCart, shoppingcart_table, properties={
-        '_ShoppingCart__books' : shoppingcart_table.c.book_id
+        '_Review__book' : reviews_table.c.book,
     })
