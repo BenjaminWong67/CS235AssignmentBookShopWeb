@@ -81,32 +81,33 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_books_by_id(self, id_list: int):
         pass
 
+    # below are the book inv methods
     def get_book_inventory(self):
         pass
 
     def add_book_to_inventory(self, book, price, nr_books_in_stock):
-        return super().add_book_to_inventory(book, price, nr_books_in_stock)
+        pass
 
     def remove_book_from_inventory(self, book_id):
-        return super().remove_book_from_inventory(book_id)
-    
+        pass
+
     def find_book(self, book_id):
-        return super().find_book(book_id)
+        pass
     
     def find_price(self, book_id):
-        return super().find_price(book_id)
+        pass
 
     def find_stock_count(self, book_id):
-        return super().find_stock_count(book_id)
+        pass
     
     def adjust_stock_count(self, book_id, amount_to_deduct):
-        return super().adjust_stock_count(book_id, amount_to_deduct)
+        pass
     
     def search_book_by_title(self, book_title):
-        return super().search_book_by_title(book_title)
+        pass
     
     def discount_book(self, book_id, discount):
-        return super().discount_book(book_id, discount)
+        pass
     
     def get_book_discount(self, book_id):
-        return super().get_book_discount(book_id)
+        pass
