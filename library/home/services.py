@@ -8,13 +8,13 @@ from library.domain.model import Book, Author, BooksInventory, Publisher
 
 def get_discounted_books(repo: AbstractRepository):
     books = repo.get_book_catalogue()
-    book_inv = repo.get_book_inventory()
+    # book_inv = repo.get_book_inventory()
 
     discounted_books = list()
 
     for book in books:
-        if book_inv.get_book_discount(book.book_id) != 0:
-            discounted_books.append(book_to_dict(book, book_inv))
+        if repo.get_book_discount(book.book_id) != 0:
+            discounted_books.append(book_to_dict(book, repo))
     
     return discounted_books
 
@@ -23,7 +23,7 @@ def get_discounted_books(repo: AbstractRepository):
 # Functions to convert model entities to dicts
 # ============================================
 
-def book_to_dict(book: Book, book_inv: BooksInventory):
+def book_to_dict(book: Book, repo: AbstractRepository):
     book_dict = {
         'id': book.book_id,
         'title': book.title,
@@ -33,9 +33,9 @@ def book_to_dict(book: Book, book_inv: BooksInventory):
         'authors': authors_to_dict(book.authors),
         'ebook': book.ebook,
         'num_pages': book.num_pages,
-        'price': book_inv.find_price(book.book_id),
-        'stock_count':book_inv.find_stock_count(book.book_id),
-        'discount':book_inv.get_book_discount(book.book_id)
+        'price': repo.find_price(book.book_id),
+        'stock_count':repo.find_stock_count(book.book_id),
+        'discount':repo.get_book_discount(book.book_id)
     }
     return book_dict
 

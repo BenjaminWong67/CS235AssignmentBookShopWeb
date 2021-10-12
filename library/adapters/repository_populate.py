@@ -14,11 +14,11 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     books_data = BooksJSONReader(authors_data_path, book_data_path)
     books_data.read_json_files()
 
-    book_inventory = repo.get_book_inventory()
+    # book_inventory = repo.get_book_inventory()
 
     for book in books_data.dataset_of_books:
         price, stock_count = random_book_price_and_stock_count()
-        book_inventory.add_book(book, price, stock_count)
+        repo.add_book_to_inventory(book, price, stock_count)
         repo.add_book(book)
     
     three_random_book_discount(repo)
@@ -27,7 +27,7 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
 def three_random_book_discount(repo: AbstractRepository):
     book_count = repo.get_number_of_books()
     book_catalogue = repo.get_book_catalogue()
-    book_inv = repo.get_book_inventory()
+    # book_inv = repo.get_book_inventory()
     quantity = 3
 
     if quantity >= book_count:
@@ -37,7 +37,7 @@ def three_random_book_discount(repo: AbstractRepository):
     random_books = random.sample(book_catalogue, quantity)
 
     for book in random_books:
-        book_inv.discount_book(book.book_id, 50)
+        repo.discount_book(book.book_id, 50)
 
 
 def random_book_price_and_stock_count():

@@ -53,9 +53,13 @@ def in_memory_repo():
     repo.add_book(book2)
     repo.add_book(book3)
 
-    repo.get_book_inventory().add_book(book1, 10, 1)
-    repo.get_book_inventory().add_book(book2, 20, 2)
-    repo.get_book_inventory().add_book(book3, 30, 3)
+    # repo.get_book_inventory().add_book(book1, 10, 1)
+    # repo.get_book_inventory().add_book(book2, 20, 2)
+    # repo.get_book_inventory().add_book(book3, 30, 3)
+
+    repo.add_book_to_inventory(book1, 10, 1)
+    repo.add_book_to_inventory(book2, 20, 2)
+    repo.add_book_to_inventory(book3, 30, 3)
 
     return repo
 
@@ -78,11 +82,17 @@ def small_memory_repo():
     repo.add_book(book2)
     repo.add_book(book3)
 
-    repo.get_book_inventory().add_book(book1, 10, 1)
-    repo.get_book_inventory().add_book(book2, 20, 2)
-    repo.get_book_inventory().add_book(book3, 30, 3)
+    # repo.get_book_inventory().add_book(book1, 10, 1)
+    # repo.get_book_inventory().add_book(book2, 20, 2)
+    # repo.get_book_inventory().add_book(book3, 30, 3)
 
-    repo.get_book_inventory().discount_book(book2.book_id, 50)
+    # repo.get_book_inventory().discount_book(book2.book_id, 50)
+
+    repo.add_book_to_inventory(book1, 10, 1)
+    repo.add_book_to_inventory(book2, 20, 2)
+    repo.add_book_to_inventory(book3, 30, 3)
+
+    repo.discount_book(book2.book_id, 50)
 
     return repo
 
