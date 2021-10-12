@@ -21,6 +21,7 @@ class NoMoreStockException(Exception):
     pass
 
 
+#TODO integrate this function into the repo more
 def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository):
     book_to_add = repo.get_book_inventory().find_book(book_id)
     user = repo.get_user(user_name)
@@ -39,6 +40,7 @@ def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository
         user.add_book_to_cart(book_to_add)
 
 
+#TODO integrate this function into the repo more
 def remove_book_from_user_cart(user_name, book_id, repo: AbstractRepository):
     book_to_remove = repo.get_book(book_id)
     user = repo.get_user(user_name)
@@ -76,6 +78,7 @@ def get_purchased_books(user_name: str, repo: AbstractRepository):
     return user_purchased_books_as_dict
 
 
+#TODO integrate this function into the repo more
 def purchase_books(user_name, repo: AbstractRepository):
     user = repo.get_user(user_name)
 
@@ -98,6 +101,7 @@ def get_book_stock(book_id: int, repo: AbstractRepository):
     return book_stock_count
 
 
+#TODO integrate this function into the repo more
 def adjust_stock_count(shoppingcart: ShoppingCart, repo: AbstractRepository):
     book_inventory = repo.get_book_inventory()
     books_to_purchase = shopping_cart_to_dict(shoppingcart, repo, book_inventory)

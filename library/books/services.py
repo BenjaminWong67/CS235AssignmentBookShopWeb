@@ -57,6 +57,8 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
         raise UnknownUserException
 
     review = make_review(review_text, rating, book_to_review, user_reviewing)
+
+    #update repo
     repo.add_review(review)
 
 
