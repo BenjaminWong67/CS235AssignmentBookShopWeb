@@ -129,3 +129,18 @@ class AbstractRepository(abc.ABC):
         """gets the discount from the book inv"""
         raise NotImplementedError
     
+    # below are the shopping cart methods
+    @abc.abstractmethod
+    def add_book_to_user_shoppingcart(self, user_name, book: Book):
+        """adds book to user shopping cart"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def remove_book_from_user_shoppingcart(self, user_name, book: Book):
+        """removes book from user shopping cart"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def purchase_books_in_user_shoppingcart(self, user_name):
+        """purchases books from user shopping cart"""
+        raise NotImplementedError

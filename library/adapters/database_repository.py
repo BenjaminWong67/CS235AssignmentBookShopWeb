@@ -85,7 +85,7 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_book_inventory(self):
         pass
 
-    def add_book_to_inventory(self, book, price, nr_books_in_stock):
+    def add_book_to_inventory(self, book: Book, price, nr_books_in_stock):
         pass
 
     def remove_book_from_inventory(self, book_id):
@@ -110,4 +110,14 @@ class SqlAlchemyRepository(AbstractRepository):
         pass
     
     def get_book_discount(self, book_id):
+        pass
+
+    # below are the shopping cart methods
+    def add_book_to_user_shoppingcart(self, user_name, book: Book):
+        pass
+    
+    def remove_book_from_user_shoppingcart(self, user_name, book: Book):
+        pass
+    
+    def purchase_books_in_user_shoppingcart(self, user_name):
         pass

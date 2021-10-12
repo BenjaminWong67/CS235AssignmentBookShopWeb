@@ -64,7 +64,7 @@ class MemoryRepository(AbstractRepository):
     def get_book_inventory(self):
         return self.__book_inventory
 
-    def add_book_to_inventory(self, book, price, nr_books_in_stock):
+    def add_book_to_inventory(self, book : Book, price, nr_books_in_stock):
         self.__book_inventory.add_book(book, price, nr_books_in_stock)
     
     def remove_book_from_inventory(self, book_id):
@@ -90,3 +90,16 @@ class MemoryRepository(AbstractRepository):
     
     def get_book_discount(self, book_id):
         return self.__book_inventory.get_book_discount(book_id)
+    
+    # below are the shopping cart methods
+    def add_book_to_user_shoppingcart(self, user_name, book: Book):
+        user = self.get_user(user_name)
+        user.add_book_to_cart(book)
+
+    def remove_book_from_user_shoppingcart(self, user_name, book: Book):
+        user = self.get_user(user_name)
+        user.remove_book_from_cart(book)
+
+    def purchase_books_in_user_shoppingcart(self, user_name):
+        user = self.get_user(user_name)
+        user.purchase_books_in_cart()
