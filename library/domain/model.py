@@ -307,6 +307,7 @@ class User:
                 self.purchased_books[book_id] += self.shoppingcart.books[book_id]
             else:
                 self.purchased_books[book_id] = self.shoppingcart.books[book_id]
+                
         self.shoppingcart.clear_cart()
 
     def __repr__(self):
