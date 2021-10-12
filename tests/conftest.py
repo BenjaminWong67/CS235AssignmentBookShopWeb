@@ -1,7 +1,7 @@
 import pytest
 
 from library import create_app
-from library.adapters import memory_repository
+from library.adapters.repository_populate import populate
 from library.adapters.memory_repository import MemoryRepository
 from library.domain.model import Author, Publisher, Review, User, Book
 
@@ -13,7 +13,7 @@ TEST_DATA_PATH = get_project_root() / "tests" / "data"
 @pytest.fixture
 def in_memory_repo():
     repo = MemoryRepository()
-    memory_repository.populate(TEST_DATA_PATH, repo)
+    populate(TEST_DATA_PATH, repo, False)
 
     list_of_users = [User("Ben", "123456"), User("Timothy", "987654")]
     for user in list_of_users:
