@@ -70,11 +70,6 @@ class AbstractRepository(abc.ABC):
         raise NotImplementedError
     
     @abc.abstractmethod
-    def get_book_inventory(self):
-        """returns the book inventory"""
-        raise NotImplementedError
-    
-    @abc.abstractmethod
     def get_number_of_books(self):
         """returns number of books in the repo"""
         raise NotImplementedError
@@ -83,3 +78,54 @@ class AbstractRepository(abc.ABC):
     def get_books_by_id(self, id_list: int):
         """returns list of books with the given list of ids"""
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_book_inventory(self):
+        """returns the book inventory"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def add_book_to_inventory(self, book, price, nr_books_in_stock):
+        """adds book to book inventory"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def remove_book_from_inventory(self, book_id):
+        """removes book from the book inventory"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def find_book(self, book_id):
+        """finds book in book inv"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def find_price(self, book_id):
+        """finds price in book inv"""
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def find_stock_count(self, book_id):
+        """finds stock count in book inv"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def adjust_stock_count(self, book_id, amount_to_deduct):
+        """adjusts stock count in book inv"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def search_book_by_title(self, book_title):
+        """searches book inv by book title"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def discount_book(self, book_id, discount):
+        """discounts the book in the book inv"""
+        raise NotImplementedError
+    
+    @abc.abstractmethod
+    def get_book_discount(self, book_id):
+        """gets the discount from the book inv"""
+        raise NotImplementedError
+    

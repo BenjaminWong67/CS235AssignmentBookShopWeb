@@ -31,10 +31,11 @@ def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository
 
     if user is None:
         raise UnknownUserException
-
-    if repo.get_book_inventory().find_stock_count(book_id) == 0:
+    
+    stock_count = repo.get_book_inventory().find_stock_count(book_id)
+    if stock_count == 0:
         raise OutOfStockException
-    elif repo.get_book_inventory().find_stock_count(book_id) == user.shoppingcart.quantity_of_book(book_id):
+    elif stock_count == user.shoppingcart.quantity_of_book(book_id):
         raise NoMoreStockException
     else:
         user.add_book_to_cart(book_to_add)

@@ -393,6 +393,7 @@ class BooksInventory:
     def remove_book(self, book_id: int):
         self.__books.pop(book_id)
         self.__prices.pop(book_id)
+        self.__discount.pop(book_id)
         self.__stock_count.pop(book_id)
 
     def find_book(self, book_id: int):

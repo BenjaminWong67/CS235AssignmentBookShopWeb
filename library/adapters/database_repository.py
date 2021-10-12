@@ -75,11 +75,38 @@ class SqlAlchemyRepository(AbstractRepository):
     def add_user(self, user):
         pass
 
-    def get_book_inventory(self):
-        pass
-
     def get_number_of_books(self):
         pass
 
     def get_books_by_id(self, id_list: int):
         pass
+
+    def get_book_inventory(self):
+        pass
+
+    def add_book_to_inventory(self, book, price, nr_books_in_stock):
+        return super().add_book_to_inventory(book, price, nr_books_in_stock)
+
+    def remove_book_from_inventory(self, book_id):
+        return super().remove_book_from_inventory(book_id)
+    
+    def find_book(self, book_id):
+        return super().find_book(book_id)
+    
+    def find_price(self, book_id):
+        return super().find_price(book_id)
+
+    def find_stock_count(self, book_id):
+        return super().find_stock_count(book_id)
+    
+    def adjust_stock_count(self, book_id, amount_to_deduct):
+        return super().adjust_stock_count(book_id, amount_to_deduct)
+    
+    def search_book_by_title(self, book_title):
+        return super().search_book_by_title(book_title)
+    
+    def discount_book(self, book_id, discount):
+        return super().discount_book(book_id, discount)
+    
+    def get_book_discount(self, book_id):
+        return super().get_book_discount(book_id)
