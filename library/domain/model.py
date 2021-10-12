@@ -307,6 +307,7 @@ class User:
                 self.purchased_books[book_id] += self.shoppingcart.books[book_id]
             else:
                 self.purchased_books[book_id] = self.shoppingcart.books[book_id]
+                
         self.shoppingcart.clear_cart()
 
     def __repr__(self):
@@ -393,6 +394,7 @@ class BooksInventory:
     def remove_book(self, book_id: int):
         self.__books.pop(book_id)
         self.__prices.pop(book_id)
+        self.__discount.pop(book_id)
         self.__stock_count.pop(book_id)
 
     def find_book(self, book_id: int):
@@ -479,13 +481,16 @@ def make_review(review_text: str, rating: int, book_to_review: Book, user: User)
     return review
 
 
-def get_total_price(dict_of_book_ids, inventory: BooksInventory):
+def get_total_price(dict_of_book_ids, repo):
     total_price_of_order = 0
+    
     for book_id in dict_of_book_ids:
-        discount = inventory.get_book_discount(book_id)
-        price_of_book = inventory.find_price(book_id)
+        discount = repo.get_book_discount(book_id)
+        price_of_book = repo.find_price(book_id)
+
         if discount == 0:
             total_price_of_order += dict_of_book_ids[book_id] * price_of_book
         else:
             total_price_of_order += dict_of_book_ids[book_id] * price_of_book * discount / 100
+
     return total_price_of_order

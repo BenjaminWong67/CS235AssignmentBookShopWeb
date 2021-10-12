@@ -18,26 +18,26 @@ class KeyErrorException(Exception):
 
 def get_book(book_id: int, repo: AbstractRepository):
     book = repo.get_book(book_id)
-    book_inv = repo.get_book_inventory()
+    # book_inv = repo.get_book_inventory()
 
     if book is None:
         raise NonExistentBookException
 
-    return book_to_dict(book, book_inv)
+    return book_to_dict(book, repo)
 
 
 def get_book_catalogue(repo: AbstractRepository, books_per_page: int, cursor: int):
     books_to_show = list()
 
     book_list = repo.get_book_catalogue()
-    book_inv = repo.get_book_inventory()
+    # book_inv = repo.get_book_inventory()
 
     if cursor + books_per_page < len(book_list):
         for i in range(cursor, cursor + books_per_page):
-            books_to_show.append(book_to_dict(book_list[i], book_inv))
+            books_to_show.append(book_to_dict(book_list[i], repo))
     else:
         for j in range(cursor, len(book_list)):
-            books_to_show.append(book_to_dict(book_list[j], book_inv))
+            books_to_show.append(book_to_dict(book_list[j], repo))
 
     return books_to_show
 
@@ -57,6 +57,8 @@ def add_review(book_id: int, review_text: str, rating: int, repo: AbstractReposi
         raise UnknownUserException
 
     review = make_review(review_text, rating, book_to_review, user_reviewing)
+
+    #update repo
     repo.add_review(review)
 
 
@@ -74,7 +76,7 @@ def get_reviews_for_book(book_id, repo: AbstractRepository):
 # ============================================
 
 
-def book_to_dict(book: Book, book_inv: BooksInventory):
+def book_to_dict(book: Book, repo: AbstractRepository):
     book_dict = {
         'id': book.book_id,
         'title': book.title,
@@ -85,9 +87,9 @@ def book_to_dict(book: Book, book_inv: BooksInventory):
         'ebook': book.ebook,
         'num_pages': book.num_pages,
         'reviews': reviews_to_dict(book.reviews),
-        'price':book_inv.find_price(book.book_id),
-        'stock_count':book_inv.find_stock_count(book.book_id),
-        'discount':book_inv.get_book_discount(book.book_id)
+        'price':repo.find_price(book.book_id),
+        'stock_count':repo.find_stock_count(book.book_id),
+        'discount':repo.get_book_discount(book.book_id)
     }
     return book_dict
 

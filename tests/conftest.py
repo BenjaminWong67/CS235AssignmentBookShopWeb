@@ -1,7 +1,7 @@
 import pytest
 
 from library import create_app
-from library.adapters import memory_repository
+from library.adapters.repository_populate import populate
 from library.adapters.memory_repository import MemoryRepository
 from library.domain.model import Author, Publisher, Review, User, Book
 
@@ -13,7 +13,7 @@ TEST_DATA_PATH = get_project_root() / "tests" / "data"
 @pytest.fixture
 def in_memory_repo():
     repo = MemoryRepository()
-    memory_repository.populate(TEST_DATA_PATH, repo)
+    populate(TEST_DATA_PATH, repo, False)
 
     list_of_users = [User("Ben", "123456"), User("Timothy", "987654")]
     for user in list_of_users:
@@ -53,9 +53,13 @@ def in_memory_repo():
     repo.add_book(book2)
     repo.add_book(book3)
 
-    repo.get_book_inventory().add_book(book1, 10, 1)
-    repo.get_book_inventory().add_book(book2, 20, 2)
-    repo.get_book_inventory().add_book(book3, 30, 3)
+    # repo.get_book_inventory().add_book(book1, 10, 1)
+    # repo.get_book_inventory().add_book(book2, 20, 2)
+    # repo.get_book_inventory().add_book(book3, 30, 3)
+
+    repo.add_book_to_inventory(book1, 10, 1)
+    repo.add_book_to_inventory(book2, 20, 2)
+    repo.add_book_to_inventory(book3, 30, 3)
 
     return repo
 
@@ -78,11 +82,17 @@ def small_memory_repo():
     repo.add_book(book2)
     repo.add_book(book3)
 
-    repo.get_book_inventory().add_book(book1, 10, 1)
-    repo.get_book_inventory().add_book(book2, 20, 2)
-    repo.get_book_inventory().add_book(book3, 30, 3)
+    # repo.get_book_inventory().add_book(book1, 10, 1)
+    # repo.get_book_inventory().add_book(book2, 20, 2)
+    # repo.get_book_inventory().add_book(book3, 30, 3)
 
-    repo.get_book_inventory().discount_book(book2.book_id, 50)
+    # repo.get_book_inventory().discount_book(book2.book_id, 50)
+
+    repo.add_book_to_inventory(book1, 10, 1)
+    repo.add_book_to_inventory(book2, 20, 2)
+    repo.add_book_to_inventory(book3, 30, 3)
+
+    repo.discount_book(book2.book_id, 50)
 
     return repo
 
