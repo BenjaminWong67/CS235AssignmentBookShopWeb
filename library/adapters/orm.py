@@ -27,7 +27,7 @@ authors_table = Table(
 books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('book_id', Integer, nullable=False),
+    Column('book_id', Integer, unique=True, nullable=False),
     Column('publisher_id', ForeignKey('publishers.id')),
     Column('title', String(500), unique=True, nullable=False),
     Column('description', String(2000)),
@@ -66,23 +66,23 @@ coauthors_table = Table(
 purchased_books_table = Table(
     'purchased_books', metadata,
     Column('id', primary_key=True, autoincrement=True),
-    Column('user_id', ForeignKey('users.id')),
-    Column('book_id', ForeignKey('books.id')),
-    Column('quantity', Integer, nullable=False)
+    Column('user', ForeignKey('users.id')),
+    Column('book', ForeignKey('books.id')),
+    Column('quantity', Integer)
 )
 
-
-# I dont think this needs to be part of the ORM
 shopping_cart_table = Table(
     'shopping_cart', metadata,
     Column('id', primary_key=True, autoincrement=True),
-    Column('user_id', ForeignKey('users.id')),
-    Column('book_id', ForeignKey('books.id')),
-    Column('quantity', Integer, nullable=False)
+    Column('user', ForeignKey('users.id')),
+    Column('book', ForeignKey('books.id')),
+    Column('quantity', Integer)
 )
 
 
 def map_model_to_tables():
+    pass
+    """
     mapper(model.Publisher, publisher_table, properties={
         '_Publisher__name' : publisher_table.c.name
     })
@@ -123,3 +123,5 @@ def map_model_to_tables():
         '_Review__user' : reviews_table.c.user,
         '_Review__book' : reviews_table.c.book,
     })
+    """
+    
