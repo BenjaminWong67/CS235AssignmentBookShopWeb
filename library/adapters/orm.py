@@ -66,7 +66,7 @@ coauthors_table = Table(
 
 purchased_books_table = Table(
     'purchased_books', metadata,
-    Column('id', primary_key=True, autoincrement=True),
+    Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user', ForeignKey('users.id')),
     Column('book', ForeignKey('books.id')),
     Column('quantity', Integer)
@@ -74,7 +74,7 @@ purchased_books_table = Table(
 
 shopping_cart_table = Table(
     'shopping_cart', metadata,
-    Column('id', primary_key=True, autoincrement=True),
+    Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user', ForeignKey('users.id')),
     Column('book', ForeignKey('books.id')),
     Column('quantity', Integer)
@@ -83,8 +83,7 @@ shopping_cart_table = Table(
 
 
 def map_model_to_tables():
-    pass
-    """
+
     mapper(model.Publisher, publisher_table, properties={
         '_Publisher__name' : publisher_table.c.name
     })
@@ -125,5 +124,4 @@ def map_model_to_tables():
         '_Review__user' : reviews_table.c.user,
         '_Review__book' : reviews_table.c.book,
     })
-    """
     
