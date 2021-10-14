@@ -81,8 +81,7 @@ shopping_cart_table = Table(
 
 
 def map_model_to_tables():
-    pass
-    """
+
     mapper(model.Publisher, publisher_table, properties={
         '_Publisher__name' : publisher_table.c.name
     })
@@ -123,5 +122,4 @@ def map_model_to_tables():
         '_Review__user' : reviews_table.c.user,
         '_Review__book' : reviews_table.c.book,
     })
-    """
     
