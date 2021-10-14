@@ -33,6 +33,7 @@ books_table = Table(
     Column('description', String(2000)),
     Column('release_year', Integer),
     Column('ebook', Boolean),
+    Column('num_pages', Integer),
     Column('prices', Integer), # not sure if  this should be here
     Column('discount', Integer), # not sure if  this should be here
     Column('stock_count', Integer) # not sure if  this should be here
@@ -80,8 +81,10 @@ shopping_cart_table = Table(
 )
 
 
-def map_model_to_tables():
 
+def map_model_to_tables():
+    pass
+    """
     mapper(model.Publisher, publisher_table, properties={
         '_Publisher__name' : publisher_table.c.name
     })
@@ -122,4 +125,5 @@ def map_model_to_tables():
         '_Review__user' : reviews_table.c.user,
         '_Review__book' : reviews_table.c.book,
     })
+    """
     
