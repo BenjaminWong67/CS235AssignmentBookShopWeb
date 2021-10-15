@@ -104,11 +104,11 @@ def map_model_to_tables():
         '_Author__unique_id' : authors_table.c.id,
         '_Author__full_name' : authors_table.c.full_name,
         '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
-                        secondary=coauthors_table,
-                        primaryjoin=authors_table.c.id==coauthors_table.c.author_id,
-                        secondaryjoin=authors_table.c.id==coauthors_table.c.coauthor_id,
-                        backref="left_nodes",
-                        collection_class=set
+                                secondary=coauthors_table,
+                                primaryjoin=authors_table.c.id==coauthors_table.c.author_id,
+                                secondaryjoin=authors_table.c.id==coauthors_table.c.coauthor_id,
+                                backref="left_nodes",
+                                collection_class=set
         )
     })
 
