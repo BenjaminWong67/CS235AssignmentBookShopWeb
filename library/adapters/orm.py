@@ -2,7 +2,7 @@ from sqlalchemy import (
     Table, MetaData, Column, Integer, String, Date, DateTime,
     ForeignKey
 )
-from sqlalchemy.orm import backref, mapper, relationship, synonym
+from sqlalchemy.orm import mapper, relationship
 from sqlalchemy.sql.expression import null
 from sqlalchemy.sql.sqltypes import Boolean
 
@@ -57,11 +57,25 @@ reviews_table = Table(
     Column('book', ForeignKey('books.id'))
 )
 
+# relationship tables
+
+book_authors_table = Table(
+    'book_authors', metadata,
+    Column('book_id', Integer, ForeignKey('books.id'), primary_key=True),
+    Column('author_id', Integer, ForeignKey('authors.id'), primary_key=True)
+)
+
 coauthors_table = Table(
     'coauthors', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('author_id', ForeignKey('authors.id')),
-    Column('coauthor_id', ForeignKey('authors.id'))
+    # Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('author_id', Integer, ForeignKey('authors.id'), primary_key=True),
+    Column('coauthor_id', Integer, ForeignKey('authors.id'), primary_key=True)
+)
+
+user_readbooks_table = Table(
+    'user_readbooks', metadata,
+    Column('user_id', Integer, ForeignKey('users.id'), primary_key=True),
+    Column('book_id', Integer, ForeignKey('books.id'), primary_key=True)
 )
 
 purchased_books_table = Table(
@@ -91,9 +105,13 @@ def map_model_to_tables():
     mapper(model.Author, authors_table, properties={
         '_Author__unique_id' : authors_table.c.author_id,
         '_Author__full_name' : authors_table.c.full_name,
-        '_Author__authors_this_one_has_worked_with' : relationship(model.Author, 
-                                                        secondary=coauthors_table,
-                                                        back_populates='_Author__authors_this_one_has_worked_with')
+        # '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
+                        #secondary=coauthors_table,
+                        #primaryjoin=id==coauthors_table.c.author_id,
+                        #secondaryjoin=id==coauthors_table.c.coauthor_id,
+                        #backref="left_nodes",
+                        # collection_class=set
+                        # )
     })
 
     mapper(model.Book, books_table, properties={
@@ -104,17 +122,20 @@ def map_model_to_tables():
         '_Book__release_year' : books_table.c.release_year,
         '_Book__ebook' : books_table.c.ebook,
         '_Book__num_pages' : books_table.c.num_pages,
-        '_Book__authors' : relationship(model.Author),
+        '_Book__authors' : relationship(model.Author,
+                                    secondary=book_authors_table),
         '_Book__reviews' : relationship(model.Review)
     })
-
+    
     mapper(model.User, users_table, properties={
         '_User__user_name' : users_table.c.user_name,
         '_User_password' : users_table.c.password,
-        '_User__read_books' : relationship(model.Book),
+        '_User__read_books' : relationship(model.Book,
+                                    secondary=user_readbooks_table),
         '_User__reviews' : relationship(model.Review),
         '_User__pages_read' : users_table.c.pages_read,
-        '_User__purchased_books' : relationship(model.Book, secondary=purchased_books_table)
+        # note when grabbing the user we need to make sure... 
+        # we grab the purchased books using sql statements
     })
 
     mapper(model.Review, reviews_table, properties={

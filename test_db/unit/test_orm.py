@@ -16,6 +16,7 @@ def insert_user(empty_session, values=None):
                                 {'user_name': new_name}).fetchone()
     return row[0]
 
+
 def insert_users(empty_session, values):
     for value in values:
         empty_session.execute('INSERT INTO users (user_name, password) VALUES (:user_name, :password)',
@@ -23,6 +24,7 @@ def insert_users(empty_session, values):
     rows = list(empty_session.execute('SELECT id from users'))
     keys = tuple(row[0] for row in rows)
     return keys
+
 
 def make_user():
     user = User("Andrew", "111")
@@ -40,11 +42,3 @@ def test_loading_of_users(empty_session):
         User("Cindy", "999")
     ]
     assert empty_session.query(User).all() == expected
-
-def test_saving_of_users(empty_session):
-    user = make_user()
-    empty_session.add(user)
-    empty_session.commit()
-
-    rows = list(empty_session.execute('SELECT user_name, password FROM users'))
-    assert rows == [("Andrew", "111")]
