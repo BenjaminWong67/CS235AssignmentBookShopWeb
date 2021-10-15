@@ -20,14 +20,12 @@ publisher_table = Table(
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('author_id', Integer, unique=True, nullable=False),
     Column('full_name', String(255), nullable=False)
 )
 
 books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('book_id', Integer, unique=True, nullable=False),
     Column('publisher_id', ForeignKey('publishers.id')),
     Column('title', String(500), unique=True, nullable=False),
     Column('description', String(2000)),
@@ -103,15 +101,15 @@ def map_model_to_tables():
     })
 
     mapper(model.Author, authors_table, properties={
-        '_Author__unique_id' : authors_table.c.author_id,
+        '_Author__unique_id' : authors_table.c.id,
         '_Author__full_name' : authors_table.c.full_name,
-        # '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
-                        #secondary=coauthors_table,
-                        #primaryjoin=id==coauthors_table.c.author_id,
-                        #secondaryjoin=id==coauthors_table.c.coauthor_id,
-                        #backref="left_nodes",
-                        # collection_class=set
-                        # )
+        '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
+                        secondary=coauthors_table,
+                        primaryjoin=authors_table.c.id==coauthors_table.c.author_id,
+                        secondaryjoin=authors_table.c.id==coauthors_table.c.coauthor_id,
+                        backref="left_nodes",
+                        collection_class=set
+        )
     })
 
     mapper(model.Book, books_table, properties={
