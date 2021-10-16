@@ -57,14 +57,9 @@ class SqlAlchemyRepository(AbstractRepository):
     
     def add_book(self, book: Book):
         with self._session_cm as scm:
-            try:
-                scm.session.add(book)
-                scm.commit()
-            except IntegrityError:
-                #Don't add duplicate authors
-                pass
-
-            print("Error add")
+            scm.session.add(book)
+            scm.commit()
+        print("Error add")
 
     def get_book(self, book_id: int) -> Book:
         book = None
@@ -74,7 +69,6 @@ class SqlAlchemyRepository(AbstractRepository):
         except NoResultFound:
             # Ignore any exception and return None.
             pass
-
         return book
 
     def get_book_catalogue(self):
