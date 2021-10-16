@@ -28,13 +28,13 @@ books_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('publisher_id', ForeignKey('publishers.id')),
     Column('title', String(500), unique=True, nullable=False),
-    Column('description', String(2000)),
-    Column('release_year', Integer),
-    Column('ebook', Boolean),
-    Column('num_pages', Integer),
-    Column('prices', Integer), # not sure if  this should be here
-    Column('discount', Integer), # not sure if  this should be here
-    Column('stock_count', Integer) # not sure if  this should be here
+    Column('description', String(2000), nullable=True),
+    Column('release_year', Integer, nullable=True),
+    Column('ebook', Boolean, nullable=True),
+    Column('num_pages', Integer, nullable=True),
+    Column('prices', Integer, nullable=True), # not sure if  this should be here
+    Column('discount', Integer, nullable=True), # not sure if  this should be here
+    Column('stock_count', Integer, nullable=True) # not sure if  this should be here
 )
 
 users_table = Table(
@@ -120,14 +120,13 @@ def map_model_to_tables():
         '_Book__release_year' : books_table.c.release_year,
         '_Book__ebook' : books_table.c.ebook,
         '_Book__num_pages' : books_table.c.num_pages,
-        '_Book__authors' : relationship(model.Author,
-                                    secondary=book_authors_table),
+        '_Book__authors' : relationship(model.Author,secondary=book_authors_table),
         '_Book__reviews' : relationship(model.Review)
     })
     
     mapper(model.User, users_table, properties={
         '_User__user_name' : users_table.c.user_name,
-        '_User_password' : users_table.c.password,
+        '_User__password' : users_table.c.password,
         '_User__read_books' : relationship(model.Book,
                                     secondary=user_readbooks_table),
         '_User__reviews' : relationship(model.Review),
