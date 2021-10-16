@@ -65,9 +65,9 @@ book_authors_table = Table(
 
 coauthors_table = Table(
     'coauthors', metadata,
-    #Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('author_id', Integer, ForeignKey('authors.id'), primary_key=True),
-    Column('coauthor_id', Integer, ForeignKey('authors.id'), primary_key=True)
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('author_id', Integer, ForeignKey('authors.id')),
+    Column('coauthor_id', Integer, ForeignKey('authors.id'))
 )
 
 user_readbooks_table = Table(

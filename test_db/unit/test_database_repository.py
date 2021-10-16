@@ -32,5 +32,4 @@ def test_repository_can_add_book(session_factory):
 
     repo.add_book(book)
 
-
     assert repo.get_book(12345) == book
