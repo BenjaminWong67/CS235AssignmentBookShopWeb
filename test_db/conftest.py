@@ -48,6 +48,7 @@ def session_factory():
     yield session_factory
     metadata.drop_all(engine)
 
+
 @pytest.fixture
 def empty_session():
     clear_mappers()
