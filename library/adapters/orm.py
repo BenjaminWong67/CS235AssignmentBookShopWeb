@@ -59,8 +59,9 @@ reviews_table = Table(
 
 book_authors_table = Table(
     'book_authors', metadata,
-    Column('book_id', Integer, ForeignKey('books.id'), primary_key=True),
-    Column('author_id', Integer, ForeignKey('authors.id'), primary_key=True)
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('book_id', Integer, ForeignKey('books.id')),
+    Column('author_id', Integer, ForeignKey('authors.id'))
 )
 
 coauthors_table = Table(
@@ -72,8 +73,9 @@ coauthors_table = Table(
 
 user_readbooks_table = Table(
     'user_readbooks', metadata,
-    Column('user_id', Integer, ForeignKey('users.id'), primary_key=True),
-    Column('book_id', Integer, ForeignKey('books.id'), primary_key=True)
+    Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('user_id', Integer, ForeignKey('users.id')),
+    Column('book_id', Integer, ForeignKey('books.id'))
 )
 
 purchased_books_table = Table(
