@@ -120,7 +120,7 @@ def map_model_to_tables():
         '_Book__release_year' : books_table.c.release_year,
         '_Book__ebook' : books_table.c.ebook,
         '_Book__num_pages' : books_table.c.num_pages,
-        '_Book__authors' : relationship(model.Author, secondary=book_authors_table),
+        #'_Book__authors' : relationship(model.Author, secondary=book_authors_table),
         '_Book__reviews' : relationship(model.Review)
     })
     
