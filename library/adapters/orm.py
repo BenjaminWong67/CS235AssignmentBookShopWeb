@@ -20,6 +20,7 @@ publisher_table = Table(
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
+    Column('author_id', Integer),
     Column('full_name', String(255), nullable=False)
 )
 
@@ -103,12 +104,12 @@ def map_model_to_tables():
     })
 
     mapper(model.Author, authors_table, properties={
-        '_Author__unique_id' : authors_table.c.id,
+        '_Author__unique_id' : authors_table.c.author_id,
         '_Author__full_name' : authors_table.c.full_name,
         '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
                                 secondary=coauthors_table,
-                                primaryjoin=authors_table.c.id==coauthors_table.c.author_id,
-                                secondaryjoin=authors_table.c.id==coauthors_table.c.coauthor_id,
+                                primaryjoin=authors_table.c.author_id==coauthors_table.c.author_id,
+                                secondaryjoin=authors_table.c.author_id==coauthors_table.c.coauthor_id,
                                 backref="left_nodes",
                                 collection_class=set
         )
@@ -131,7 +132,7 @@ def map_model_to_tables():
         '_User__read_books' : relationship(model.Book,
                                     secondary=user_readbooks_table),
         '_User__reviews' : relationship(model.Review),
-        '_User__pages_read' : users_table.c.pages_read,
+        '_User__pages_read' : users_table.c.pages_read
         # note when grabbing the user we need to make sure... 
         # we grab the purchased books using sql statements
     })
@@ -139,8 +140,6 @@ def map_model_to_tables():
     mapper(model.Review, reviews_table, properties={
         '_Review__review_text' : reviews_table.c.review_text,
         '_Review__rating' : reviews_table.c.rating,
-        '_Review__timestamp' : reviews_table.c.timestamp,
-        '_Review__user' : reviews_table.c.user,
-        '_Review__book' : reviews_table.c.book,
+        '_Review__timestamp' : reviews_table.c.timestamp
     })
     
