@@ -26,7 +26,7 @@ authors_table = Table(
 books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    #Column('publisher_id', ForeignKey('publishers.id')),
+    Column('publisher_id', Integer, ForeignKey('publishers.id')),
     Column('title', String(500), unique=True, nullable=False),
     Column('description', String(2000), nullable=True),
     Column('release_year', Integer, nullable=True),
@@ -51,8 +51,8 @@ reviews_table = Table(
     Column('review_text', String(1000), nullable=False),
     Column('rating', Integer, nullable=False),
     Column('timestamp', DateTime, nullable=False),
-    Column('user', ForeignKey('users.id')),
-    Column('book', ForeignKey('books.id'))
+    Column('user', Integer, ForeignKey('users.id')),
+    Column('book', Integer, ForeignKey('books.id'))
 )
 
 # relationship tables
@@ -65,7 +65,7 @@ book_authors_table = Table(
 
 coauthors_table = Table(
     'coauthors', metadata,
-    # Column('id', Integer, primary_key=True, autoincrement=True),
+    #Column('id', Integer, primary_key=True, autoincrement=True),
     Column('author_id', Integer, ForeignKey('authors.id'), primary_key=True),
     Column('coauthor_id', Integer, ForeignKey('authors.id'), primary_key=True)
 )
@@ -79,16 +79,16 @@ user_readbooks_table = Table(
 purchased_books_table = Table(
     'purchased_books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('user', ForeignKey('users.id')),
-    Column('book', ForeignKey('books.id')),
+    Column('user', Integer,ForeignKey('users.id')),
+    Column('book', Integer,ForeignKey('books.id')),
     Column('quantity', Integer)
 )
 
 shopping_cart_table = Table(
     'shopping_cart', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('user', ForeignKey('users.id')),
-    Column('book', ForeignKey('books.id')),
+    Column('user', Integer,ForeignKey('users.id')),
+    Column('book', Integer,ForeignKey('books.id')),
     Column('quantity', Integer)
 )
 
@@ -114,7 +114,6 @@ def map_model_to_tables():
 
     mapper(model.Book, books_table, properties={
         '_Book__book_id' : books_table.c.id,
-        #'_Book__publisher' : books_table.c.publisher_id,
         '_Book__title' : books_table.c.title,
         '_Book__description' : books_table.c.description,
         '_Book__release_year' : books_table.c.release_year,
