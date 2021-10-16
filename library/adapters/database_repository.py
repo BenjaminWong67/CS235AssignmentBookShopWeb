@@ -2,6 +2,7 @@ from datetime import date
 from typing import List
 
 from sqlalchemy import desc, asc
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 
 from sqlalchemy.orm import scoped_session
@@ -56,8 +57,13 @@ class SqlAlchemyRepository(AbstractRepository):
     
     def add_book(self, book: Book):
         with self._session_cm as scm:
-            scm.session.add(book)
-            scm.commit()
+            try:
+                scm.session.add(book)
+                scm.commit()
+            except IntegrityError:
+                #Don't add duplicate authors
+                pass
+
             print("Error add")
 
     def get_book(self, book_id: int) -> Book:

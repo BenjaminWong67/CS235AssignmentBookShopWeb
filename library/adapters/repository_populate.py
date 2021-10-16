@@ -17,7 +17,7 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     # book_inventory = repo.get_book_inventory()
 
     for book in books_data.dataset_of_books:
-        print(book)
+        print(book.authors)
         price, stock_count = random_book_price_and_stock_count()
         repo.add_book_to_inventory(book, price, stock_count)
         repo.add_book(book)
