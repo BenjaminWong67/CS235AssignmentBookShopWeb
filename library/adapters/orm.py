@@ -26,7 +26,7 @@ authors_table = Table(
 books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('publisher_id', ForeignKey('publishers.id')),
+    #Column('publisher_id', ForeignKey('publishers.id')),
     Column('title', String(500), unique=True, nullable=False),
     Column('description', String(2000), nullable=True),
     Column('release_year', Integer, nullable=True),
@@ -114,13 +114,13 @@ def map_model_to_tables():
 
     mapper(model.Book, books_table, properties={
         '_Book__book_id' : books_table.c.id,
-        '_Book__publisher' : books_table.c.publisher_id,
+        #'_Book__publisher' : books_table.c.publisher_id,
         '_Book__title' : books_table.c.title,
         '_Book__description' : books_table.c.description,
         '_Book__release_year' : books_table.c.release_year,
         '_Book__ebook' : books_table.c.ebook,
         '_Book__num_pages' : books_table.c.num_pages,
-        '_Book__authors' : relationship(model.Author,secondary=book_authors_table),
+        '_Book__authors' : relationship(model.Author, secondary=book_authors_table),
         '_Book__reviews' : relationship(model.Review)
     })
     

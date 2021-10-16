@@ -15,12 +15,13 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     books_data.read_json_files()
 
     # book_inventory = repo.get_book_inventory()
-    """
+
     for book in books_data.dataset_of_books:
+        print(book)
         price, stock_count = random_book_price_and_stock_count()
         repo.add_book_to_inventory(book, price, stock_count)
         repo.add_book(book)
-    """
+
 
     #three_random_book_discount(repo)
 

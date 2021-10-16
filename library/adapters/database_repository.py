@@ -56,9 +56,9 @@ class SqlAlchemyRepository(AbstractRepository):
     
     def add_book(self, book: Book):
         with self._session_cm as scm:
-            print("Error add")
             scm.session.add(book)
             scm.commit()
+            print("Error add")
 
     def get_book(self, book_id: int) -> Book:
         book = None
