@@ -1,6 +1,6 @@
 import pytest
 
-from library.domain.model import User
+from library.domain.model import User, Publisher
 
 def insert_user(empty_session, values=None):
     new_name = "Andrew"
@@ -42,3 +42,12 @@ def test_loading_of_users(empty_session):
         User("Cindy", "999")
     ]
     assert empty_session.query(User).all() == expected
+
+
+def test_loading_publisher(empty_session):
+    pub = Publisher("12345")
+    with empty_session as scm:
+        scm.add(pub)
+        scm.commit()
+    
+    assert empty_session.query(Publisher).all() == [Publisher("12345")]
