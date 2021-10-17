@@ -259,17 +259,9 @@ class User:
     def password(self) -> str:
         return self.__password
 
-    #@property
-    #def read_books(self) -> List[Book]:
-     #   return self.__read_books
-
     @property
     def reviews(self) -> List["Review"]:
         return self.__reviews
-
-    #@property
-    #def pages_read(self) -> int:
-     #   return self.__pages_read
 
     @property
     def shoppingcart(self):

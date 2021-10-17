@@ -8,6 +8,9 @@ from library.domain.model import Book, User
 
 
 # populates the memory repository with the provided json files
+from library.domain.model import User
+
+
 def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     authors_data_path = str(Path(data_path) / "comic_books_excerpt.json")
     book_data_path = str(Path(data_path) / "book_authors_excerpt.json")

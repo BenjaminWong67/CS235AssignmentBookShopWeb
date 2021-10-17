@@ -6,6 +6,8 @@ import library.utilities.utilities as utilities
 import library.home.services as services
 
 # configure blueprint
+from library.domain.model import Book
+
 home_blueprint = Blueprint(
     "home_bp", __name__)
 
@@ -14,7 +16,9 @@ home_blueprint = Blueprint(
 def home():
 
     form_search = utilities.SearchForm()
+
     featured_books = utilities.get_featured_books(3, repo.repo_instance)
+
 
     discounted_books = services.get_discounted_books(repo.repo_instance)
 

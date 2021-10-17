@@ -1,7 +1,7 @@
 from datetime import date
 from typing import List
 
-from sqlalchemy import desc, asc
+from sqlalchemy import desc, asc, update, insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy import update, column
@@ -75,7 +75,8 @@ class SqlAlchemyRepository(AbstractRepository):
         return book
 
     def get_book_catalogue(self):
-        pass
+        books = self._session_cm.session.query(Book).all()
+        return books
 
     def add_review(self, review: Review):
         with self._session_cm as scm:
@@ -108,7 +109,8 @@ class SqlAlchemyRepository(AbstractRepository):
             scm.commit()
 
     def get_number_of_books(self):
-        pass
+        books = self.get_book_catalogue()
+        return len(books)
 
     def get_books_by_id(self, id_list: int):
         pass
@@ -120,6 +122,7 @@ class SqlAlchemyRepository(AbstractRepository):
                                 filter_by(id = book_id).\
                                 update(dict(stock_count=nr_books_in_stock, prices=price, discount=0))
             scm.commit()
+
 
     def remove_book_from_inventory(self, book_id):
         with self._session_cm as scm:
@@ -178,13 +181,47 @@ class SqlAlchemyRepository(AbstractRepository):
 
     # below are the shopping cart methods
     def add_book_to_user_shoppingcart(self, user_name: str, book: Book):
-        pass
+        user = self.get_user(user_name)
+        book = self.get_book(book.book_id)
+        quantity = self._session_cm.session.execute('SELECT quantity FROM shopping_cart WHERE user=:user AND book=:book', {'user': user.id, 'book': book.book_id}).fetchone()
+        if quantity == None:
+            quantity = 1
+            self._session_cm.session.execute('INSERT INTO shopping_cart VALUES (:id,:user, :book, :quantity)',
+                                             {'id': None, 'user': user.id, 'book': book.book_id, 'quantity': quantity})
+        else:
+            quantity = quantity['quantity'] + 1
+            self._session_cm.session.execute('UPDATE shopping_cart SET quantity=:quantity WHERE book=:book AND user=:user',{'quantity':quantity ,'user': user.id, 'book': book.book_id})
+        self._session_cm.commit()
 
     def remove_book_from_user_shoppingcart(self, user_name, book: Book):
-        pass
+        user = self.get_user(user_name)
+        book = self.get_book(book.book_id)
+        quantity = self._session_cm.session.execute('SELECT quantity FROM shopping_cart WHERE user=:user AND book=:book', {'user': user.id, 'book': book.book_id}).fetchone()
+        if quantity == None or quantity == 0:
+            self._session_cm.session.execute('DELETE FROM shopping_cart WHERE book=:book AND user=:user', {'user': user.id, 'book': book.book_id})
+        else:
+            quantity = quantity['quantity'] - 1
+            self._session_cm.session.execute('UPDATE shopping_cart SET quantity=:quantity WHERE book=:book AND user=:user',{'quantity':quantity ,'user': user.id, 'book': book.book_id})
+        self._session_cm.commit()
+
     
     def purchase_books_in_user_shoppingcart(self, user_name):
-        pass
+        user = self.get_user(user_name)
+        shopping_cart = self.get_shopping_cart(user_name)
+        for book in shopping_cart.books:
+            quantity = self._session_cm.session.execute(
+                'SELECT quantity FROM purchased_books WHERE user=:user AND book=:book',
+                {'user': user.id, 'book': book}).fetchone()
+            if quantity == None:
+                self._session_cm.session.execute('INSERT INTO purchased_books VALUES (:id,:user, :book, :quantity)',
+                                                 {'id': None, 'user': user.id, 'book': book,
+                                                  'quantity': shopping_cart.books[book]})
+            else:
+                quantity = quantity['quantity'] + shopping_cart.books[book]
+                self._session_cm.session.execute(
+                    'UPDATE purchased_books SET quantity=:quantity WHERE book=:book AND user=:user',
+                    {'quantity': quantity, 'user': user.id, 'book': book})
+        self._session_cm.commit()
 
     def add_publisher(self, publisher:Publisher):
         with self._session_cm as scm:
@@ -195,3 +232,21 @@ class SqlAlchemyRepository(AbstractRepository):
         with self._session_cm as scm:
             scm.session.add(author_object)
             scm.commit()
+
+    def get_shopping_cart(self, user_name):
+        user = self.get_user(user_name)
+        resurrected_shopping_cart = ShoppingCart()
+        shopping_cart_from_database = self._session_cm.session.execute('SELECT book, quantity FROM shopping_cart WHERE user=:user', {'user': user.id})
+        for book in shopping_cart_from_database:
+            resurrected_shopping_cart.books[book['book']] = book['quantity']
+        return resurrected_shopping_cart
+
+    def get_purchased_books(self, user_name):
+        user = self.get_user(user_name)
+        resurrected_purchased_books = {}
+        purchased_books_from_database = self._session_cm.session.execute('SELECT book, quantity FROM purchased_books WHERE user=:user', {'user': user.id})
+        for book in purchased_books_from_database:
+            resurrected_purchased_books[book] = book['quantity']
+        return resurrected_purchased_books
+
+
