@@ -1,6 +1,7 @@
 import json
 from typing import List
 
+from library.adapters.repository import AbstractRepository
 from library.domain.model import Publisher, Author, Book
 
 
@@ -10,6 +11,7 @@ class BooksJSONReader:
         self.__books_file_name = books_file_name
         self.__authors_file_name = authors_file_name
         self.__dataset_of_books = []
+
 
     @property
     def dataset_of_books(self) -> List[Book]:
@@ -70,6 +72,11 @@ class BooksJSONReader:
                     if int(author_json['author_id']) == numerical_id:
                         author_name = author_json['name']
                 book_instance.add_author(Author(numerical_id, author_name))
-
             # adds book instance to the dataset of books
             self.__dataset_of_books.append(book_instance)
+
+    def load_data(self, repo: AbstractRepository):
+        for book in self.__dataset_of_books:
+            repo.add_book(book)
+
+
