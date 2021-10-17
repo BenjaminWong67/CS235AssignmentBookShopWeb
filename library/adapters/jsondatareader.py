@@ -94,6 +94,7 @@ class BooksJSONReader:
             book.authors.clear()
         for book in self.__dataset_of_books:
             repo.add_book(book)
+
         for author_id in authors_id_dict.keys():
             author_object = Author(author_id, authors_name_dict[author_id])
             for book_id in authors_id_dict[author_id]:

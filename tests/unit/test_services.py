@@ -310,6 +310,7 @@ def test_can_get_user_purchased_books(in_memory_repo: AbstractRepository):
     shopping_services.purchase_books("Ben", in_memory_repo)
     user_purchased_books = shopping_services.get_purchased_books("Ben", in_memory_repo)
 
+
     assert len(user_purchased_books) == 2
 
 
@@ -348,7 +349,7 @@ def test_can_adjust_stock(in_memory_repo):
     shopping_services.add_book_to_user_cart("Ben", book_id, in_memory_repo)
     user = in_memory_repo.get_user("Ben")
     user_shopping_cart = user.shoppingcart
-    shopping_services.adjust_stock_count(user_shopping_cart, in_memory_repo)
+    shopping_services.adjust_stock_count(user.user_name, in_memory_repo)
     book_stock = shopping_services.get_book_stock(book_id, in_memory_repo)
 
     assert book_stock == 1

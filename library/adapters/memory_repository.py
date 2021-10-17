@@ -103,3 +103,17 @@ class MemoryRepository(AbstractRepository):
     def purchase_books_in_user_shoppingcart(self, user_name):
         user = self.get_user(user_name)
         user.purchase_books_in_cart()
+
+    def add_author(self, author_object):
+        pass
+
+    def add_publisher(self, publisher):
+        pass
+
+    def get_shopping_cart(self, user_name):
+        user = self.get_user(user_name)
+        return user.shoppingcart
+
+    def get_purchased_books(self, user_name):
+        user = self.get_user(user_name)
+        return user.purchased_books

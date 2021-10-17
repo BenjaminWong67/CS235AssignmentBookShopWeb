@@ -7,13 +7,17 @@ from library.adapters.jsondatareader import BooksJSONReader
 
 
 # populates the memory repository with the provided json files
+from library.domain.model import User
+
+
 def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     authors_data_path = str(Path(data_path) / "comic_books_excerpt.json")
     book_data_path = str(Path(data_path) / "book_authors_excerpt.json")
 
     books_data = BooksJSONReader(authors_data_path, book_data_path)
     books_data.read_json_files()
-    # book_inventory = repo.get_book_inventory()
+
+
     if database_mode is not True:
         for book in books_data.dataset_of_books:
             price, stock_count = random_book_price_and_stock_count()

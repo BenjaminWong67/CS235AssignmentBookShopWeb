@@ -379,19 +379,6 @@ class TestUser:
         set_of_users.add(user3)
         assert str(sorted(set_of_users)) == "[<User daniel>, <User Martin>, <User Shyamli>]"
 
-    def test_reading_a_book(self):
-        books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
-        books[0].num_pages = 107
-        books[1].num_pages = 121
-        user = User("Martin", "pw12345")
-        assert user.read_books == []
-        assert user.pages_read == 0
-        for book in books:
-            user.read_a_book(book)
-        assert str(
-            user.read_books) == "[<Book Harry Potter, book id = 874658>, <Book Lord of the Rings, book id = 89576>]"
-        assert user.pages_read == 228
-
     def test_user_reviews(self):
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
         user = User("Martin", "pw12345")

@@ -41,8 +41,7 @@ users_table = Table(
     'users', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
-    Column('password', String(255), nullable=False),
-    Column('pages_read', Integer)
+    Column('password', String(255), nullable=False)
 )
 
 reviews_table = Table(
@@ -71,12 +70,6 @@ coauthors_table = Table(
     Column('coauthor_id', Integer, ForeignKey('authors.id'))
 )
 
-user_readbooks_table = Table(
-    'user_readbooks', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('user_id', Integer, ForeignKey('users.id')),
-    Column('book_id', Integer, ForeignKey('books.id'))
-)
 
 purchased_books_table = Table(
     'purchased_books', metadata,
@@ -93,6 +86,8 @@ shopping_cart_table = Table(
     Column('book', Integer, ForeignKey('books.id')),
     Column('quantity', Integer)
 )
+
+
 
 
 
@@ -129,10 +124,7 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name' : users_table.c.user_name,
         '_User__password' : users_table.c.password,
-        '_User__read_books' : relationship(model.Book,
-                                    secondary=user_readbooks_table),
-        '_User__reviews' : relationship(model.Review),
-        '_User__pages_read' : users_table.c.pages_read
+        '_User__reviews' : relationship(model.Review)
         # note when grabbing the user we need to make sure... 
         # we grab the purchased books using sql statements
     })
