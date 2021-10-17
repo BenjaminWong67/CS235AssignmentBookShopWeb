@@ -41,8 +41,7 @@ users_table = Table(
     'users', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('user_name', String(255), unique=True, nullable=False),
-    Column('password', String(255), nullable=False),
-    Column('pages_read', Integer)
+    Column('password', String(255), nullable=False)
 )
 
 reviews_table = Table(
@@ -62,20 +61,6 @@ book_authors_table = Table(
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('book_id', Integer, ForeignKey('books.id')),
     Column('author_id', Integer, ForeignKey('authors.id'))
-)
-
-coauthors_table = Table(
-    'coauthors', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('author_id', Integer, ForeignKey('authors.id')),
-    Column('coauthor_id', Integer, ForeignKey('authors.id'))
-)
-
-user_readbooks_table = Table(
-    'user_readbooks', metadata,
-    Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('user_id', Integer, ForeignKey('users.id')),
-    Column('book_id', Integer, ForeignKey('books.id'))
 )
 
 purchased_books_table = Table(
@@ -104,14 +89,7 @@ def map_model_to_tables():
 
     mapper(model.Author, authors_table, properties={
         '_Author__unique_id' : authors_table.c.id,
-        '_Author__full_name' : authors_table.c.full_name,
-        '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
-                                secondary=coauthors_table,
-                                primaryjoin=authors_table.c.id==coauthors_table.c.id,
-                                secondaryjoin=authors_table.c.id==coauthors_table.c.coauthor_id,
-                                backref="left_nodes",
-                                collection_class=set
-        )
+        '_Author__full_name' : authors_table.c.full_name
     })
 
     mapper(model.Book, books_table, properties={
@@ -129,10 +107,7 @@ def map_model_to_tables():
     mapper(model.User, users_table, properties={
         '_User__user_name' : users_table.c.user_name,
         '_User__password' : users_table.c.password,
-        '_User__read_books' : relationship(model.Book,
-                                    secondary=user_readbooks_table),
         '_User__reviews' : relationship(model.Review),
-        '_User__pages_read' : users_table.c.pages_read
         # note when grabbing the user we need to make sure... 
         # we grab the purchased books using sql statements
     })
