@@ -79,6 +79,7 @@ class BooksJSONReader:
         authors_id_dict = dict()
         authors_name_dict = dict()
         publisher_dict = dict()
+
         for book in self.__dataset_of_books:
             for author in book.authors:
                 if author.unique_id not in authors_id_dict:
@@ -89,11 +90,13 @@ class BooksJSONReader:
             if book.publisher.name not in publisher_dict.keys():
                 publisher_dict[book.publisher.name] = list()
             publisher_dict[book.publisher.name].append(book.book_id)
-            book.publisher = None
 
+            book.publisher = None
             book.authors.clear()
+
         for book in self.__dataset_of_books:
             repo.add_book(book)
+            
         for author_id in authors_id_dict.keys():
             author_object = Author(author_id, authors_name_dict[author_id])
             for book_id in authors_id_dict[author_id]:
