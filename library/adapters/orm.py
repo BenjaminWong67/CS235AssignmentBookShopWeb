@@ -108,8 +108,8 @@ def map_model_to_tables():
         '_Author__full_name' : authors_table.c.full_name,
         '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
                                 secondary=coauthors_table,
-                                primaryjoin=authors_table.c.author_id==coauthors_table.c.author_id,
-                                secondaryjoin=authors_table.c.author_id==coauthors_table.c.coauthor_id,
+                                primaryjoin=authors_table.c.id==coauthors_table.c.id,
+                                secondaryjoin=authors_table.c.id==coauthors_table.c.coauthor_id,
                                 backref="left_nodes",
                                 collection_class=set
         )

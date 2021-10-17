@@ -59,11 +59,10 @@ class SqlAlchemyRepository(AbstractRepository):
         with self._session_cm as scm:
             scm.session.add(book)
             scm.commit()
-        print("Error add")
+
 
     def get_book(self, book_id: int) -> Book:
         book = None
-        print("Error get_book")
         try:
             book = self._session_cm.session.query(Book).filter(Book._Book__book_id == book_id).one()
         except NoResultFound:
