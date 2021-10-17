@@ -80,9 +80,6 @@ shopping_cart_table = Table(
 )
 
 
-
-
-
 def map_model_to_tables():
 
     mapper(model.Publisher, publisher_table, properties={
@@ -110,8 +107,6 @@ def map_model_to_tables():
         '_User__user_name' : users_table.c.user_name,
         '_User__password' : users_table.c.password,
         '_User__reviews' : relationship(model.Review, backref='_Review__user')
-        # note when grabbing the user we need to make sure... 
-        # we grab the purchased books using sql statements
     })
 
     mapper(model.Review, reviews_table, properties={
