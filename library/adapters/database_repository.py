@@ -80,6 +80,7 @@ class SqlAlchemyRepository(AbstractRepository):
 
     def add_review(self, review: Review):
         with self._session_cm as scm:
+            print("hi")
             scm.session.add(review)
             scm.commit()
 
@@ -197,7 +198,7 @@ class SqlAlchemyRepository(AbstractRepository):
         user = self.get_user(user_name)
         book = self.get_book(book.book_id)
         quantity = self._session_cm.session.execute('SELECT quantity FROM shopping_cart WHERE user=:user AND book=:book', {'user': user.id, 'book': book.book_id}).fetchone()
-        if quantity == None or quantity == 0:
+        if quantity['quantity'] <= 1 :
             self._session_cm.session.execute('DELETE FROM shopping_cart WHERE book=:book AND user=:user', {'user': user.id, 'book': book.book_id})
         else:
             quantity = quantity['quantity'] - 1
@@ -216,11 +217,15 @@ class SqlAlchemyRepository(AbstractRepository):
                 self._session_cm.session.execute('INSERT INTO purchased_books VALUES (:id,:user, :book, :quantity)',
                                                  {'id': None, 'user': user.id, 'book': book,
                                                   'quantity': shopping_cart.books[book]})
+                self._session_cm.session.execute('DELETE FROM shopping_cart WHERE book=:book AND user=:user',
+                                                 {'user': user.id, 'book': book})
             else:
                 quantity = quantity['quantity'] + shopping_cart.books[book]
                 self._session_cm.session.execute(
                     'UPDATE purchased_books SET quantity=:quantity WHERE book=:book AND user=:user',
                     {'quantity': quantity, 'user': user.id, 'book': book})
+                self._session_cm.session.execute('DELETE FROM shopping_cart WHERE book=:book AND user=:user',
+                                                 {'user': user.id, 'book': book})
         self._session_cm.commit()
 
     def add_publisher(self, publisher:Publisher):
@@ -246,7 +251,7 @@ class SqlAlchemyRepository(AbstractRepository):
         resurrected_purchased_books = {}
         purchased_books_from_database = self._session_cm.session.execute('SELECT book, quantity FROM purchased_books WHERE user=:user', {'user': user.id})
         for book in purchased_books_from_database:
-            resurrected_purchased_books[book] = book['quantity']
+            resurrected_purchased_books[book['book']] = book['quantity']
         return resurrected_purchased_books
 
 

@@ -50,8 +50,8 @@ reviews_table = Table(
     Column('review_text', String(1000), nullable=False),
     Column('rating', Integer, nullable=False),
     Column('timestamp', DateTime, nullable=False),
-    Column('user', ForeignKey('users.id')),
-    Column('book', ForeignKey('books.id'))
+    Column('user_id', ForeignKey('users.id')),
+    Column('book_id', ForeignKey('books.id'))
 )
 
 # relationship tables
@@ -103,13 +103,13 @@ def map_model_to_tables():
         '_Book__ebook' : books_table.c.ebook,
         '_Book__num_pages' : books_table.c.num_pages,
         '_Book__authors' : relationship(model.Author, secondary=book_authors_table),
-        '_Book__reviews' : relationship(model.Review)
+        '_Book__reviews' : relationship(model.Review, backref='_Review__book')
     })
     
     mapper(model.User, users_table, properties={
         '_User__user_name' : users_table.c.user_name,
         '_User__password' : users_table.c.password,
-        '_User__reviews' : relationship(model.Review)
+        '_User__reviews' : relationship(model.Review, backref='_Review__user')
         # note when grabbing the user we need to make sure... 
         # we grab the purchased books using sql statements
     })
@@ -117,6 +117,6 @@ def map_model_to_tables():
     mapper(model.Review, reviews_table, properties={
         '_Review__review_text' : reviews_table.c.review_text,
         '_Review__rating' : reviews_table.c.rating,
-        '_Review__timestamp' : reviews_table.c.timestamp,
+        '_Review__timestamp' : reviews_table.c.timestamp
     })
     

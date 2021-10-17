@@ -211,6 +211,7 @@ def purchased_books_dict_to_list(user_name, repo: AbstractRepository):
     purchased_books_with_dict = list()
     purchased_books_dict = repo.get_purchased_books(user_name)
     for book_id in purchased_books_dict:
+        print(book_id)
         book = book_to_dict(repo.get_book(int(book_id)), repo)
         book['quantity'] = purchased_books_dict[book_id]
         book['price'] = repo.find_price(book_id)

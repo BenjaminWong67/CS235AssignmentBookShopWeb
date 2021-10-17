@@ -243,6 +243,7 @@ def test_repo_can_purchase_books(session_factory):
     repo.add_book_to_user_shoppingcart(user.user_name, book)
 
     repo.purchase_books_in_user_shoppingcart(user.user_name)
+    purchased = repo.get_purchased_books(user.user_name)
 
 
 
