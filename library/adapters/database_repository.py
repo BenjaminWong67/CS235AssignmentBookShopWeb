@@ -4,6 +4,10 @@ from typing import List
 from sqlalchemy import desc, asc
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound, MultipleResultsFound
+from sqlalchemy import update, column
+from sqlalchemy.sql.expression import select
+
+from library.adapters import orm
 
 from sqlalchemy.orm import scoped_session
 from flask import _app_ctx_stack
@@ -74,10 +78,19 @@ class SqlAlchemyRepository(AbstractRepository):
         pass
 
     def add_review(self, review: Review):
-        pass
+        with self._session_cm as scm:
+            scm.session.add(review)
+            scm.commit()
 
     def get_reviews(self):
-        pass
+        reviews = None
+        try:
+            reviews = self._session_cm.session.query(Review).all()
+        except NoResultFound:
+            pass
+
+        return reviews
+
 
     def get_user(self, user_name: str) -> User:
         user = None
@@ -93,9 +106,6 @@ class SqlAlchemyRepository(AbstractRepository):
         with self._session_cm as scm:
             scm.session.add(user)
             scm.commit()
-            user_id = self._session_cm.session.execute('SELECT id FROM users WHERE user_name = :user_name',
-                                                       {'user_name': user.user_name}).fetchone()
-            print("hello " + str(user_id[0]))
 
     def get_number_of_books(self):
         pass
@@ -103,48 +113,73 @@ class SqlAlchemyRepository(AbstractRepository):
     def get_books_by_id(self, id_list: int):
         pass
 
-    # below are the book inv methods
-    def get_book_inventory(self):
-        pass
-
-    def add_book_to_inventory(self, book: Book, price, nr_books_in_stock):
-        pass
+    def add_book_to_inventory(self, book: Book, price: int, nr_books_in_stock: int):
+        book_id = book.book_id
+        with self._session_cm as scm:
+            scm.session.query(orm.books_table).\
+                                filter_by(id = book_id).\
+                                update(dict(stock_count=nr_books_in_stock, prices=price, discount=0))
+            scm.commit()
 
     def remove_book_from_inventory(self, book_id):
-        pass
+        with self._session_cm as scm:
+            scm.session.query(orm.books_table).\
+                                filter_by(id = book_id).\
+                                update(dict(prices=None, stock_count=None, discount=None))
+            scm.commit()
 
     def find_book(self, book_id):
-        pass
+        price = self.find_price(book_id)
+        if price == None:
+            return None
+        else:
+            try:
+                book = self._session_cm.session.query(Book).filter(Book._Book__book_id == book_id).one()
+            except NoResultFound:
+                # Ignore any exception and return None.
+                pass
+            return book
     
     def find_price(self, book_id):
-        pass
+        with self._session_cm as scm:
+            book_data = scm.session.query(orm.books_table).filter_by(id = book_id).one()
+            return book_data['prices']
 
     def find_stock_count(self, book_id):
-        pass
-    
+        with self._session_cm as scm:
+            book_data = scm.session.query(orm.books_table).filter_by(id = book_id).one()
+            return book_data['stock_count']
+
     def adjust_stock_count(self, book_id, amount_to_deduct):
-        pass
+        with self._session_cm as scm:
+            stock = self.find_stock_count(book_id)
+            scm.session.query(orm.books_table).\
+                                filter_by(id = book_id).\
+                                update(dict(stock_count = (stock-amount_to_deduct)))
+            scm.commit()
     
     def search_book_by_title(self, book_title):
-        pass
+        with self._session_cm as scm:
+            book_data = scm.session.query(orm.books_table).filter_by(title = book_title).one()
+            book_id = book_data['id']
+            return self.find_book(book_id)
     
     def discount_book(self, book_id, discount):
-        pass
+        with self._session_cm as scm:
+            scm.session.query(orm.books_table).\
+                                filter_by(id = book_id).\
+                                update(dict(discount=discount))
+            scm.commit()
     
     def get_book_discount(self, book_id):
-        pass
+        with self._session_cm as scm:
+            book_data = scm.session.query(orm.books_table).filter_by(id = book_id).one()
+            return book_data['discount']
 
     # below are the shopping cart methods
     def add_book_to_user_shoppingcart(self, user_name: str, book: Book):
-        user_id = self._session_cm.session.execute('SELECT id FROM users WHERE user_name = :user_name', {'user_name': user_name}).fetchone()
-        user_id = user_id[0]
-        """
-        self._session_cm.session.execute(
-            'INSERT INTO shopping_cart VALUES , user_id, '
-        )
-        """
         pass
-    
+
     def remove_book_from_user_shoppingcart(self, user_name, book: Book):
         pass
     

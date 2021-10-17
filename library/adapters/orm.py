@@ -2,7 +2,7 @@ from sqlalchemy import (
     Table, MetaData, Column, Integer, String, Date, DateTime,
     ForeignKey
 )
-from sqlalchemy.orm import mapper, relationship
+from sqlalchemy.orm import backref, mapper, relationship
 from sqlalchemy.sql.expression import null
 from sqlalchemy.sql.sqltypes import Boolean
 
@@ -50,8 +50,8 @@ reviews_table = Table(
     Column('review_text', String(1000), nullable=False),
     Column('rating', Integer, nullable=False),
     Column('timestamp', DateTime, nullable=False),
-    Column('user', Integer, ForeignKey('users.id')),
-    Column('book', Integer, ForeignKey('books.id'))
+    Column('user', ForeignKey('users.id')),
+    Column('book', ForeignKey('books.id'))
 )
 
 # relationship tables
@@ -115,6 +115,6 @@ def map_model_to_tables():
     mapper(model.Review, reviews_table, properties={
         '_Review__review_text' : reviews_table.c.review_text,
         '_Review__rating' : reviews_table.c.rating,
-        '_Review__timestamp' : reviews_table.c.timestamp
+        '_Review__timestamp' : reviews_table.c.timestamp,
     })
     

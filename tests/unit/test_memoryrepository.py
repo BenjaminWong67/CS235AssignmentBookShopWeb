@@ -72,11 +72,6 @@ def test_repository_can_get_reviews(in_memory_repo):
     assert len(in_memory_repo.get_reviews()) == 2
 
 
-# this test may be redundant after database redesign
-def test_repository_can_retrieve_from_book_inventory(in_memory_repo):
-    assert isinstance(in_memory_repo.get_book_inventory(), BooksInventory) == True
-
-
 def test_get_books_by_ids(small_memory_repo: AbstractRepository):
     list_ids = [10, 20, 30]
 

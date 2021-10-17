@@ -1,9 +1,10 @@
 import random
 
 from pathlib import Path
-
+from sqlalchemy import select
 from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
+from library.domain.model import Book, User
 
 
 # populates the memory repository with the provided json files
@@ -19,10 +20,10 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
             price, stock_count = random_book_price_and_stock_count()
             repo.add_book_to_inventory(book, price, stock_count)
             repo.add_book(book)
-
-            three_random_book_discount(repo)
     else:
         books_data.load_data(repo)
+    
+    # three_random_book_discount(repo)
 
 
 def three_random_book_discount(repo: AbstractRepository):

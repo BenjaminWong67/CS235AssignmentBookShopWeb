@@ -123,25 +123,6 @@ class TestAuthor:
         assert str(sorted(
             set_of_authors)) == "[<Author Neil Gaiman, author id = 2>, <Author J.R.R. Tolkien, author id = 13>, <Author J.K. Rowling, author id = 98>]"
 
-    def test_coauthors(self):
-        author1 = Author(1, "Neil Gaiman")
-        author2 = Author(2, "J.K. Rowling")
-        author3 = Author(3, "J.R.R. Tolkien")
-        author4 = Author(4, "Barack Obama")
-        author1.add_coauthor(author2)
-        author1.add_coauthor(author3)
-        assert author1.check_if_this_author_coauthored_with(author2) is True
-        assert author1.check_if_this_author_coauthored_with(author3) is True
-        assert author1.check_if_this_author_coauthored_with(author4) is False
-        assert author2.check_if_this_author_coauthored_with(author1) is False
-        author2.add_coauthor(author1)
-        assert author2.check_if_this_author_coauthored_with(author1) is True
-
-    def test_coauthor_same_as_author(self):
-        author = Author(1, "Neil Gaiman")
-        author.add_coauthor(author)
-        assert author.check_if_this_author_coauthored_with(author) is False
-
     def test_invalid_author_ids(self):
         author = Author(0, "J.R.R. Tolkien")
         assert str(author) == "<Author J.R.R. Tolkien, author id = 0>"
@@ -378,19 +359,6 @@ class TestUser:
         set_of_users.add(user2)
         set_of_users.add(user3)
         assert str(sorted(set_of_users)) == "[<User daniel>, <User Martin>, <User Shyamli>]"
-
-    def test_reading_a_book(self):
-        books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
-        books[0].num_pages = 107
-        books[1].num_pages = 121
-        user = User("Martin", "pw12345")
-        assert user.read_books == []
-        assert user.pages_read == 0
-        for book in books:
-            user.read_a_book(book)
-        assert str(
-            user.read_books) == "[<Book Harry Potter, book id = 874658>, <Book Lord of the Rings, book id = 89576>]"
-        assert user.pages_read == 228
 
     def test_user_reviews(self):
         books = [Book(874658, "Harry Potter"), Book(89576, "Lord of the Rings")]
