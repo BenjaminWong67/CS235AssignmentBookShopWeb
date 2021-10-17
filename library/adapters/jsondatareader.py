@@ -41,7 +41,7 @@ class BooksJSONReader:
             # creates book instance with id and title
             book_instance = Book(int(book_json['book_id']), book_json['title'])
             # adds publisher
-            book_instance.publisher = Publisher(book_json['publisher'])
+            book_instance.publisher= (Publisher(book_json['publisher']))
 
             # adds publication year if exists
             if book_json['publication_year'] != "":
@@ -76,7 +76,41 @@ class BooksJSONReader:
             self.__dataset_of_books.append(book_instance)
 
     def load_data(self, repo: AbstractRepository):
+        authors_id_dict = dict()
+        authors_name_dict = dict()
+        publisher_dict = dict()
+        for book in self.__dataset_of_books:
+            for author in book.authors:
+                if author.unique_id not in authors_id_dict:
+                    authors_id_dict[author.unique_id] = list()
+                    authors_name_dict[author.unique_id] = author.full_name
+                authors_id_dict[author.unique_id].append(book.book_id)
+
+            if book.publisher.name not in publisher_dict.keys():
+                publisher_dict[book.publisher.name] = list()
+            publisher_dict[book.publisher.name].append(book.book_id)
+            book.publisher = None
+
+            book.authors.clear()
         for book in self.__dataset_of_books:
             repo.add_book(book)
+        for author_id in authors_id_dict.keys():
+            author_object = Author(author_id, authors_name_dict[author_id])
+            for book_id in authors_id_dict[author_id]:
+                book = repo.get_book(book_id)
+                book.add_author(author_object)
+            repo.add_author(author_object)
+
+        for publisher_name in publisher_dict.keys():
+            publisher_object = Publisher(publisher_name)
+            for book_id in publisher_dict[publisher_name]:
+                book = repo.get_book(book_id)
+                book.publisher = publisher_object
+            repo.add_publisher(publisher_object)
+
+
+
+
+
 
 

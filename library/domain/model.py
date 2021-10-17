@@ -54,6 +54,7 @@ class Author:
         # We use a set so each unique author is only represented once.
         self.__authors_this_one_has_worked_with = set()
 
+
     @property
     def unique_id(self) -> int:
         return self.__unique_id
@@ -111,7 +112,7 @@ class Book:
         self.title = book_title
 
         self.__description = None
-        self.__publisher = None
+        self.__publisher: Publisher = None
         self.__authors = []
         self.__release_year = None
         self.__ebook = None

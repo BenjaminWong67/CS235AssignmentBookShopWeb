@@ -144,3 +144,11 @@ class AbstractRepository(abc.ABC):
     def purchase_books_in_user_shoppingcart(self, user_name):
         """purchases books from user shopping cart"""
         raise NotImplementedError
+    @abc.abstractmethod
+    def add_author(self, author_object):
+        """add author to repo"""
+        raise NotImplementedError
+    @abc.abstractmethod
+    def add_publisher(self, publisher):
+        """add author to repo"""
+        raise NotImplementedError
