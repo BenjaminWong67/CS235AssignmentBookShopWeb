@@ -14,20 +14,19 @@ metadata = MetaData()
 publisher_table = Table(
     'publishers', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('name', String(255), unique=True, nullable=False)
+    Column('name', String(255), nullable=False)
 )
 
 authors_table = Table(
     'authors', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('author_id', Integer),
     Column('full_name', String(255), nullable=False)
 )
 
 books_table = Table(
     'books', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('publisher_id', Integer, ForeignKey('publishers.id')),
+    Column('publisher_id', ForeignKey('publishers.id')),
     Column('title', String(500), unique=True, nullable=False),
     Column('description', String(2000), nullable=True),
     Column('release_year', Integer, nullable=True),
@@ -104,7 +103,7 @@ def map_model_to_tables():
     })
 
     mapper(model.Author, authors_table, properties={
-        '_Author__unique_id' : authors_table.c.author_id,
+        '_Author__unique_id' : authors_table.c.id,
         '_Author__full_name' : authors_table.c.full_name,
         '_Author__authors_this_one_has_worked_with' : relationship(model.Author,
                                 secondary=coauthors_table,
@@ -118,6 +117,7 @@ def map_model_to_tables():
     mapper(model.Book, books_table, properties={
         '_Book__book_id' : books_table.c.id,
         '_Book__title' : books_table.c.title,
+        '_Book__publisher': relationship(model.Publisher),
         '_Book__description' : books_table.c.description,
         '_Book__release_year' : books_table.c.release_year,
         '_Book__ebook' : books_table.c.ebook,

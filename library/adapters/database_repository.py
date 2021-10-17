@@ -150,3 +150,13 @@ class SqlAlchemyRepository(AbstractRepository):
     
     def purchase_books_in_user_shoppingcart(self, user_name):
         pass
+
+    def add_publisher(self, publisher:Publisher):
+        with self._session_cm as scm:
+            scm.session.add(publisher)
+            scm.commit()
+
+    def add_author(self, author_object):
+        with self._session_cm as scm:
+            scm.session.add(author_object)
+            scm.commit()
