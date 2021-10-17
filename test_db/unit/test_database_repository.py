@@ -12,7 +12,6 @@ from sqlalchemy import select
 
 from test_db.conftest import database_engine
 
-
 def test_repository_can_add_a_user(session_factory):
     repo = SqlAlchemyRepository(session_factory)
 
@@ -23,6 +22,7 @@ def test_repository_can_add_a_user(session_factory):
     user2 = repo.get_user('Dave')
 
     assert user2 == user and user2 is user
+
 
 def test_repository_can_retrieve_a_user(session_factory):
     repo = SqlAlchemyRepository(session_factory)
@@ -244,8 +244,3 @@ def test_repo_can_purchase_books(session_factory):
 
     repo.purchase_books_in_user_shoppingcart(user.user_name)
     purchased = repo.get_purchased_books(user.user_name)
-
-
-
-
-
