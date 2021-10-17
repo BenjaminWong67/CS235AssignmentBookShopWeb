@@ -50,10 +50,6 @@ class Author:
         # Uses the attribute setter method.
         self.full_name = author_full_name
 
-        # Initialize author colleagues data structure with empty set.
-        # We use a set so each unique author is only represented once.
-        self.__authors_this_one_has_worked_with = set()
-
 
     @property
     def unique_id(self) -> int:
@@ -75,12 +71,12 @@ class Author:
         else:
             raise ValueError
 
-    def add_coauthor(self, coauthor: "Author"):
-        if isinstance(coauthor, self.__class__) and coauthor.unique_id != self.unique_id:
-            self.__authors_this_one_has_worked_with.add(coauthor)
+    #def add_coauthor(self, coauthor: "Author"):
+     #   if isinstance(coauthor, self.__class__) and coauthor.unique_id != self.unique_id:
+      #      self.__authors_this_one_has_worked_with.add(coauthor)
 
-    def check_if_this_author_coauthored_with(self, author):
-        return author in self.__authors_this_one_has_worked_with
+    #def check_if_this_author_coauthored_with(self, author):
+     #   return author in self.__authors_this_one_has_worked_with
 
     def __repr__(self):
         return f'<Author {self.full_name}, author id = {self.unique_id}>'
@@ -251,9 +247,7 @@ class User:
         else:
             self.__password = password
 
-        self.__read_books = []
         self.__reviews = []
-        self.__pages_read = 0
         self.__shoppingcart = ShoppingCart()
         self.__purchased_books = {}
 
@@ -265,17 +259,17 @@ class User:
     def password(self) -> str:
         return self.__password
 
-    @property
-    def read_books(self) -> List[Book]:
-        return self.__read_books
+    #@property
+    #def read_books(self) -> List[Book]:
+     #   return self.__read_books
 
     @property
     def reviews(self) -> List["Review"]:
         return self.__reviews
 
-    @property
-    def pages_read(self) -> int:
-        return self.__pages_read
+    #@property
+    #def pages_read(self) -> int:
+     #   return self.__pages_read
 
     @property
     def shoppingcart(self):
@@ -285,11 +279,11 @@ class User:
     def purchased_books(self):
         return self.__purchased_books
 
-    def read_a_book(self, book: Book):
-        if isinstance(book, Book):
-            self.__read_books.append(book)
-            if book.num_pages is not None:
-                self.__pages_read += book.num_pages
+    #def read_a_book(self, book: Book):
+     #   if isinstance(book, Book):
+      #      self.__read_books.append(book)
+       #     if book.num_pages is not None:
+        #        self.__pages_read += book.num_pages
 
     def add_review(self, review: "Review"):
         if isinstance(review, Review):
