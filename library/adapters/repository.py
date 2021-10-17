@@ -78,11 +78,6 @@ class AbstractRepository(abc.ABC):
     def get_books_by_id(self, id_list: int):
         """returns list of books with the given list of ids"""
         raise NotImplementedError
-
-    @abc.abstractmethod
-    def get_book_inventory(self):
-        """returns the book inventory"""
-        raise NotImplementedError
     
     @abc.abstractmethod
     def add_book_to_inventory(self, book, price, nr_books_in_stock):
@@ -144,11 +139,28 @@ class AbstractRepository(abc.ABC):
     def purchase_books_in_user_shoppingcart(self, user_name):
         """purchases books from user shopping cart"""
         raise NotImplementedError
+        
     @abc.abstractmethod
     def add_author(self, author_object):
         """add author to repo"""
         raise NotImplementedError
+
     @abc.abstractmethod
     def add_publisher(self, publisher):
         """add author to repo"""
         raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_shopping_cart(self, user_name):
+        """
+        gets user shopping cart"
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_purchased_books(self, user_name):
+        """
+        gets user purchased books"
+        """
+        raise NotImplementedError
+

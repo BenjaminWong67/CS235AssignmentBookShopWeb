@@ -2,7 +2,7 @@ from sqlalchemy import (
     Table, MetaData, Column, Integer, String, Date, DateTime,
     ForeignKey
 )
-from sqlalchemy.orm import mapper, relationship
+from sqlalchemy.orm import backref, mapper, relationship
 from sqlalchemy.sql.expression import null
 from sqlalchemy.sql.sqltypes import Boolean
 
@@ -50,8 +50,8 @@ reviews_table = Table(
     Column('review_text', String(1000), nullable=False),
     Column('rating', Integer, nullable=False),
     Column('timestamp', DateTime, nullable=False),
-    Column('user', Integer, ForeignKey('users.id')),
-    Column('book', Integer, ForeignKey('books.id'))
+    Column('user_id', ForeignKey('users.id')),
+    Column('book_id', ForeignKey('books.id'))
 )
 
 # relationship tables
@@ -81,6 +81,8 @@ shopping_cart_table = Table(
 
 
 
+
+
 def map_model_to_tables():
 
     mapper(model.Publisher, publisher_table, properties={
@@ -101,13 +103,13 @@ def map_model_to_tables():
         '_Book__ebook' : books_table.c.ebook,
         '_Book__num_pages' : books_table.c.num_pages,
         '_Book__authors' : relationship(model.Author, secondary=book_authors_table),
-        '_Book__reviews' : relationship(model.Review)
+        '_Book__reviews' : relationship(model.Review, backref='_Review__book')
     })
     
     mapper(model.User, users_table, properties={
         '_User__user_name' : users_table.c.user_name,
         '_User__password' : users_table.c.password,
-        '_User__reviews' : relationship(model.Review),
+        '_User__reviews' : relationship(model.Review, backref='_Review__user')
         # note when grabbing the user we need to make sure... 
         # we grab the purchased books using sql statements
     })

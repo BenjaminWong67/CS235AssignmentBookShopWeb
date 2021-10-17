@@ -37,7 +37,7 @@ def add_book_to_user_cart(user_name: str, book_id: int, repo: AbstractRepository
     stock_count = repo.find_stock_count(book_id)
     if stock_count == 0:
         raise OutOfStockException
-    elif stock_count == user.shoppingcart.quantity_of_book(book_id):
+    elif stock_count == repo.get_shopping_cart(user_name).quantity_of_book(book_id):
         raise NoMoreStockException
     else:
         repo.add_book_to_user_shoppingcart(user_name, book_to_add)
@@ -66,7 +66,7 @@ def get_shopping_cart(user_name: str, repo: AbstractRepository):
     if user is None:
         raise UnknownUserException
 
-    user_shopping_cart = shopping_cart_to_dict(user.shoppingcart, repo)
+    user_shopping_cart = shopping_cart_to_dict(user_name, repo)
 
     return user_shopping_cart
 
@@ -78,7 +78,7 @@ def get_purchased_books(user_name: str, repo: AbstractRepository):
     if user is None:
         raise UnknownUserException
 
-    user_purchased_books_as_dict = purchased_books_dict_to_list(user.purchased_books, repo)
+    user_purchased_books_as_dict = purchased_books_dict_to_list(user_name, repo)
 
     return user_purchased_books_as_dict
 
@@ -90,7 +90,7 @@ def purchase_books(user_name, repo: AbstractRepository):
     if user is None:
         raise UnknownUserException
 
-    adjust_stock_count(user.shoppingcart, repo)
+    adjust_stock_count(user_name, repo)
     repo.purchase_books_in_user_shoppingcart(user_name)
     # user.purchase_books_in_cart()
 
@@ -107,9 +107,9 @@ def get_book_stock(book_id: int, repo: AbstractRepository):
     return book_stock_count
 
 
-def adjust_stock_count(shoppingcart: ShoppingCart, repo: AbstractRepository):
+def adjust_stock_count(user_name, repo: AbstractRepository):
     # book_inventory = repo.get_book_inventory()
-    books_to_purchase = shopping_cart_to_dict(shoppingcart, repo)
+    books_to_purchase = shopping_cart_to_dict(user_name, repo)
     for book in books_to_purchase:
         repo.adjust_stock_count(book['id'], book['quantity'])
 
@@ -121,7 +121,7 @@ def get_total_price_shopping_cart(user_name: str, repo: AbstractRepository):
     if user is None:
         raise UnknownUserException
 
-    return get_total_price(user.shoppingcart.books, repo)
+    return get_total_price(repo.get_shopping_cart(user_name).books, repo)
 
 
 def get_total_price_of_purchased(user_name: str, repo: AbstractRepository):
@@ -131,11 +131,11 @@ def get_total_price_of_purchased(user_name: str, repo: AbstractRepository):
     if user is None:
         raise UnknownUserException
 
-    return get_total_price(user.purchased_books, repo)
+    return get_total_price(repo.get_purchased_books(user_name), repo)
 
 
 def get_book_count_in_cart(user_name: str, book_id: int, repo: AbstractRepository):
-    shopping_cart = repo.get_user(user_name).shoppingcart
+    shopping_cart = repo.get_shopping_cart(user_name)
     return shopping_cart.quantity_of_book(book_id)
 
 
@@ -195,9 +195,9 @@ def reviews_to_dict(reviews: Iterable[Review]):
     return [review_to_dict(review) for review in reviews]
 
 
-def shopping_cart_to_dict(books_in_shopping_cart, repo: AbstractRepository):
+def shopping_cart_to_dict(user_name, repo: AbstractRepository):
     shopping_cart_to_list = list()
-
+    books_in_shopping_cart = repo.get_shopping_cart(user_name)
     for book_id in books_in_shopping_cart.books:
         book = book_to_dict(repo.get_book(int(book_id)), repo)
         book['quantity'] = books_in_shopping_cart.books[book_id]
@@ -207,10 +207,11 @@ def shopping_cart_to_dict(books_in_shopping_cart, repo: AbstractRepository):
     return shopping_cart_to_list
 
 
-def purchased_books_dict_to_list(purchased_books_dict, repo: AbstractRepository):
+def purchased_books_dict_to_list(user_name, repo: AbstractRepository):
     purchased_books_with_dict = list()
-
+    purchased_books_dict = repo.get_purchased_books(user_name)
     for book_id in purchased_books_dict:
+        print(book_id)
         book = book_to_dict(repo.get_book(int(book_id)), repo)
         book['quantity'] = purchased_books_dict[book_id]
         book['price'] = repo.find_price(book_id)

@@ -59,10 +59,6 @@ class MemoryRepository(AbstractRepository):
         # Fetch the Articles.
         books = [self.__books_index[id] for id in existing_ids]
         return books
-    
-    # below are the book inv methods
-    def get_book_inventory(self):
-        return self.__book_inventory
 
     def add_book_to_inventory(self, book : Book, price, nr_books_in_stock):
         self.__book_inventory.add_book(book, price, nr_books_in_stock)
@@ -103,3 +99,17 @@ class MemoryRepository(AbstractRepository):
     def purchase_books_in_user_shoppingcart(self, user_name):
         user = self.get_user(user_name)
         user.purchase_books_in_cart()
+    
+    def add_author(self, author_object):
+        pass
+
+    def add_publisher(self, publisher):
+        pass
+
+    def get_shopping_cart(self, user_name):
+        user = self.get_user(user_name)
+        return user.shoppingcart
+
+    def get_purchased_books(self, user_name):
+        user = self.get_user(user_name)
+        return user.purchased_books

@@ -1,5 +1,6 @@
 import json
 from typing import List
+import random
 
 from library.adapters.repository import AbstractRepository
 from library.domain.model import Publisher, Author, Book
@@ -96,6 +97,8 @@ class BooksJSONReader:
 
         for book in self.__dataset_of_books:
             repo.add_book(book)
+            price, stock_count = random_book_price_and_stock_count()
+            repo.add_book_to_inventory(book, price, stock_count)
             
         for author_id in authors_id_dict.keys():
             author_object = Author(author_id, authors_name_dict[author_id])
@@ -112,6 +115,11 @@ class BooksJSONReader:
             repo.add_publisher(publisher_object)
 
 
+def random_book_price_and_stock_count():
+    price = random.randint(0, 400)
+    stock_count = random.randint(0, 20)
+
+    return price, stock_count
 
 
 
