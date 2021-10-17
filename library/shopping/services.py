@@ -135,7 +135,7 @@ def get_total_price_of_purchased(user_name: str, repo: AbstractRepository):
 
 
 def get_book_count_in_cart(user_name: str, book_id: int, repo: AbstractRepository):
-    shopping_cart = repo.get_user(user_name).shoppingcart
+    shopping_cart = repo.get_shopping_cart(user_name)
     return shopping_cart.quantity_of_book(book_id)
 
 
