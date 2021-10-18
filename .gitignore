@@ -1,5 +1,6 @@
-# database file
+# database files
 timben-library.db
+timben-test.db
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

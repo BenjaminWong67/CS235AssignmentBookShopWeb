@@ -4,7 +4,9 @@
 
 This webapp is an implementation of a library book catalogue/shop. The webapp features a homepage, catalogue, register, login, and also provides the functionality to review bookks and also add them to a shopping cart. Our implementation requires that a user is logged in to perform a review and to access the 'shopping cart' or 'purchased books' pages. Each user object of the webapp contains the reiviews that a user has made, the current shopping cart instance and the list of books that a user has purchased. When logging out, the shopping cart is cleared and cannot be retrieved. The list of purchased books is saved and can be retrieved upon logging back in.
 
-Something to note is that currently the webapp has no implementation of a database. Any data not part of the provided json files in 'library/adapters/data' e.g. registered users, purchased books, shopping cart etc, will be lost upon stopping the app in the terminal it is running in. Another thing to note is that our implementation of prices and discounts are randomized and are also lost when stopping the webapp.
+When the the webapp is set to either memory and/or TESTING *(see .env variables below)*, Any data not part of the provided json files in 'library/adapters/data' e.g. registered users, purchased books, shopping cart etc, will be lost upon stopping the app in the terminal it is running in. 
+
+Another thing to note is that our implementation of prices and discounts are randomized, when TESTING is False and database mode is selected, these prices will be persistent. However if the webapp is set to memory and/or TESTING True, the webapp will randomize new prices and discounts upon execution.
 
 
 ## Python version
@@ -25,9 +27,41 @@ when running this webapp please makesure you configure a virtual environment wit
 
 ## Testing with the pytest unit tests
 
-From a terminal in the root folder of the project, you can also call 'python -m pytest tests' to run all the tests. 
+**Testing in memory mode**
+
+Set the REPOSITORY env variable in the .env file to memory. *(see Choosing the environment variables below).*
+
+From a terminal in the root folder of the project, run the command below
+```
+'python -m pytest tests'
+``` 
+
+**Testing in database mode**
+
+Set the REPOSITORY env variable in the .env file to database. *(see Choosing the environment variables below).*
+
+From a terminal in the root folder of the project, run the command below
+```
+'python -m pytest test_db'
+``` 
+
 
 ## Execution of the web application
+
+**Choosing the environment variables**
+
+Use the .env file of the project directory to choose the webapp environment:
+
+```
+FLASK_ENV <- can be set to development or production
+
+TESTING <- True or False
+
+SQLALCHEMY_ECHO <- when set to True will output database behaviour in command line
+
+REPOSITORY <- used to select a memory or database based repository.
+```
+*NOTE: When TESTING is set to True the database will refresh and remove all data upon executing the application*
 
 **Running the Flask application**
 

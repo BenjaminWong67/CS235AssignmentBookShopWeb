@@ -6,7 +6,6 @@ from library.adapters.repository import AbstractRepository
 from library.adapters.jsondatareader import BooksJSONReader
 from library.domain.model import Book, User
 
-
 # populates the memory repository with the provided json files
 from library.domain.model import User
 
@@ -26,7 +25,7 @@ def populate(data_path: Path, repo: AbstractRepository, database_mode: bool):
     else:
         books_data.load_data(repo)
     
-    # three_random_book_discount(repo)
+    three_random_book_discount(repo)
 
 
 def three_random_book_discount(repo: AbstractRepository):

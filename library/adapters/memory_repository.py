@@ -12,6 +12,8 @@ class MemoryRepository(AbstractRepository):
         self.__reviews = list()
         self.__users = list()
         self.__book_inventory = BooksInventory()
+        self.__authors = list()
+        self.__publishers = list()
 
     def add_book(self, book: Book):
 
@@ -100,11 +102,13 @@ class MemoryRepository(AbstractRepository):
         user = self.get_user(user_name)
         user.purchase_books_in_cart()
     
-    def add_author(self, author_object):
-        pass
+    def add_author(self, author: Author):
+        if isinstance(author, Author):
+            self.__authors.append(author)
 
     def add_publisher(self, publisher):
-        pass
+        if isinstance(publisher, Publisher):
+            self.__publishers.append(publisher)
 
     def get_shopping_cart(self, user_name):
         user = self.get_user(user_name)
