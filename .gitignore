@@ -1,6 +1,8 @@
 # database files
 timben-library.db
 timben-test.db
+timben-library.db-journal
+timben-test.db-journal
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
