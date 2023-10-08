@@ -1,7 +1,7 @@
 # TimBen Book Catalogue WebApp
 
 ## Description
-This webapp is an implementation of a library book catalogue/shop. The webapp features a homepage, catalogue, register, login, and also provides the functionality to review bookks and also add them to a shopping cart. Our implementation requires that a user is logged in to perform a review and to access the 'shopping cart' or 'purchased books' pages. Each user object of the webapp contains the reiviews that a user has made, the current shopping cart instance and the list of books that a user has purchased. When logging out, the shopping cart is cleared and cannot be retrieved. The list of purchased books is saved and can be retrieved upon logging back in.
+This webapp is an implementation of a library book catalogue/shop. The webapp features a homepage, catalogue, register, login, and also provides the functionality to review books and also add them to a shopping cart. Our implementation requires that a user is logged in to perform a review and to access the 'shopping cart' or 'purchased books' pages. Each user object of the webapp contains the reiviews that a user has made, the current shopping cart instance and the list of books that a user has purchased. When logging out, the shopping cart is cleared and cannot be retrieved. The list of purchased books is saved and can be retrieved upon logging back in.
 
 When the the webapp is set to either memory and/or TESTING *(see .env variables below)*, Any data not part of the provided json files in 'library/adapters/data' e.g. registered users, purchased books, shopping cart etc, will be lost upon stopping the app in the terminal it is running in. 
 
